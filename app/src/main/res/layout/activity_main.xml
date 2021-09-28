@@ -21,9 +21,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/counterView"
-        android:layout_width="358dp"
-        android:layout_height="750dp"
-        android:layout_marginTop="84dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toStartOf="parent"
