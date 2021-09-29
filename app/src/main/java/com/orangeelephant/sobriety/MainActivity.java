@@ -37,14 +37,7 @@ public class MainActivity extends AppCompatActivity implements CounterAdapter.On
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
 
-        SwipeRefreshLayout swipeRefreshLayoutHome = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayoutHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayoutHome.setRefreshing(false);
-                onRefreshRecycler();
-            }
-        });
+        onBackPressed();
     }
 
     public void onClickAddCounter (View v) {
@@ -77,21 +70,11 @@ public class MainActivity extends AppCompatActivity implements CounterAdapter.On
         CreateNewCounter newCounter = new CreateNewCounter();
         newCounter.create(this, nameText, time);
 
-        setContentView(R.layout.activity_main);
-        onRefreshRecycler();
+        onBackPressed();
     }
 
     public void onClickCancel (View v) {
-        setContentView(R.layout.activity_main);
-        onRefreshRecycler();
-        SwipeRefreshLayout swipeRefreshLayoutHome = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayoutHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayoutHome.setRefreshing(false);
-                onRefreshRecycler();
-            }
-        });
+        onBackPressed();
     }
 
     public void onRefreshRecycler() {
@@ -151,8 +134,7 @@ public class MainActivity extends AppCompatActivity implements CounterAdapter.On
         String counterName = this.openCounter.getName();
         DeleteCounter deleteCounter = new DeleteCounter(this, openCounterId, counterName);
 
-        setContentView(R.layout.activity_main);
-        onRefreshRecycler();
+        onBackPressed();
 
         deleteCounter.printDeletionMessage();
     }
@@ -161,6 +143,18 @@ public class MainActivity extends AppCompatActivity implements CounterAdapter.On
     public void onBackPressed() {
         setContentView(R.layout.activity_main);
         onRefreshRecycler();
+        setHomePageRefreshListener();
         //super.onBackPressed();
+    }
+
+    private void setHomePageRefreshListener() {
+        SwipeRefreshLayout swipeRefreshLayoutHome = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayoutHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayoutHome.setRefreshing(false);
+                onRefreshRecycler();
+            }
+        });
     }
 }
