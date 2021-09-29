@@ -5,15 +5,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/counterScreenToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/counterName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            android:typeface="monospace"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.appcompat.widget.Toolbar>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayoutFullCounter"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="391dp"
+        android:layout_height="759dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/counterScreenToolbar"
         tools:context=".MainActivity">
 
 
@@ -27,26 +51,11 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/counterName"
-                    android:layout_width="259dp"
-                    android:layout_height="72dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="sans-serif-black"
-                    android:text="Name"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textSize="40sp"
-                    android:textStyle="bold"
-                    android:typeface="monospace"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
                     android:id="@+id/durationView"
                     android:layout_width="323dp"
                     android:layout_height="59dp"
                     android:layout_marginStart="36dp"
-                    android:layout_marginTop="36dp"
+                    android:layout_marginTop="50dp"
                     android:text="Duration"
                     android:textSize="24sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -74,18 +83,6 @@
                     android:text="Reset counter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
-
-                <Button
-                    android:id="@+id/backButton"
-                    android:layout_width="140dp"
-                    android:layout_height="46dp"
-                    android:layout_marginBottom="36dp"
-                    android:onClick="onClickCancel"
-                    android:text="Back"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/resetCounterButton"
-                    app:layout_constraintHorizontal_bias="0.587"
-                    app:layout_constraintStart_toStartOf="parent" />
 
                 <Button
                     android:id="@+id/deleteCounterButton"
