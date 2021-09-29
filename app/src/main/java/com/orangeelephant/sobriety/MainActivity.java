@@ -84,6 +84,14 @@ public class MainActivity extends AppCompatActivity implements CounterAdapter.On
     public void onClickCancel (View v) {
         setContentView(R.layout.activity_main);
         onRefreshRecycler();
+        SwipeRefreshLayout swipeRefreshLayoutHome = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayoutHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayoutHome.setRefreshing(false);
+                onRefreshRecycler();
+            }
+        });
     }
 
     public void onRefreshRecycler() {
