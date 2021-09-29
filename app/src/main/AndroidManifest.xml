@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+
     package="com.orangeelephant.sobriety">
 
     <application
@@ -8,7 +9,8 @@
         android:label="Sobriety"
         android:roundIcon="@mipmap/app_logo"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyApplication">
+        android:theme="@style/Theme.AppCompat.NoActionBar">
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

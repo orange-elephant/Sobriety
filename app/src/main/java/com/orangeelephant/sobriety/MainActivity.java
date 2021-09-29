@@ -1,5 +1,6 @@
 package com.orangeelephant.sobriety;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.orangeelephant.sobriety.counter.Counter;
 import com.orangeelephant.sobriety.counter.CreateNewCounter;
@@ -30,6 +32,11 @@ public class MainActivity extends AppCompatActivity implements CounterAdapter.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         onRefreshRecycler();
+
+        setSupportActionBar(findViewById(R.id.homeScreenToolbar));
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
 
         SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
