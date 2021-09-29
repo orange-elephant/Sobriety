@@ -3,6 +3,7 @@ package com.orangeelephant.sobriety;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.view.View;
@@ -28,7 +29,16 @@ public class MainActivity extends AppCompatActivity implements CounterAdapter.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        onRefresh();
+        onRefreshRecycler();
+
+        SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+                onRefreshRecycler();
+            }
+        });
     }
 
     public void onClickAddCounter (View v) {
@@ -62,11 +72,7 @@ public class MainActivity extends AppCompatActivity implements CounterAdapter.On
         newCounter.create(this, nameText, time);
 
         setContentView(R.layout.activity_main);
-        onRefresh();
-    }
-
-    public void onClickRefresh (View v) {
-        onRefresh();
+        onRefreshRecycler();
     }
 
     public void onClickRefreshCurrentCounterView (View v) {
@@ -75,10 +81,10 @@ public class MainActivity extends AppCompatActivity implements CounterAdapter.On
 
     public void onClickCancel (View v) {
         setContentView(R.layout.activity_main);
-        onRefresh();
+        onRefreshRecycler();
     }
 
-    public void onRefresh() {
+    public void onRefreshRecycler() {
         LoadCounters counters = new LoadCounters(this);
         this.counters = counters.getLoadedCounters().toArray(new Counter[0]);
 
@@ -127,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements CounterAdapter.On
         DeleteCounter deleteCounter = new DeleteCounter(this, openCounterId, counterName);
 
         setContentView(R.layout.activity_main);
-        onRefresh();
+        onRefreshRecycler();
 
         deleteCounter.printDeletionMessage();
     }
@@ -135,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements CounterAdapter.On
     @Override
     public void onBackPressed() {
         setContentView(R.layout.activity_main);
-        onRefresh();
+        onRefreshRecycler();
         super.onBackPressed();
     }
 }
