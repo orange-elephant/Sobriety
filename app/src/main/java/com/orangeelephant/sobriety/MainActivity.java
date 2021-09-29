@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.orangeelephant.sobriety.counter.Counter;
 import com.orangeelephant.sobriety.counter.CreateNewCounter;
@@ -38,11 +37,11 @@ public class MainActivity extends AppCompatActivity implements CounterAdapter.On
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
 
-        SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        SwipeRefreshLayout swipeRefreshLayoutHome = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayoutHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayoutHome.setRefreshing(false);
                 onRefreshRecycler();
             }
         });
@@ -82,10 +81,6 @@ public class MainActivity extends AppCompatActivity implements CounterAdapter.On
         onRefreshRecycler();
     }
 
-    public void onClickRefreshCurrentCounterView (View v) {
-        refreshCurrentCounterView();
-    }
-
     public void onClickCancel (View v) {
         setContentView(R.layout.activity_main);
         onRefreshRecycler();
@@ -111,6 +106,15 @@ public class MainActivity extends AppCompatActivity implements CounterAdapter.On
         this.openCounter = this.counters[position];
 
         refreshCurrentCounterView();
+
+        SwipeRefreshLayout swipeRefreshLayoutFullCounter = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayoutFullCounter);
+        swipeRefreshLayoutFullCounter.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayoutFullCounter.setRefreshing(false);
+                refreshCurrentCounterView();
+            }
+        });
     }
 
     public void onClickResetCounter (View v) {
@@ -149,6 +153,6 @@ public class MainActivity extends AppCompatActivity implements CounterAdapter.On
     public void onBackPressed() {
         setContentView(R.layout.activity_main);
         onRefreshRecycler();
-        super.onBackPressed();
+        //super.onBackPressed();
     }
 }
