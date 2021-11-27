@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements CounterAdapter.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         onRefreshRecycler();
 
         setSupportActionBar(findViewById(R.id.homeScreenToolbar));
@@ -38,6 +39,14 @@ public class MainActivity extends AppCompatActivity implements CounterAdapter.On
         actionBar.setDisplayShowTitleEnabled(false);
 
         onBackPressed();
+    }
+
+    private void setStrings() {
+        TextView appName = (TextView) findViewById(R.id.appNameView);
+        appName.setText(getString(R.string.app_name));
+
+        TextView addCounter = (TextView) findViewById(R.id.add_counter);
+        addCounter.setText(getString(R.string.add_counter));
     }
 
     public void onClickAddCounter (View v) {
@@ -142,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements CounterAdapter.On
     @Override
     public void onBackPressed() {
         setContentView(R.layout.activity_main);
+        setStrings();
         onRefreshRecycler();
         setHomePageRefreshListener();
         //super.onBackPressed();

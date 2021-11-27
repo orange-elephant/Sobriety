@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <!--Strings for home page activity -->
+    <string name="app_name">Sobriety</string>
+    <string name="add_counter">+</string>
+
+    <!--Strings for counter timer message-->
+    <string name="counter_message_long">%1$d days, %2$d hours, %3$d minutes, and %4$d seconds.</string>
+
 </resources>
