@@ -43,10 +43,10 @@ public class MainActivity extends AppCompatActivity implements CounterAdapter.On
 
     private void setStrings() {
         TextView appName = (TextView) findViewById(R.id.appNameView);
-        appName.setText(getString(R.string.app_name));
+        appName.setText(getString(R.string.HomeActivity_app_name));
 
         TextView addCounter = (TextView) findViewById(R.id.add_counter);
-        addCounter.setText(getString(R.string.add_counter));
+        addCounter.setText(getString(R.string.HomeActivity_add_counter));
     }
 
     public void onClickAddCounter (View v) {
