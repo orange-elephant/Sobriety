@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.counter.Counter;
 import com.orangeelephant.sobriety.database.DBhelper;
 import com.orangeelephant.sobriety.database.DefineTables;
@@ -27,7 +28,8 @@ public class ResetCounter {
     }
 
     public Counter returnResetCounter() {
-        return new Counter(this.counterId, this.name, this.timeNow, this.recordTime);
+        String time_sober_string = context.getString(R.string.CounterViewActivity_counter_message_long);
+        return new Counter(this.counterId, this.name, this.timeNow, this.recordTime, time_sober_string);
     }
 
     private void checkForRecordTime() {

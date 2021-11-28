@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.database.DBhelper;
 
 import java.util.ArrayList;
@@ -69,8 +70,9 @@ public class LoadCounters {
             String name = currentCounterDetails.get(1).toString();
             Long time = (Long) currentCounterDetails.get(2);
             Long recordTime = (Long) currentCounterDetails.get(3);
+            String time_sober_string = context.getString(R.string.CounterViewActivity_counter_message_long);
 
-            Counter currentCounter = new Counter(id, name, time, recordTime);
+            Counter currentCounter = new Counter(id, name, time, recordTime, time_sober_string);
 
             counterObjects.add(currentCounter);
         }

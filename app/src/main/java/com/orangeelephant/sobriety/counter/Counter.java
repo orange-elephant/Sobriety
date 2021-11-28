@@ -9,12 +9,14 @@ public class Counter implements Serializable {
     private final long start_time_in_millis;
     private final long record_time_sober_in_millis;
     private long time_sober_in_millis;
+    private final String time_sober_string;
 
-    public Counter(int _id, String name, Long start_time_in_millis, Long record_time_sober_in_millis) {
+    public Counter(int _id, String name, Long start_time_in_millis, Long record_time_sober_in_millis, String time_sober_string) {
         this._id = _id;
         this.name = name;
         this.start_time_in_millis = start_time_in_millis;
         this.record_time_sober_in_millis = record_time_sober_in_millis;
+        this.time_sober_string = time_sober_string;
     }
 
     public String getName() {
@@ -42,7 +44,10 @@ public class Counter implements Serializable {
 
         long elapsedSeconds = timeSoberInMillis / secondsInMilli;
 
-        return (elapsedDays + "days, " + elapsedHours + " hours, " + elapsedMinutes + " minutes, and " + elapsedSeconds + "seconds.");
+        String time_sober_message = String.format(this.time_sober_string, elapsedDays, elapsedHours,
+                elapsedMinutes, elapsedSeconds);
+
+        return time_sober_message;
     }
 
     public Long getRecordTimeSoberInMillis() {
