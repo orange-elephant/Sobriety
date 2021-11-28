@@ -16,7 +16,7 @@ public final class DefineTables {
                 TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_NAME + " TEXT, " +
-                COLUMN_START_TIME + " INTEGER," +
-                COLUMN_RECORD_CLEAN_TIME + "INTEGER DEFAULT 0" + ")";
+                COLUMN_START_TIME + " INTEGER, " +
+                COLUMN_RECORD_CLEAN_TIME + " INTEGER DEFAULT 0" + ")";
     }
 }
