@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="HomeActivity_add_counter">+</string>
+    <string name="HomeActivity_counter_message_long">%1$d días, %2$d horas, %3$d minutos, and %4$d segundos.</string>
+    <string name="AddCounterActivity_counter_name_input">Nombre...</string>
+    <string name="CounterViewActivity_counter_message_long">%1$d días, %2$d horas, %3$d minutos, and %4$d segundos.</string>
+    <string name="Toast_counter_deleted">%1$s eliminado.</string>
+    <string name="HomeActivity_app_name">Sobriedad</string>
+    <string name="AddCounterActivity_cancel">Cancelar</string>
+</resources>
