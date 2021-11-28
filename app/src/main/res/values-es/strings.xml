@@ -7,4 +7,6 @@
     <string name="Toast_counter_deleted">%1$s eliminado.</string>
     <string name="HomeActivity_app_name">Sobriedad</string>
     <string name="AddCounterActivity_cancel">Cancelar</string>
+    <string name="CounterViewActivity_reset_counter">Restablecer temporizador</string>
+    <string name="CounterViewActivity_delete_counter">Eliminar temporizador</string>
 </resources>

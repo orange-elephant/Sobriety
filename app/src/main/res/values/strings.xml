@@ -15,8 +15,8 @@
     <!--Strings for the counter full screen view -->
     <string name="CounterViewActivity_counter_message_long">%1$d days, %2$d hours, %3$d minutes, and %4$d seconds.</string>
     <string name="CounterViewActivity_record_sobriety_message">Your record sobriety duration is %1$d days, %2$d hours, %3$d minutes, and %4$d seconds.</string>
-    <string name="CounterViewActivity_reset_counter">RESET COUNTER</string>
-    <string name="CounterViewActivity_delete_counter">DELETE COUNTER</string>
+    <string name="CounterViewActivity_reset_counter">Reset counter</string>
+    <string name="CounterViewActivity_delete_counter">Delete counter</string>
 
     <!--Toast messages -->
     <string name="Toast_counter_deleted">%1$s was deleted.</string>
