@@ -17,10 +17,9 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/counterName"
+            android:id="@+id/CounterViewActivity_counter_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name"
             android:textSize="34sp"
             android:textStyle="bold"
             android:typeface="monospace"
@@ -38,7 +37,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/counterScreenToolbar"
-        tools:context=".MainActivity">
+        tools:context=".activities.HomeScreenActivity">
 
 
         <ScrollView
@@ -51,47 +50,43 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/durationView"
+                    android:id="@+id/CounterViewActivity_counter_message_long"
                     android:layout_width="323dp"
                     android:layout_height="59dp"
                     android:layout_marginStart="36dp"
                     android:layout_marginTop="50dp"
-                    android:text="Duration"
                     android:textSize="24sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/counterName" />
+                    app:layout_constraintTop_toBottomOf="@+id/CounterViewActivity_counter_name" />
 
                 <TextView
-                    android:id="@+id/RecordSobrietyStreakView"
+                    android:id="@+id/CounterViewActivity_record_sobriety_message"
                     android:layout_width="322dp"
                     android:layout_height="93dp"
                     android:layout_marginStart="36dp"
                     android:layout_marginTop="36dp"
-                    android:text="TextView"
                     android:textSize="24sp"
                     android:textStyle="italic"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/durationView" />
+                    app:layout_constraintTop_toBottomOf="@+id/CounterViewActivity_counter_message_long" />
 
                 <Button
-                    android:id="@+id/resetCounterButton"
+                    android:id="@+id/CounterViewActivity_reset_counter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="36dp"
                     android:onClick="onClickResetCounter"
-                    android:text="Reset counter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <Button
-                    android:id="@+id/deleteCounterButton"
+                    android:id="@+id/CounterViewActivity_delete_counter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="16dp"
                     android:onClick="onClickDelete"
-                    android:text="Delete"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/refreshCurrentCounterView" />
 

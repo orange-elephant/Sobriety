@@ -3,9 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/layout/activity_add_counter.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_counter_full_view.xml" value="0.14035087719298245" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/add_counter.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/counter_full_view.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/counter_full_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/counter_layout.xml" value="0.5" />
       </map>
     </option>

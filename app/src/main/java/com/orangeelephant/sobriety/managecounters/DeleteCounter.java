@@ -1,9 +1,11 @@
 package com.orangeelephant.sobriety.managecounters;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
+import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.database.DBhelper;
 import com.orangeelephant.sobriety.database.DefineTables;
 
@@ -28,8 +30,8 @@ public class DeleteCounter {
         db.execSQL(sql);
     }
 
-    public void printDeletionMessage() {
-        CharSequence message = this.name + " was deleted";
+    public void printDeletionMessage(String toastString) {
+        CharSequence message = String.format(toastString, this.name);
         Toast deletionMessage = Toast.makeText(this.context, message, Toast.LENGTH_LONG);
         deletionMessage.show();
     }
