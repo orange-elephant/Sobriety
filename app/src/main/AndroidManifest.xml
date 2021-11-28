@@ -10,13 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity
-            android:name=".CounterFullViewActivity"
+            android:name=".activities.CounterFullViewActivity"
             android:exported="true" />
         <activity
-            android:name=".AddCounterActivity"
+            android:name=".activities.AddCounterActivity"
             android:exported="true" />
         <activity
-            android:name=".HomeScreenActivity"
+            android:name=".activities.HomeScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

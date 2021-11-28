@@ -1,4 +1,4 @@
-package com.orangeelephant.sobriety;
+package com.orangeelephant.sobriety.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.counter.Counter;
 
 // Create the basic adapter extending from RecyclerView.Adapter

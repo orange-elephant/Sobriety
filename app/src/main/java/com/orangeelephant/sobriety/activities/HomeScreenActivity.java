@@ -1,4 +1,4 @@
-package com.orangeelephant.sobriety;
+package com.orangeelephant.sobriety.activities;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,19 +9,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 
+import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.counter.Counter;
 import com.orangeelephant.sobriety.counter.CreateNewCounter;
 import com.orangeelephant.sobriety.counter.LoadCounters;
 import com.orangeelephant.sobriety.managecounters.DeleteCounter;
 import com.orangeelephant.sobriety.managecounters.ResetCounter;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.orangeelephant.sobriety.adapters.CounterAdapter;
 
 public class HomeScreenActivity extends AppCompatActivity implements CounterAdapter.OnItemClicked {
     private Counter[] counters;
@@ -56,6 +52,16 @@ public class HomeScreenActivity extends AppCompatActivity implements CounterAdap
         startActivity(intent);
     }
 
+    @Override
+    public void onItemClick(int position) {
+        openCounter = this.counters[position];
+
+        Intent intent = new Intent(HomeScreenActivity.this, CounterFullViewActivity.class);
+        intent.putExtra("openCounter", openCounter);
+
+        startActivity(intent);
+    }
+
     public void onRefreshRecycler() {
         LoadCounters counters = new LoadCounters(this);
         this.counters = counters.getLoadedCounters().toArray(new Counter[0]);
@@ -67,55 +73,6 @@ public class HomeScreenActivity extends AppCompatActivity implements CounterAdap
         countersView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter.setOnClick(this);
-    }
-
-    @Override
-    public void onItemClick(int position) {
-        setContentView(R.layout.counter_full_view);
-
-        this.openCounter = this.counters[position];
-
-        refreshCurrentCounterView();
-
-        SwipeRefreshLayout swipeRefreshLayoutFullCounter = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayoutFullCounter);
-        swipeRefreshLayoutFullCounter.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayoutFullCounter.setRefreshing(false);
-                refreshCurrentCounterView();
-            }
-        });
-    }
-
-    public void onClickResetCounter (View v) {
-        int openCounterId = this.openCounter.get_id();
-        ResetCounter resetCounter = new ResetCounter(this, openCounterId);
-        this.openCounter = resetCounter.returnResetCounter();
-
-        refreshCurrentCounterView();
-    }
-
-    public void refreshCurrentCounterView () {
-        TextView name = (TextView) findViewById(R.id.counterName);
-        name.setText(openCounter.getName());
-
-        TextView timeSober = (TextView) findViewById((R.id.durationView));
-        timeSober.setText(openCounter.getTimeSoberMessage(openCounter.getCurrentTimeSoberInMillis()));
-
-        TextView recordTimeSober = (TextView) findViewById(R.id.RecordSobrietyStreakView);
-        String recordTimeText = "Your record sobriety duration is " +
-                                openCounter.getTimeSoberMessage(openCounter.getRecordTimeSoberInMillis());
-        recordTimeSober.setText(recordTimeText);
-    }
-
-    public void onClickDelete (View v) {
-        int openCounterId = this.openCounter.get_id();
-        String counterName = this.openCounter.getName();
-        DeleteCounter deleteCounter = new DeleteCounter(this, openCounterId, counterName);
-
-        onBackPressed();
-
-        deleteCounter.printDeletionMessage();
     }
 
     @Override

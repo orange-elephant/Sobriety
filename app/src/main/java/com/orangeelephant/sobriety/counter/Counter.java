@@ -1,8 +1,9 @@
 package com.orangeelephant.sobriety.counter;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Counter {
+public class Counter implements Serializable {
     private final int _id;
     private final String name;
     private final long start_time_in_millis;
