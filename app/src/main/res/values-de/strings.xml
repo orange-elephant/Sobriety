@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="HomeActivity_app_name">Sobriety</string>
+    <string name="AddCounterActivity_enter_counter_name">"Geben Sie den Namen Ihres Zählers ein "</string>
+    <string name="AddCounterActivity_select_start_date">Startdatum:</string>
+    <string name="AddCounterActivity_cancel">Abbrechen</string>
+    <string name="AddCounterActivity_submit">Eingeben</string>
+    <string name="CounterViewActivity_reset_counter">"Zahler zurucksetzen "</string>
+    <string name="CounterViewActivity_delete_counter">"Zähler löschen "</string>
+    <string name="CounterViewActivity_current_sobriety_message">"Ihre aktuelle Dauer ist "</string>
+    <string name="HomeActivity_counter_message_long">%1$d Tage, %2$d Stunden, %3$d Minuten, and %4$d Sekonden.</string>
+    <string name="CounterViewActivity_counter_message_long">%1$d Tage, %2$d Stunden, %3$d Minuten, and %4$d Sekonden.</string>
+</resources>

@@ -6,7 +6,7 @@
     <string name="HomeActivity_counter_message_long">%1$d days, %2$d hours, %3$d minutes, and %4$d seconds.</string>
 
     <!--Strings for the add counter view -->
-    <string name="AddCounterActivity_enter_counter_name">Enter the name of your counter:</string>
+    <string name="AddCounterActivity_enter_counter_name">Choose the name of your counter:</string>
     <string name="AddCounterActivity_counter_name_input">Name...</string>
     <string name="AddCounterActivity_select_start_date">Select the start date:</string>
     <string name="AddCounterActivity_cancel">Cancel</string>
@@ -14,7 +14,8 @@
 
     <!--Strings for the counter full screen view -->
     <string name="CounterViewActivity_counter_message_long">%1$d days, %2$d hours, %3$d minutes, and %4$d seconds.</string>
-    <string name="CounterViewActivity_record_sobriety_message">Your record sobriety duration is %1$d days, %2$d hours, %3$d minutes, and %4$d seconds.</string>
+    <string name="CounterViewActivity_record_sobriety_message">Your record sobriety duration is %1$s</string>
+    <string name="CounterViewActivity_current_sobriety_message">Your current sobriety duration is %1$s</string>
     <string name="CounterViewActivity_reset_counter">Reset counter</string>
     <string name="CounterViewActivity_delete_counter">Delete counter</string>
 

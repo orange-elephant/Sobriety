@@ -48,8 +48,9 @@ public class CounterFullViewActivity extends AppCompatActivity {
         name.setText(openCounter.getName());
 
         TextView timeSober = (TextView) findViewById((R.id.CounterViewActivity_counter_message_long));
-        timeSober.setText(String.format(getString(R.string.CounterViewActivity_current_sobriety_message),
-                openCounter.getTimeSoberMessage(openCounter.getCurrentTimeSoberInMillis())));
+        String currentTimeText = String.format(getString(R.string.CounterViewActivity_current_sobriety_message),
+                openCounter.getTimeSoberMessage(openCounter.getCurrentTimeSoberInMillis()));
+        timeSober.setText(currentTimeText);
 
         TextView recordTimeSober = (TextView) findViewById(R.id.CounterViewActivity_record_sobriety_message);
         String recordTimeText = String.format(getString(R.string.CounterViewActivity_record_sobriety_message),

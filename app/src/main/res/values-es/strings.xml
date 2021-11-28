@@ -9,4 +9,6 @@
     <string name="AddCounterActivity_cancel">Cancelar</string>
     <string name="CounterViewActivity_reset_counter">Restablecer temporizador</string>
     <string name="CounterViewActivity_delete_counter">Eliminar temporizador</string>
+    <string name="AddCounterActivity_enter_counter_name">Eligir un nombre para el temporizador.</string>
+    <string name="AddCounterActivity_select_start_date">Seleccionar la fecha de inicio:</string>
 </resources>
