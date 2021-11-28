@@ -69,8 +69,9 @@ public class CounterFullViewActivity extends AppCompatActivity {
         String counterName = this.openCounter.getName();
         DeleteCounter deleteCounter = new DeleteCounter(this, openCounterId, counterName);
 
-        onBackPressed();
+        String deletionToast = this.getApplicationContext().getResources().getString(R.string.Toast_counter_deleted);
+        deleteCounter.printDeletionMessage(deletionToast);
 
-        deleteCounter.printDeletionMessage();
+        onBackPressed();
     }
 }
