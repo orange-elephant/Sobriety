@@ -9,8 +9,8 @@
     <string name="AddCounterActivity_enter_counter_name">Enter the name of your counter:</string>
     <string name="AddCounterActivity_counter_name_input">Name...</string>
     <string name="AddCounterActivity_select_start_date">Select the start date:</string>
-    <string name="AddCounterActivity_cancel">CANCEL</string>
-    <string name="AddCounterActivity_submit">SUBMIT</string>
+    <string name="AddCounterActivity_cancel">Cancel</string>
+    <string name="AddCounterActivity_submit">Submit</string>
 
     <!--Strings for the counter full screen view -->
     <string name="CounterViewActivity_counter_message_long">%1$d days, %2$d hours, %3$d minutes, and %4$d seconds.</string>
