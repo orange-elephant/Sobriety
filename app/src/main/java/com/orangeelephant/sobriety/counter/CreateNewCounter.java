@@ -16,11 +16,12 @@ public class CreateNewCounter extends AppCompatActivity {
     }
 
     private String _name;
-    private String _description;
+    private String _reason;
     private Long _startTime;
 
-    public void create(Context context, String name, Long startTime) {
+    public void create(Context context, String name, String reason, Long startTime) {
         this._name = name;
+        this._reason = reason;
         this._startTime = startTime;
 
         writeToDb(context);
@@ -31,6 +32,7 @@ public class CreateNewCounter extends AppCompatActivity {
 
         ContentValues values = new ContentValues();
         values.put(DefineTables.Counters.COLUMN_NAME, this._name);
+        values.put(DefineTables.Counters.COLUMN_SOBRIETY_REASON, this._reason);
         values.put(DefineTables.Counters.COLUMN_START_TIME, this._startTime);
 
         long newRowId = db.insert(DefineTables.Counters.TABLE_NAME, null, values);

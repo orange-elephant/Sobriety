@@ -9,6 +9,8 @@
     <string name="AddCounterActivity_enter_counter_name">Choose the name of your counter:</string>
     <string name="AddCounterActivity_counter_name_input">Name...</string>
     <string name="AddCounterActivity_select_start_date">Select the start date:</string>
+    <string name="AddCounterActivity_add_a_reason_for_sobriety">Add a reason for your sobriety (optional):</string>
+    <string name="AddCounterActivity_add_a_reason_for_sobriety_hint">Enter reason here...</string>
     <string name="AddCounterActivity_cancel">Cancel</string>
     <string name="AddCounterActivity_submit">Submit</string>
 

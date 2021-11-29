@@ -42,6 +42,12 @@ public class AddCounterActivity extends AppCompatActivity {
         TextView selectStartDatePointer = (TextView) findViewById(R.id.AddCounterActivity_select_start_date);
         selectStartDatePointer.setText(R.string.AddCounterActivity_select_start_date);
 
+        TextView enterReasonPointer = (TextView) findViewById(R.id.AddCounterActivity_add_a_reason_for_sobriety);
+        enterReasonPointer.setText(getString(R.string.AddCounterActivity_add_a_reason_for_sobriety));
+
+        TextView enterReasonHint = (TextView) findViewById(R.id.AddCounterActivity_add_a_reason_for_sobriety_hint);
+        enterReasonHint.setHint(getString(R.string.AddCounterActivity_add_a_reason_for_sobriety_hint));
+
         TextView cancel = (TextView) findViewById(R.id.AddCounterActivity_cancel);
         cancel.setText(R.string.AddCounterActivity_cancel);
 
@@ -52,6 +58,9 @@ public class AddCounterActivity extends AppCompatActivity {
     public void onClickSubmit (View v) throws ParseException {
         EditText name = (EditText) findViewById(R.id.AddCounterActivity_counter_name_input);
         String nameText = name.getText().toString();
+
+        EditText reason = (EditText) findViewById(R.id.AddCounterActivity_add_a_reason_for_sobriety_hint);
+        String reasonText = reason.getText().toString();
 
         DatePicker startDatePicker = (DatePicker)findViewById(R.id.startDatePicker);
         int year = startDatePicker.getYear();
@@ -65,7 +74,7 @@ public class AddCounterActivity extends AppCompatActivity {
         Long time = startDate.getTime();
 
         CreateNewCounter newCounter = new CreateNewCounter();
-        newCounter.create(this, nameText, time);
+        newCounter.create(this, nameText, reasonText, time);
 
         onBackPressed();
     }

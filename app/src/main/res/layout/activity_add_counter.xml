@@ -10,14 +10,14 @@
         android:id="@+id/AddCounterActivity_counter_name_input"
         android:layout_width="326dp"
         android:layout_height="100dp"
-        android:layout_marginTop="104dp"
+        android:layout_marginTop="60dp"
         android:ems="10"
 
         android:inputType="textPersonName"
         android:paddingTop="200px"
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,9 +44,10 @@
         android:id="@+id/AddCounterActivity_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="380dp"
+        android:layout_marginTop="484dp"
         android:onClick="onClickSubmit"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.592"
         app:layout_constraintStart_toEndOf="@+id/AddCounterActivity_cancel"
         app:layout_constraintTop_toBottomOf="@+id/AddCounterActivity_counter_name_input" />
 
@@ -62,10 +63,33 @@
         android:id="@+id/AddCounterActivity_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="380dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="484dp"
         android:onClick="onClickCancel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AddCounterActivity_counter_name_input" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/AddCounterActivity_submit"
+        app:layout_constraintTop_toBottomOf="@+id/startDatePicker"
+        tools:layout_editor_absoluteX="2dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/AddCounterActivity_add_a_reason_for_sobriety_hint"
+            android:layout_width="match_parent"
+            android:layout_height="81dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/AddCounterActivity_add_a_reason_for_sobriety"
+        android:layout_width="338dp"
+        android:layout_height="29dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textInputLayout"
+        app:layout_constraintTop_toBottomOf="@+id/startDatePicker"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
