@@ -32,7 +32,9 @@ public class CreateNewCounter extends AppCompatActivity {
 
         ContentValues values = new ContentValues();
         values.put(DefineTables.Counters.COLUMN_NAME, this._name);
-        values.put(DefineTables.Counters.COLUMN_SOBRIETY_REASON, this._reason);
+        if (! this._reason.isEmpty()) {
+            values.put(DefineTables.Counters.COLUMN_SOBRIETY_REASON, this._reason);
+        }
         values.put(DefineTables.Counters.COLUMN_START_TIME, this._startTime);
 
         long newRowId = db.insert(DefineTables.Counters.TABLE_NAME, null, values);

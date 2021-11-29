@@ -19,6 +19,7 @@ public class DBhelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(DefineTables.Counters.CREATE_TABLE);
+        System.out.println(DefineTables.Counters.CREATE_TABLE);
     }
 
     @Override
@@ -27,7 +28,7 @@ public class DBhelper extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL("ALTER TABLE counters ADD record_time_clean INTEGER DEFAULT 0");
         }
         if (oldVersion < LOG_SOBRIETY_REASON) {
-            sqLiteDatabase.execSQL("ALTER TABLE counters ADD sobriety_reason TEXT");
+            sqLiteDatabase.execSQL("ALTER TABLE counters ADD sobriety_reason TEXT DEFAULT NULL");
         }
     }
 

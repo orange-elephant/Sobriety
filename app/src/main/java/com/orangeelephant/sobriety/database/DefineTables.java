@@ -19,6 +19,6 @@ public final class DefineTables {
                 COLUMN_NAME + " TEXT, " +
                 COLUMN_START_TIME + " INTEGER, " +
                 COLUMN_RECORD_CLEAN_TIME + " INTEGER DEFAULT 0, " +
-                COLUMN_SOBRIETY_REASON + " TEXT " + ")";
+                COLUMN_SOBRIETY_REASON + " TEXT DEFAULT NULL " + ")";
     }
 }
