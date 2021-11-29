@@ -2,10 +2,11 @@ package com.orangeelephant.sobriety.counter;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.database.DBhelper;
+
+import net.sqlcipher.database.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class LoadCounters {
         String sql = "SELECT * FROM Counters\n" +
                      "ORDER by start_time_unix_millis ASC";
 
-        SQLiteDatabase db = new DBhelper(this.context).getReadableDatabase();
+        SQLiteDatabase db = new DBhelper(this.context).getReadableDatabase("");
 
         Cursor cursor = db.rawQuery(sql, null);
 
@@ -54,7 +55,6 @@ public class LoadCounters {
         cursor.close();
         db.close();
 
-        System.out.println(outerList);
         return outerList;
     }
 

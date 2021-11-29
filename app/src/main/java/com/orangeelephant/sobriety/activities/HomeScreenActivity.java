@@ -19,6 +19,8 @@ import com.orangeelephant.sobriety.managecounters.DeleteCounter;
 import com.orangeelephant.sobriety.managecounters.ResetCounter;
 import com.orangeelephant.sobriety.adapters.CounterAdapter;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 public class HomeScreenActivity extends AppCompatActivity implements CounterAdapter.OnItemClicked {
     private Counter[] counters;
     private Counter openCounter;
@@ -28,6 +30,9 @@ public class HomeScreenActivity extends AppCompatActivity implements CounterAdap
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         setStrings();
+
+        //load libraries necessary for sqlcipher library to function
+        SQLiteDatabase.loadLibs(this);
 
         onRefreshRecycler();
 
