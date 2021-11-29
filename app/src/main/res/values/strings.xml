@@ -16,6 +16,8 @@
     <string name="CounterViewActivity_counter_message_long">%1$d days, %2$d hours, %3$d minutes, and %4$d seconds.</string>
     <string name="CounterViewActivity_record_sobriety_message">Your record sobriety duration is %1$s</string>
     <string name="CounterViewActivity_current_sobriety_message">Your current sobriety duration is %1$s</string>
+    <string name="CounterViewActivity_no_sobriety_reason_provided">You have not added a reason for your sobriety</string>
+    <string name="CounterViewActivity_sobriety_reason">The reason for your sobriety is %1$s</string>
     <string name="CounterViewActivity_reset_counter">Reset counter</string>
     <string name="CounterViewActivity_delete_counter">Delete counter</string>
 

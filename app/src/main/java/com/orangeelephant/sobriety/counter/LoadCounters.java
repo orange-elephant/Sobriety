@@ -40,11 +40,13 @@ public class LoadCounters {
             String name = cursor.getString(1);
             long time_in_millis = cursor.getLong(2);
             long record_time_in_millis = cursor.getLong(3);
+            String sobriety_reason = cursor.getString(4);
 
             innerList.add(id);
             innerList.add(name);
             innerList.add(time_in_millis);
             innerList.add(record_time_in_millis);
+            innerList.add(sobriety_reason);
 
             outerList.add((ArrayList) innerList.clone());
         }
@@ -70,9 +72,10 @@ public class LoadCounters {
             String name = currentCounterDetails.get(1).toString();
             Long time = (Long) currentCounterDetails.get(2);
             Long recordTime = (Long) currentCounterDetails.get(3);
+            String sobriety_reason = (String) currentCounterDetails.get(4);
             String time_sober_string = context.getString(R.string.CounterViewActivity_counter_message_long);
 
-            Counter currentCounter = new Counter(id, name, time, recordTime, time_sober_string);
+            Counter currentCounter = new Counter(id, name, time, recordTime, sobriety_reason, time_sober_string);
 
             counterObjects.add(currentCounter);
         }

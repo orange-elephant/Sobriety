@@ -70,6 +70,11 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/CounterViewActivity_counter_message_long" />
 
+                <TextView
+                    android:id="@+id/CounterViewActivity_sobriety_reason"
+                    android:layout_width="361dp"
+                    android:layout_height="82dp" />
+
                 <Button
                     android:id="@+id/CounterViewActivity_reset_counter"
                     android:layout_width="wrap_content"

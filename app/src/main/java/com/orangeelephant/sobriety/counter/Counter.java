@@ -9,13 +9,16 @@ public class Counter implements Serializable {
     private final long start_time_in_millis;
     private final long record_time_sober_in_millis;
     private long time_sober_in_millis;
+    private final String sobriety_reason;
     private final String time_sober_string;
 
-    public Counter(int _id, String name, Long start_time_in_millis, Long record_time_sober_in_millis, String time_sober_string) {
+    public Counter(int _id, String name, Long start_time_in_millis, Long record_time_sober_in_millis,
+                   String sobriety_reason, String time_sober_string) {
         this._id = _id;
         this.name = name;
         this.start_time_in_millis = start_time_in_millis;
         this.record_time_sober_in_millis = record_time_sober_in_millis;
+        this.sobriety_reason = sobriety_reason;
         this.time_sober_string = time_sober_string;
     }
 
@@ -62,5 +65,9 @@ public class Counter implements Serializable {
         this.time_sober_in_millis = timeSoberInMillis;
 
         return timeSoberInMillis;
+    }
+
+    public String getSobrietyReason() {
+        return this.sobriety_reason;
     }
 }

@@ -17,6 +17,7 @@ public class ResetCounter {
     private String name;
     private long recordTime;
     private long timeNow;
+    private String sobrietyReason;
 
     public ResetCounter(Context context, int counterId) {
         this.context = context;
@@ -29,13 +30,14 @@ public class ResetCounter {
 
     public Counter returnResetCounter() {
         String time_sober_string = context.getString(R.string.CounterViewActivity_counter_message_long);
-        return new Counter(this.counterId, this.name, this.timeNow, this.recordTime, time_sober_string);
+        return new Counter(this.counterId, this.name, this.timeNow, this.recordTime, this.sobrietyReason, time_sober_string);
     }
 
     private void checkForRecordTime() {
         String sql = "SELECT " + DefineTables.Counters.COLUMN_START_TIME + ", " +
                 DefineTables.Counters.COLUMN_RECORD_CLEAN_TIME + ", " +
-                DefineTables.Counters.COLUMN_NAME +
+                DefineTables.Counters.COLUMN_NAME + ", " +
+                DefineTables.Counters.COLUMN_SOBRIETY_REASON +
                 " FROM " + DefineTables.Counters.TABLE_NAME +
                 " WHERE _id = " + this.counterId;
 
@@ -46,6 +48,7 @@ public class ResetCounter {
         long startTime = cursor.getLong(0);
         long recordTime = cursor.getLong(1);
         String name = cursor.getString(2);
+        String sobrietyReason = cursor.getString(3);
 
         cursor.close();
         db.close();
@@ -53,6 +56,7 @@ public class ResetCounter {
         long timeElapsed = getCurrentTimeElapsed(startTime);
 
         this.name = name;
+        this.sobrietyReason = sobrietyReason;
         this.recordTime = Math.max(timeElapsed, recordTime);
     }
 
