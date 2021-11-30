@@ -7,6 +7,7 @@ import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.database.DBhelper;
 
 import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +27,8 @@ public class LoadCounters {
     private List retrieveCountersFromDb() {
         String sql = "SELECT * FROM Counters\n" +
                      "ORDER by start_time_unix_millis ASC";
-
-        SQLiteDatabase db = new DBhelper(this.context).getReadableDatabase("");
+        SQLiteDatabase db;
+        db = new DBhelper(this.context).getReadableDatabase("");
 
         Cursor cursor = db.rawQuery(sql, null);
 

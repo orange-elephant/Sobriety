@@ -15,6 +15,7 @@ import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.counter.Counter;
 import com.orangeelephant.sobriety.counter.CreateNewCounter;
 import com.orangeelephant.sobriety.counter.LoadCounters;
+import com.orangeelephant.sobriety.database.SqlCipherMigration;
 import com.orangeelephant.sobriety.managecounters.DeleteCounter;
 import com.orangeelephant.sobriety.managecounters.ResetCounter;
 import com.orangeelephant.sobriety.adapters.CounterAdapter;
@@ -33,7 +34,7 @@ public class HomeScreenActivity extends AppCompatActivity implements CounterAdap
 
         //load libraries necessary for sqlcipher library to function
         SQLiteDatabase.loadLibs(this);
-
+        SqlCipherMigration sqlCipherMigration = new SqlCipherMigration(this);
         onRefreshRecycler();
 
         setSupportActionBar(findViewById(R.id.homeScreenToolbar));

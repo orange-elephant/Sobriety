@@ -1,13 +1,10 @@
 package com.orangeelephant.sobriety.database;
 
 import android.content.Context;
+
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteOpenHelper;
-import net.sqlcipher.database.SQLiteStatement;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 public class DBhelper extends SQLiteOpenHelper {
 
@@ -27,7 +24,6 @@ public class DBhelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(DefineTables.Counters.CREATE_TABLE);
-        System.out.println(DefineTables.Counters.CREATE_TABLE);
     }
 
     @Override
@@ -38,10 +34,5 @@ public class DBhelper extends SQLiteOpenHelper {
         if (oldVersion < LOG_SOBRIETY_REASON) {
             sqLiteDatabase.execSQL("ALTER TABLE counters ADD sobriety_reason TEXT DEFAULT NULL");
         }
-        if (oldVersion < SQL_CIPHER_MIGRATION) {
-            //TODO
-            //migrateDbToSqlcipher(context, sqLiteDatabase.getPath(), );
-        }
     }
-
 }
