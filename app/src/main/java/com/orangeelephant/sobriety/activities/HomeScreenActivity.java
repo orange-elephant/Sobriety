@@ -32,9 +32,6 @@ public class HomeScreenActivity extends AppCompatActivity implements CounterAdap
         setContentView(R.layout.activity_home_screen);
         setStrings();
 
-        //load libraries necessary for sqlcipher library to function
-        SQLiteDatabase.loadLibs(this);
-        SqlCipherMigration sqlCipherMigration = new SqlCipherMigration(this);
         onRefreshRecycler();
 
         setSupportActionBar(findViewById(R.id.homeScreenToolbar));
