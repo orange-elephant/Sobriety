@@ -22,4 +22,9 @@ public class AppStartupActivity extends AppCompatActivity {
         Intent intent = new Intent(AppStartupActivity.this, HomeScreenActivity.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

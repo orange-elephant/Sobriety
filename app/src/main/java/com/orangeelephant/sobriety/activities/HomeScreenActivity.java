@@ -80,7 +80,7 @@ public class HomeScreenActivity extends AppCompatActivity implements CounterAdap
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        moveTaskToBack(true);
     }
 
     private void setHomePageRefreshListener() {
