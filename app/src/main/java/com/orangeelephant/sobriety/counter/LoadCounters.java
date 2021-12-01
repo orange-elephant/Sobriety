@@ -6,6 +6,7 @@ import android.database.Cursor;
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.database.DBhelper;
 
+import net.sqlcipher.CursorIndexOutOfBoundsException;
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteException;
 
@@ -42,13 +43,22 @@ public class LoadCounters {
             String name = cursor.getString(1);
             long time_in_millis = cursor.getLong(2);
             long record_time_in_millis = cursor.getLong(3);
-            String sobriety_reason = cursor.getString(4);
 
             innerList.add(id);
             innerList.add(name);
             innerList.add(time_in_millis);
             innerList.add(record_time_in_millis);
-            innerList.add(sobriety_reason);
+
+            try {
+                String reasonSql = "SELECT sobriety_reason FROM reasons WHERE counter_id = " + id;
+                Cursor reasonsCursor = db.rawQuery(reasonSql, null);
+                reasonsCursor.moveToFirst();
+                String sobriety_reason = reasonsCursor.getString(0);
+                innerList.add(sobriety_reason);
+            } catch (CursorIndexOutOfBoundsException exception) {
+                innerList.add(null);
+                System.out.println("Counter id " + id + " has no associated sobriety reasons.");
+            }
 
             outerList.add((ArrayList) innerList.clone());
         }

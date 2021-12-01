@@ -33,14 +33,15 @@ public class CreateNewCounter extends AppCompatActivity {
 
         ContentValues values = new ContentValues();
         values.put(DefineTables.Counters.COLUMN_NAME, this._name);
-        if (! this._reason.isEmpty()) {
-            values.put(DefineTables.Counters.COLUMN_SOBRIETY_REASON, this._reason);
-        }
         values.put(DefineTables.Counters.COLUMN_START_TIME, this._startTime);
+        long counterRowId = db.insert(DefineTables.Counters.TABLE_NAME_COUNTERS, null, values);
 
-        long newRowId = db.insert(DefineTables.Counters.TABLE_NAME, null, values);
+        if (! this._reason.isEmpty()) {
+            ContentValues nextValues = new ContentValues();
+            nextValues.put(DefineTables.Counters.COLUMN_COUNTER_ID, counterRowId);
+            nextValues.put(DefineTables.Counters.COLUMN_SOBRIETY_REASON, this._reason);
+            long reasonRowId = db.insert(DefineTables.Counters.TABLE_NAME_REASONS, null, nextValues);
+        }
         db.close();
     }
-
-
 }

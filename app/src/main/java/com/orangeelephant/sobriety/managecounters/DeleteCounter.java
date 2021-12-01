@@ -24,11 +24,16 @@ public class DeleteCounter {
     }
 
     private void deleteRecord() {
-        String sql = "DELETE FROM " + DefineTables.Counters.TABLE_NAME +
+        String sqlCounterRecord = "DELETE FROM " + DefineTables.Counters.TABLE_NAME_COUNTERS +
                 " WHERE _id = " + this.counterID;
 
         SQLiteDatabase db = new DBhelper(this.context).getWritableDatabase("");
-        db.execSQL(sql);
+        db.execSQL(sqlCounterRecord);
+
+        String sqlReasonRecords = "DELETE FROM " + DefineTables.Counters.TABLE_NAME_REASONS +
+                " WHERE counter_id = " + this.counterID;
+        db.execSQL(sqlReasonRecords);
+        db.close();
     }
 
     public void printDeletionMessage(String toastString) {

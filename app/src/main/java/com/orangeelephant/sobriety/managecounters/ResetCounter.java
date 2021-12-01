@@ -20,9 +20,10 @@ public class ResetCounter {
     private long timeNow;
     private String sobrietyReason;
 
-    public ResetCounter(Context context, int counterId) {
+    public ResetCounter(Context context, int counterId, String sobrietyReason) {
         this.context = context;
         this.counterId = counterId;
+        this.sobrietyReason = sobrietyReason;
 
         checkForRecordTime();
 
@@ -37,9 +38,8 @@ public class ResetCounter {
     private void checkForRecordTime() {
         String sql = "SELECT " + DefineTables.Counters.COLUMN_START_TIME + ", " +
                 DefineTables.Counters.COLUMN_RECORD_CLEAN_TIME + ", " +
-                DefineTables.Counters.COLUMN_NAME + ", " +
-                DefineTables.Counters.COLUMN_SOBRIETY_REASON +
-                " FROM " + DefineTables.Counters.TABLE_NAME +
+                DefineTables.Counters.COLUMN_NAME +
+                " FROM " + DefineTables.Counters.TABLE_NAME_COUNTERS +
                 " WHERE _id = " + this.counterId;
 
         net.sqlcipher.database.SQLiteDatabase db = new DBhelper(this.context).getReadableDatabase("");
@@ -49,7 +49,6 @@ public class ResetCounter {
         long startTime = cursor.getLong(0);
         long recordTime = cursor.getLong(1);
         String name = cursor.getString(2);
-        String sobrietyReason = cursor.getString(3);
 
         cursor.close();
         db.close();
@@ -69,7 +68,7 @@ public class ResetCounter {
     }
 
     private void updateRecord() {
-        String sql = "UPDATE " +  DefineTables.Counters.TABLE_NAME +
+        String sql = "UPDATE " +  DefineTables.Counters.TABLE_NAME_COUNTERS +
                     " SET " + DefineTables.Counters.COLUMN_RECORD_CLEAN_TIME + " = " + this.recordTime +
                     ", " + DefineTables.Counters.COLUMN_START_TIME + " = " + this.timeNow +
                     " WHERE _id = " + this.counterId;

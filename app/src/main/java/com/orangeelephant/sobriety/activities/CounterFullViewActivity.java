@@ -70,7 +70,8 @@ public class CounterFullViewActivity extends AppCompatActivity {
 
     public void onClickResetCounter (View v) {
         int openCounterId = this.openCounter.get_id();
-        ResetCounter resetCounter = new ResetCounter(this, openCounterId);
+        String reason = this.openCounter.getSobrietyReason();
+        ResetCounter resetCounter = new ResetCounter(this, openCounterId, reason);
         this.openCounter = resetCounter.returnResetCounter();
 
         refreshCurrentCounterView();
