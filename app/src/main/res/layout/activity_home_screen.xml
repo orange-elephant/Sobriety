@@ -60,6 +60,7 @@
             android:onClick="onClickAddCounter"
             android:textSize="30sp"
             android:textStyle="bold"
+            android:textColor = "?android:textColorPrimary"
             app:layout_constraintBottom_toBottomOf="@id/appNameView"
             app:layout_constraintEnd_toEndOf="@id/appNameView" />
 

@@ -8,7 +8,7 @@
         android:label="Sobriety"
         android:roundIcon="@mipmap/app_logo"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+        android:theme="@style/Theme.MyApplication">
         <activity
             android:name=".activities.AppStartupActivity"
             android:exported="true" >
