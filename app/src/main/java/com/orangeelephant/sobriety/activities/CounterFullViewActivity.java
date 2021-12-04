@@ -3,8 +3,10 @@ package com.orangeelephant.sobriety.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.orangeelephant.sobriety.R;
@@ -41,6 +43,9 @@ public class CounterFullViewActivity extends AppCompatActivity {
 
         TextView delete = (TextView) findViewById(R.id.CounterViewActivity_delete_counter);
         delete.setText(R.string.CounterViewActivity_delete_counter);
+
+        Button edit = findViewById(R.id.edit_counter_button);
+        edit.setText(getString(R.string.CounterViewActivity_edit_counter));
     }
 
     public void refreshCurrentCounterView () {
@@ -86,5 +91,12 @@ public class CounterFullViewActivity extends AppCompatActivity {
         deleteCounter.printDeletionMessage(deletionToast);
 
         onBackPressed();
+    }
+
+    public void onClickEditCounter (View v) {
+        Intent intent = new Intent(CounterFullViewActivity.this, EditCounterActivity.class);
+        intent.putExtra("openCounter", openCounter);
+
+        startActivity(intent);
     }
 }

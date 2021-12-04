@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.orangeelephant.sobriety.database.SqlCipherMigration;
+import com.orangeelephant.sobriety.managecounters.EditCounter;
 
 import net.sqlcipher.database.SQLiteDatabase;
 

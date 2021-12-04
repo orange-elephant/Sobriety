@@ -13,11 +13,7 @@ import android.widget.TextView;
 
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.counter.Counter;
-import com.orangeelephant.sobriety.counter.CreateNewCounter;
 import com.orangeelephant.sobriety.counter.LoadCounters;
-import com.orangeelephant.sobriety.database.SqlCipherMigration;
-import com.orangeelephant.sobriety.managecounters.DeleteCounter;
-import com.orangeelephant.sobriety.managecounters.ResetCounter;
 import com.orangeelephant.sobriety.adapters.CounterAdapter;
 
 import net.sqlcipher.database.SQLiteDatabase;
