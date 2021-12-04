@@ -1,7 +1,7 @@
 <resources>
     <!--Strings for home page activity -->
     <string name="HomeActivity_app_name">Sobriety</string>
-    <string name="HomeActivity_add_counter">+</string>
+    <string name="HomeActivity_add_counter">Add new</string>
     <!--Strings for counter timer message in recycler view -->
     <string name="HomeActivity_counter_message_long">%1$d days, %2$d hours, %3$d minutes, and %4$d seconds.</string>
 
@@ -21,8 +21,8 @@
     <string name="CounterViewActivity_no_sobriety_reason_provided">You have not added a reason for your sobriety</string>
     <string name="CounterViewActivity_sobriety_reason">The reason for your sobriety is %1$s</string>
     <string name="CounterViewActivity_edit_counter">Edit</string>
-    <string name="CounterViewActivity_reset_counter">Reset counter</string>
-    <string name="CounterViewActivity_delete_counter">Delete counter</string>
+    <string name="CounterViewActivity_reset_counter">Reset</string>
+    <string name="CounterViewActivity_delete_counter">Delete</string>
 
     <!--Strings for the edit counter view-->
     <string name="EditCounterActivity_add_sobriety_reason_hint">Add a sobriety reason...</string>

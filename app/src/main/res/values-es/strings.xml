@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="HomeActivity_add_counter">+</string>
     <string name="HomeActivity_counter_message_long">%1$d días, %2$d horas, %3$d minutos, and %4$d segundos.</string>
     <string name="AddCounterActivity_counter_name_input">Nombre...</string>
     <string name="CounterViewActivity_counter_message_long">%1$d días, %2$d horas, %3$d minutos, and %4$d segundos.</string>
     <string name="Toast_counter_deleted">%1$s eliminado.</string>
     <string name="HomeActivity_app_name">Sobriedad</string>
     <string name="AddCounterActivity_cancel">Cancelar</string>
-    <string name="CounterViewActivity_reset_counter">Restablecer temporizador</string>
-    <string name="CounterViewActivity_delete_counter">Eliminar temporizador</string>
+    <string name="CounterViewActivity_reset_counter">Restablecer</string>
+    <string name="CounterViewActivity_delete_counter">Eliminar</string>
     <string name="AddCounterActivity_enter_counter_name">Eligir un nombre para el temporizador.</string>
     <string name="AddCounterActivity_select_start_date">Seleccionar la fecha de inicio:</string>
+    <string name="HomeActivity_add_counter">Añadir</string>
+    <string name="EditCounterActivity_save_changes_button">Guardar</string>
+    <string name="Toast_counter_edited_successfully">Temporizador cambiado con exito</string>
+    <string name="CounterViewActivity_edit_counter">Editar</string>
 </resources>
