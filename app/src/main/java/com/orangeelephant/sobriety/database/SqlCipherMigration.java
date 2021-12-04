@@ -2,6 +2,8 @@ package com.orangeelephant.sobriety.database;
 
 import android.content.Context;
 
+import com.orangeelephant.sobriety.logging.LogEvent;
+
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteException;
 import net.sqlcipher.database.SQLiteStatement;
@@ -21,13 +23,13 @@ public class SqlCipherMigration {
             if (version >= DBhelper.SQL_CIPHER_MIGRATION) {
                 migrateDbToSqlcipher(context, originalFile, passphrase, version);
             } else {
-                System.out.println("Not migrating as version number " + version + " is lower than " +
+                LogEvent.i("Not migrating as version number " + version + " is lower than " +
                         "sqlcipher migration at version number " + DBhelper.SQL_CIPHER_MIGRATION);
             }
         } catch (SQLiteException exception) {
-            System.out.println("Database is encrypted already");
+            LogEvent.i("Database is encrypted already");
         } catch (IOException exception) {
-            System.out.println(exception);
+            LogEvent.e("IOException attempting to migrate DB to sql cipher", exception);
         }
     }
 
