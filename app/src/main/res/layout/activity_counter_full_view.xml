@@ -30,12 +30,8 @@
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayoutFullCounter"
-        android:layout_width="391dp"
-        android:layout_height="759dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="404dp"
+        android:layout_height="578dp"
         app:layout_constraintTop_toBottomOf="@+id/counterScreenToolbar"
         tools:context=".activities.HomeScreenActivity">
 
@@ -72,43 +68,48 @@
 
                 <TextView
                     android:id="@+id/CounterViewActivity_sobriety_reason"
-                    android:layout_width="361dp"
-                    android:layout_height="82dp" />
-
-                <Button
-                    android:id="@+id/CounterViewActivity_reset_counter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="36dp"
-                    android:onClick="onClickResetCounter"
-                    android:textColor = "?android:textColorPrimary"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <Button
-                    android:id="@+id/CounterViewActivity_delete_counter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="16dp"
-                    android:onClick="onClickDelete"
-                    android:textColor = "?android:textColorPrimary"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/refreshCurrentCounterView" />
+                    android:layout_width="324dp"
+                    android:layout_height="82dp"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginTop="36dp"
+                    android:textSize="24sp"
+                    android:textStyle="italic" />
 
             </LinearLayout>
         </ScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <Button
+        android:id="@+id/CounterViewActivity_reset_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="36dp"
+        android:onClick="onClickResetCounter"
+        android:textColor="?android:textColorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/CounterViewActivity_delete_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
+        android:onClick="onClickDelete"
+        android:textColor="?android:textColorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/CounterViewActivity_reset_counter"
+        app:layout_constraintHorizontal_bias="0.281"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
         android:id="@+id/edit_counter_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:onClick="onClickEditCounter"
+        android:drawableLeft="@drawable/edit_icon"
         android:enabled="false"
-        android:text="Button"
+        android:onClick="onClickEditCounter"
         app:layout_constraintEnd_toEndOf="@+id/counterScreenToolbar"
         tools:layout_editor_absoluteY="8dp" />
 
