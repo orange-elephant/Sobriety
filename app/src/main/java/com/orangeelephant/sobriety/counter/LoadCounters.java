@@ -5,12 +5,15 @@ import android.database.Cursor;
 
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.database.DBhelper;
+import com.orangeelephant.sobriety.logging.LogEvent;
 
 import net.sqlcipher.CursorIndexOutOfBoundsException;
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteException;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
 public class LoadCounters {
@@ -50,14 +53,20 @@ public class LoadCounters {
             innerList.add(record_time_in_millis);
 
             try {
-                String reasonSql = "SELECT sobriety_reason FROM reasons WHERE counter_id = " + id;
+                String reasonSql = "SELECT _id, sobriety_reason FROM reasons WHERE counter_id = " + id;
                 Cursor reasonsCursor = db.rawQuery(reasonSql, null);
-                reasonsCursor.moveToFirst();
-                String sobriety_reason = reasonsCursor.getString(0);
-                innerList.add(sobriety_reason);
+                Dictionary reasons_dict = new Hashtable();
+
+                while(reasonsCursor.moveToNext()) {
+                    int reason_id = reasonsCursor.getInt(0);
+                    String sobriety_reason = reasonsCursor.getString(1);
+                    reasons_dict.put(reason_id, sobriety_reason);
+                }
+                innerList.add(reasons_dict);
+
             } catch (CursorIndexOutOfBoundsException exception) {
                 innerList.add(null);
-                System.out.println("Counter id " + id + " has no associated sobriety reasons.");
+                LogEvent.i("Counter id " + id + " has no associated sobriety reasons.");
             }
 
             outerList.add((ArrayList) innerList.clone());
@@ -83,10 +92,10 @@ public class LoadCounters {
             String name = currentCounterDetails.get(1).toString();
             Long time = (Long) currentCounterDetails.get(2);
             Long recordTime = (Long) currentCounterDetails.get(3);
-            String sobriety_reason = (String) currentCounterDetails.get(4);
+            Dictionary sobriety_reasons = (Dictionary) currentCounterDetails.get(4);
             String time_sober_string = context.getString(R.string.CounterViewActivity_counter_message_long);
 
-            Counter currentCounter = new Counter(id, name, time, recordTime, sobriety_reason, time_sober_string);
+            Counter currentCounter = new Counter(id, name, time, recordTime, sobriety_reasons, time_sober_string);
 
             counterObjects.add(currentCounter);
         }

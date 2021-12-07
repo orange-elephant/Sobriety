@@ -13,9 +13,12 @@ import com.orangeelephant.sobriety.managecounters.EditCounter;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
+import java.util.Dictionary;
+
 public class EditCounterActivity extends AppCompatActivity {
     private EditCounter editCounter;
     private Counter openCounter;
+    private Dictionary reasons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +27,7 @@ public class EditCounterActivity extends AppCompatActivity {
 
         this.openCounter = (Counter) getIntent().getSerializableExtra("openCounter");
         this.editCounter = new EditCounter(this, openCounter.get_id());
+        this.reasons = openCounter.getReasons_dict();
 
         setStrings();
     }
@@ -40,7 +44,13 @@ public class EditCounterActivity extends AppCompatActivity {
     public void onClickSave(View v) {
         EditText reason_field = findViewById(R.id.addReasonField);
         String reason = reason_field.getText().toString();
-        editCounter.addReason(reason);
+
+        if (this.reasons.isEmpty()) {
+            editCounter.addReason(reason);
+        } else {
+            int reason_id = (int) this.reasons.keys().nextElement();
+            editCounter.changeReason(reason, reason_id);
+        }
         editCounter.printEditSuccessfulMessage(getString(R.string.Toast_counter_edited_successfully));
         onBackPressed();
     }

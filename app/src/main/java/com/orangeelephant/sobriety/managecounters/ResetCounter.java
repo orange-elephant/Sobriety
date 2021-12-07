@@ -11,6 +11,7 @@ import com.orangeelephant.sobriety.database.DefineTables;
 import net.sqlcipher.database.SQLiteDatabase;
 
 import java.util.Date;
+import java.util.Dictionary;
 
 public class ResetCounter {
     private final Context context;
@@ -18,12 +19,12 @@ public class ResetCounter {
     private String name;
     private long recordTime;
     private long timeNow;
-    private String sobrietyReason;
+    private Dictionary sobrietyReasons;
 
-    public ResetCounter(Context context, int counterId, String sobrietyReason) {
+    public ResetCounter(Context context, int counterId, Dictionary sobrietyReasons) {
         this.context = context;
         this.counterId = counterId;
-        this.sobrietyReason = sobrietyReason;
+        this.sobrietyReasons = sobrietyReasons;
 
         checkForRecordTime();
 
@@ -32,7 +33,7 @@ public class ResetCounter {
 
     public Counter returnResetCounter() {
         String time_sober_string = context.getString(R.string.CounterViewActivity_counter_message_long);
-        return new Counter(this.counterId, this.name, this.timeNow, this.recordTime, this.sobrietyReason, time_sober_string);
+        return new Counter(this.counterId, this.name, this.timeNow, this.recordTime, this.sobrietyReasons, time_sober_string);
     }
 
     private void checkForRecordTime() {
@@ -56,7 +57,7 @@ public class ResetCounter {
         long timeElapsed = getCurrentTimeElapsed(startTime);
 
         this.name = name;
-        this.sobrietyReason = sobrietyReason;
+        this.sobrietyReasons = sobrietyReasons;
         this.recordTime = Math.max(timeElapsed, recordTime);
     }
 

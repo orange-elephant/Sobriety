@@ -28,6 +28,15 @@ public class EditCounter {
         db.close();
     }
 
+    public void changeReason(String reason, int reasonId) {
+        SQLiteDatabase db = new DBhelper(context).getWritableDatabase("");
+        String sql = "update " + DefineTables.Counters.TABLE_NAME_REASONS +
+                " set " + DefineTables.Counters.COLUMN_SOBRIETY_REASON + " = '" +
+                reason + "' where _id = " + reasonId;
+        db.execSQL(sql);
+        db.close();
+    }
+
     public void printEditSuccessfulMessage(String toastMessage) {
         Toast deletionMessage = Toast.makeText(this.context, toastMessage, Toast.LENGTH_LONG);
         deletionMessage.show();

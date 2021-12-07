@@ -14,6 +14,8 @@ import com.orangeelephant.sobriety.counter.Counter;
 import com.orangeelephant.sobriety.managecounters.ResetCounter;
 import com.orangeelephant.sobriety.managecounters.DeleteCounter;
 
+import java.util.Dictionary;
+
 public class CounterFullViewActivity extends AppCompatActivity {
     private Counter openCounter;
 
@@ -75,7 +77,7 @@ public class CounterFullViewActivity extends AppCompatActivity {
 
     public void onClickResetCounter (View v) {
         int openCounterId = this.openCounter.get_id();
-        String reason = this.openCounter.getSobrietyReason();
+        Dictionary reason = this.openCounter.getReasons_dict();
         ResetCounter resetCounter = new ResetCounter(this, openCounterId, reason);
         this.openCounter = resetCounter.returnResetCounter();
 
