@@ -108,6 +108,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:drawableLeft="@drawable/edit_icon"
+        android:textColor="?android:textColorPrimary"
         android:enabled="true"
         android:onClick="onClickEditCounter"
         app:layout_constraintEnd_toEndOf="@+id/counterScreenToolbar"

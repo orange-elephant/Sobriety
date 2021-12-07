@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.counter.Counter;
+import com.orangeelephant.sobriety.counter.LoadCounters;
 
 // Create the basic adapter extending from RecyclerView.Adapter
 // Note that we specify the custom ViewHolder which gives us access to our views
@@ -19,15 +20,17 @@ public class CounterAdapter extends
 
     private OnItemClicked onClick;
 
-    private final Counter[] mCounter;
+    private Counter[] mCounter;
+    private final Context context;
 
     public interface OnItemClicked {
         void onItemClick(int position);
     }
 
     // Pass in the contact array into the constructor
-    public CounterAdapter(Counter[] counters) {
-        mCounter = counters;
+    public CounterAdapter(Context context) {
+        this.context = context;
+        onDataChanged();
     }
 
     // Provide a direct reference to each of the views within a data item
@@ -91,7 +94,21 @@ public class CounterAdapter extends
         return mCounter.length;
     }
 
+    public Counter[] getmCounter() {
+        return this.mCounter;
+    }
+
     public void setOnClick(OnItemClicked onClick) {
         this.onClick=onClick;
+    }
+
+    public void onDataChanged() {
+        LoadCounters counters = new LoadCounters(context);
+        this.mCounter = counters.getLoadedCounters().toArray(new Counter[0]);
+        this.notifyDataSetChanged();
+    }
+
+    public void refreshTimeMessage() {
+        this.notifyDataSetChanged();
     }
 }

@@ -8,6 +8,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 
@@ -19,23 +20,22 @@ import com.orangeelephant.sobriety.adapters.CounterAdapter;
 import net.sqlcipher.database.SQLiteDatabase;
 
 public class HomeScreenActivity extends AppCompatActivity implements CounterAdapter.OnItemClicked {
-    private Counter[] counters;
-    private Counter openCounter;
+
+    private CounterAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         setStrings();
-
-        onRefreshRecycler();
+        onCreateRecycler();
 
         setSupportActionBar(findViewById(R.id.homeScreenToolbar));
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
 
         setHomePageRefreshListener();
+        setTimeMessageUpdateHandler();
     }
 
     private void setStrings() {
@@ -53,7 +53,7 @@ public class HomeScreenActivity extends AppCompatActivity implements CounterAdap
 
     @Override
     public void onItemClick(int position) {
-        openCounter = this.counters[position];
+        Counter openCounter = this.adapter.getmCounter()[position];
 
         Intent intent = new Intent(HomeScreenActivity.this, CounterFullViewActivity.class);
         intent.putExtra("openCounter", openCounter);
@@ -61,17 +61,18 @@ public class HomeScreenActivity extends AppCompatActivity implements CounterAdap
         startActivity(intent);
     }
 
-    public void onRefreshRecycler() {
-        LoadCounters counters = new LoadCounters(this);
-        this.counters = counters.getLoadedCounters().toArray(new Counter[0]);
-
+    public void onCreateRecycler() {
         RecyclerView countersView = (RecyclerView) findViewById(R.id.counterView);
 
-        CounterAdapter adapter = new CounterAdapter(this.counters);
+        this.adapter = new CounterAdapter(this);
         countersView.setAdapter(adapter);
         countersView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter.setOnClick(this);
+    }
+
+    public void onUpdateRecycler() {
+        this.adapter.onDataChanged();
     }
 
     @Override
@@ -85,8 +86,21 @@ public class HomeScreenActivity extends AppCompatActivity implements CounterAdap
             @Override
             public void onRefresh() {
                 swipeRefreshLayoutHome.setRefreshing(false);
-                onRefreshRecycler();
+                onUpdateRecycler();
             }
         });
+    }
+
+    // https://stackoverflow.com/questions/11434056/how-to-run-a-method-every-x-seconds
+    private void setTimeMessageUpdateHandler() {
+        final Handler handler = new Handler();
+        final int delay = 1000; // 1000 milliseconds == 1 second
+
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                onUpdateRecycler();
+                handler.postDelayed(this, delay);
+            }
+        }, delay);
     }
 }

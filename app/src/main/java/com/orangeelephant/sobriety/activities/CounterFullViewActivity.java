@@ -5,6 +5,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ public class CounterFullViewActivity extends AppCompatActivity {
         setStrings();
 
         refreshCurrentCounterView();
+        setTimeMessageUpdateHandler();
 
         SwipeRefreshLayout swipeRefreshLayoutFullCounter = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayoutFullCounter);
         swipeRefreshLayoutFullCounter.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -100,5 +102,18 @@ public class CounterFullViewActivity extends AppCompatActivity {
         intent.putExtra("openCounter", openCounter);
 
         startActivity(intent);
+    }
+
+    // https://stackoverflow.com/questions/11434056/how-to-run-a-method-every-x-seconds
+    private void setTimeMessageUpdateHandler() {
+        final Handler handler = new Handler();
+        final int delay = 1000; // 1000 milliseconds == 1 second
+
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                refreshCurrentCounterView();
+                handler.postDelayed(this, delay);
+            }
+        }, delay);
     }
 }
