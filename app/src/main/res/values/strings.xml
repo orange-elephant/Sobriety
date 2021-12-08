@@ -31,4 +31,15 @@
     <!--Toast messages -->
     <string name="Toast_counter_deleted">%1$s was deleted.</string>
     <string name="Toast_counter_edited_successfully">The counter was updated successfully.</string>
+    <string name="Toast_reset_cancelled">Counter was not reset.</string>
+    <string name="Toast_counter_reset">Counter was reset successfully.</string>
+    <string name="Toast_delete_cancelled">Counter was not deleted.</string>
+
+    <!-- Confirmation fragment messages -->
+    <string name="ConfirmationFrgament_title_delete">Delete counter</string>
+    <string name="ConfirmationFrgament_title_reset">Reset timer</string>
+    <string name="ConfirmationFragment_delete">Are you sure you want to delete this counter?</string>
+    <string name="ConfirmationFragment_reset">Are you sure you want to reset your progress on this counter?</string>
+    <string name="ConfirmationFragment_confirm">Yes</string>
+    <string name="ConfirmationFragment_cancel">No</string>
 </resources>

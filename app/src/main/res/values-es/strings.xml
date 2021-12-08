@@ -14,4 +14,10 @@
     <string name="EditCounterActivity_save_changes_button">Guardar</string>
     <string name="Toast_counter_edited_successfully">Temporizador cambiado con exito</string>
     <string name="CounterViewActivity_edit_counter">Editar</string>
+    <string name="ConfirmationFragment_delete">Estas seguro que quieres eliminar este temporizador?</string>
+    <string name="ConfirmationFragment_reset">Estas seguro que quieres restablecer este temporizador?</string>
+    <string name="ConfirmationFragment_cancel">No</string>
+    <string name="ConfirmationFragment_confirm">Sí</string>
+    <string name="ConfirmationFrgament_title_delete">Eliminar temporizador</string>
+    <string name="ConfirmationFrgament_title_reset">Restablecer temporizador</string>
 </resources>
