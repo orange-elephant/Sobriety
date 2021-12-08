@@ -28,56 +28,50 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayoutFullCounter"
-        android:layout_width="404dp"
-        android:layout_height="578dp"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="68dp"
         app:layout_constraintTop_toBottomOf="@+id/counterScreenToolbar"
-        tools:context=".activities.HomeScreenActivity">
+        tools:layout_editor_absoluteX="-14dp">
 
-
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+            <TextView
+                android:id="@+id/CounterViewActivity_counter_message_long"
+                android:layout_width="323dp"
+                android:layout_height="88dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="50dp"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/CounterViewActivity_counter_name" />
 
-                <TextView
-                    android:id="@+id/CounterViewActivity_counter_message_long"
-                    android:layout_width="323dp"
-                    android:layout_height="88dp"
-                    android:layout_marginStart="36dp"
-                    android:layout_marginTop="50dp"
-                    android:textSize="24sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/CounterViewActivity_counter_name" />
+            <TextView
+                android:id="@+id/CounterViewActivity_record_sobriety_message"
+                android:layout_width="322dp"
+                android:layout_height="93dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="36dp"
+                android:textSize="24sp"
+                android:textStyle="italic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/CounterViewActivity_counter_message_long" />
 
-                <TextView
-                    android:id="@+id/CounterViewActivity_record_sobriety_message"
-                    android:layout_width="322dp"
-                    android:layout_height="93dp"
-                    android:layout_marginStart="36dp"
-                    android:layout_marginTop="36dp"
-                    android:textSize="24sp"
-                    android:textStyle="italic"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/CounterViewActivity_counter_message_long" />
+            <TextView
+                android:id="@+id/CounterViewActivity_sobriety_reason"
+                android:layout_width="324dp"
+                android:layout_height="82dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="36dp"
+                android:textSize="24sp"
+                android:textStyle="italic" />
 
-                <TextView
-                    android:id="@+id/CounterViewActivity_sobriety_reason"
-                    android:layout_width="324dp"
-                    android:layout_height="82dp"
-                    android:layout_marginStart="36dp"
-                    android:layout_marginTop="36dp"
-                    android:textSize="24sp"
-                    android:textStyle="italic" />
-
-            </LinearLayout>
-        </ScrollView>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/CounterViewActivity_reset_counter"

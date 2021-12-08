@@ -30,15 +30,6 @@ public class CounterFullViewActivity extends AppCompatActivity {
 
         refreshCurrentCounterView();
         setTimeMessageUpdateHandler();
-
-        SwipeRefreshLayout swipeRefreshLayoutFullCounter = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayoutFullCounter);
-        swipeRefreshLayoutFullCounter.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayoutFullCounter.setRefreshing(false);
-                refreshCurrentCounterView();
-            }
-        });
     }
 
     private void setStrings() {

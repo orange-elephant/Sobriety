@@ -34,8 +34,13 @@ public class HomeScreenActivity extends AppCompatActivity implements CounterAdap
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
 
-        setHomePageRefreshListener();
         setTimeMessageUpdateHandler();
+    }
+
+    @Override
+    public void onResume() {
+        adapter.onDataChanged();
+        super.onResume();
     }
 
     private void setStrings() {
@@ -78,17 +83,6 @@ public class HomeScreenActivity extends AppCompatActivity implements CounterAdap
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
-    }
-
-    private void setHomePageRefreshListener() {
-        SwipeRefreshLayout swipeRefreshLayoutHome = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayoutHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayoutHome.setRefreshing(false);
-                onUpdateRecycler();
-            }
-        });
     }
 
     // https://stackoverflow.com/questions/11434056/how-to-run-a-method-every-x-seconds
