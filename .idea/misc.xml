@@ -8,13 +8,14 @@
         <entry key="app/src/main/res/drawable/edit_icon_light.xml" value="0.16025641025641027" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.30337552742616036" />
         <entry key="app/src/main/res/layout/activity_add_counter.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/activity_counter_full_view.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_counter_full_view.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_edit_counter.xml" value="0.2811965811965812" />
         <entry key="app/src/main/res/layout/activity_home_screen.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/add_counter.xml" value="0.22" />
         <entry key="app/src/main/res/layout/counter_full_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/counter_layout.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/fragment_confirmation.xml" value="0.16794871794871793" />
       </map>
     </option>
   </component>

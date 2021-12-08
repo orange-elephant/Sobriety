@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.orangeelephant.sobriety.database.SqlCipherMigration;
-import com.orangeelephant.sobriety.managecounters.EditCounter;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
@@ -18,7 +17,7 @@ public class AppStartupActivity extends AppCompatActivity {
 
         //load libraries necessary for sqlcipher library to function
         SQLiteDatabase.loadLibs(this);
-        SqlCipherMigration sqlCipherMigration = new SqlCipherMigration(this);
+        new SqlCipherMigration(this);
 
         Intent intent = new Intent(AppStartupActivity.this, HomeScreenActivity.class);
         startActivity(intent);

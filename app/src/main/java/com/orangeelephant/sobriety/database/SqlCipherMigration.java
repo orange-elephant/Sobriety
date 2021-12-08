@@ -34,7 +34,7 @@ public class SqlCipherMigration {
     }
 
     /**
-     * Sourced from, approach to setting the database version was modified, and database path returned to be reopened.
+     * Sourced from, approach to setting the database version was modified.
      * https://github.com/commonsguy/cwac-saferoom/blob/v1.2.1/saferoom/src/main/java/com/commonsware/cwac/saferoom/SQLCipherUtils.java#L175-L224
      *  *
      *  * Copyright (c) 2012-2017 CommonsWare, LLC
@@ -59,8 +59,6 @@ public class SqlCipherMigration {
      * @param originalFile a File pointing to the database
      * @param passphrase the passphrase from the user
      * @throws IOException
-     *
-     * @return String path to new db file
      */
     public static void migrateDbToSqlcipher(Context ctxt, File originalFile, byte[] passphrase, int version)
             throws IOException {

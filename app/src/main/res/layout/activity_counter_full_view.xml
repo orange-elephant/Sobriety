@@ -29,6 +29,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="68dp"
@@ -69,7 +70,6 @@
                 android:layout_marginTop="36dp"
                 android:textSize="24sp"
                 android:textStyle="italic" />
-
         </LinearLayout>
     </ScrollView>
 
@@ -107,6 +107,16 @@
         android:onClick="onClickEditCounter"
         app:layout_constraintEnd_toEndOf="@+id/counterScreenToolbar"
         tools:layout_editor_absoluteY="8dp" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/confirmationDialogFragmentContainer"
+        android:layout_width="280dp"
+        android:layout_height="135dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="@+id/scrollView2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/counterScreenToolbar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

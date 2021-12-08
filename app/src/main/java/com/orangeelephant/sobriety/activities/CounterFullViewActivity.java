@@ -1,14 +1,16 @@
 package com.orangeelephant.sobriety.activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.counter.Counter;
@@ -69,6 +71,28 @@ public class CounterFullViewActivity extends AppCompatActivity {
     }
 
     public void onClickResetCounter (View v) {
+        new AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.ConfirmationFrgament_title_reset))
+                    .setMessage(getString(R.string.ConfirmationFragment_reset))
+                    .setPositiveButton(getString(R.string.ConfirmationFragment_confirm), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            CounterFullViewActivity.this.resetCounter();
+                            Toast counterReset = new Toast(CounterFullViewActivity.this);
+                            counterReset.setText(R.string.Toast_counter_reset);
+                            counterReset.show();
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.ConfirmationFragment_cancel), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast cancelledMessage = new Toast(CounterFullViewActivity.this);
+                            cancelledMessage.setText(R.string.Toast_reset_cancelled);
+                            cancelledMessage.show();
+                        }
+                    })
+                    .show();
+    }
+
+    private void resetCounter() {
         int openCounterId = this.openCounter.get_id();
         Dictionary reason = this.openCounter.getReasons_dict();
         ResetCounter resetCounter = new ResetCounter(this, openCounterId, reason);
@@ -78,6 +102,25 @@ public class CounterFullViewActivity extends AppCompatActivity {
     }
 
     public void onClickDelete (View v) {
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.ConfirmationFrgament_title_delete))
+                .setMessage(getString(R.string.ConfirmationFragment_delete))
+                .setPositiveButton(getString(R.string.ConfirmationFragment_confirm), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        CounterFullViewActivity.this.deleteCounter();
+                    }
+                })
+                .setNegativeButton(getString(R.string.ConfirmationFragment_cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast cancelledMessage = new Toast(CounterFullViewActivity.this);
+                        cancelledMessage.setText(R.string.Toast_delete_cancelled);
+                        cancelledMessage.show();
+                    }
+                })
+                .show();
+    }
+
+    private void deleteCounter() {
         int openCounterId = this.openCounter.get_id();
         String counterName = this.openCounter.getName();
         DeleteCounter deleteCounter = new DeleteCounter(this, openCounterId, counterName);
