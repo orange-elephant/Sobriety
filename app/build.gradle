@@ -9,8 +9,8 @@ android {
         applicationId "com.orangeelephant.sobriety"
         minSdk 21
         targetSdk 31
-        versionCode 18
-        versionName "0.4.12"
+        versionCode 19
+        versionName "0.4.13"
 
         setProperty("archivesBaseName", applicationId + "-v" + versionName)
 
