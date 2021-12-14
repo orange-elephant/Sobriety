@@ -13,6 +13,7 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingTop="?attr/actionBarSize"
+        android:paddingHorizontal="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -36,6 +37,7 @@
             android:layout_height="wrap_content"
             android:textSize="34sp"
             android:textStyle="bold"
+            android:text="@string/HomeActivity_app_name"
             android:typeface="monospace"
             tools:layout_editor_absoluteX="6dp"
             tools:layout_editor_absoluteY="20dp" />
@@ -51,6 +53,7 @@
         android:layout_marginEnd="16dp"
         android:drawableLeft="@drawable/add_counter"
         android:textColor = "?android:textColorPrimary"
+        android:text="@string/HomeActivity_add_counter"
         android:onClick="onClickAddCounter"
         app:layout_constraintEnd_toEndOf="@+id/homeScreenToolbar"
         app:layout_constraintTop_toTopOf="@+id/homeScreenToolbar" />

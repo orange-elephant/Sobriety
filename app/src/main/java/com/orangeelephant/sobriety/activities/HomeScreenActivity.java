@@ -27,7 +27,6 @@ public class HomeScreenActivity extends AppCompatActivity implements CounterAdap
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
-        setStrings();
         onCreateRecycler();
 
         setSupportActionBar(findViewById(R.id.homeScreenToolbar));
@@ -41,14 +40,6 @@ public class HomeScreenActivity extends AppCompatActivity implements CounterAdap
     public void onResume() {
         adapter.onDataChanged();
         super.onResume();
-    }
-
-    private void setStrings() {
-        TextView appName = (TextView) findViewById(R.id.appNameView);
-        appName.setText(getString(R.string.HomeActivity_app_name));
-
-        TextView addCounter = (TextView) findViewById(R.id.add_counter);
-        addCounter.setText(getString(R.string.HomeActivity_add_counter));
     }
 
     public void onClickAddCounter (View v) {

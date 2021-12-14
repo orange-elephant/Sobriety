@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:ems="10"
-
+        android:text="@string/AddCounterActivity_counter_name_input"
         android:inputType="textPersonName"
         android:paddingTop="10px"
         android:textColor="?android:textColorPrimary"
@@ -27,7 +27,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/AddCounterActivity_counter_name_input"
-        tools:layout_editor_absoluteX="45dp" />
+        tools:layout_editor_absoluteX="45dp"
+        android:text="@string/AddCounterActivity_enter_counter_name"/>
 
     <DatePicker
         android:id="@+id/startDatePicker"
@@ -47,6 +48,7 @@
         android:layout_marginTop="484dp"
         android:onClick="onClickSubmit"
         android:textColor="?android:textColorPrimary"
+        android:text="@string/AddCounterActivity_submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.592"
@@ -55,6 +57,7 @@
 
     <TextView
         android:id="@+id/AddCounterActivity_select_start_date"
+        android:text="@string/AddCounterActivity_select_start_date"
         android:layout_width="250dp"
         android:layout_height="26dp"
         android:layout_marginBottom="8dp"
@@ -69,6 +72,7 @@
         android:layout_marginTop="484dp"
         android:onClick="onClickCancel"
         android:textColor="?android:textColorPrimary"
+        android:text="@string/AddCounterActivity_cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AddCounterActivity_counter_name_input" />
@@ -83,12 +87,14 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/AddCounterActivity_add_a_reason_for_sobriety_hint"
+            android:text="@string/AddCounterActivity_add_a_reason_for_sobriety_hint"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/AddCounterActivity_add_a_reason_for_sobriety"
+        android:text="@string/AddCounterActivity_add_a_reason_for_sobriety"
         android:layout_width="338dp"
         android:layout_height="29dp"
         app:layout_constraintBottom_toBottomOf="@+id/textInputLayout"

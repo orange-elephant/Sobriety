@@ -28,17 +28,6 @@ public class EditCounterActivity extends AppCompatActivity {
         this.openCounter = (Counter) getIntent().getSerializableExtra("openCounter");
         this.editCounter = new EditCounter(this, openCounter.get_id());
         this.reasons = openCounter.getReasons_dict();
-
-        setStrings();
-    }
-
-    private void setStrings() {
-        EditText reason_field = findViewById(R.id.addReasonField);
-        reason_field.setText(openCounter.getSobrietyReason());
-        reason_field.setHint(getString(R.string.EditCounterActivity_add_sobriety_reason_hint));
-
-        Button save_change = findViewById(R.id.save_changes);
-        save_change.setText(getString(R.string.EditCounterActivity_save_changes_button));
     }
 
     public void onClickSave(View v) {

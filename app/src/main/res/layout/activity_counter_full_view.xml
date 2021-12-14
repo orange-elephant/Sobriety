@@ -81,6 +81,7 @@
         android:layout_marginBottom="36dp"
         android:onClick="onClickResetCounter"
         android:textColor="?android:textColorPrimary"
+        android:text="@string/CounterViewActivity_reset_counter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -91,6 +92,7 @@
         android:layout_marginBottom="36dp"
         android:onClick="onClickDelete"
         android:textColor="?android:textColorPrimary"
+        android:text="@string/CounterViewActivity_delete_counter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/CounterViewActivity_reset_counter"
         app:layout_constraintHorizontal_bias="0.281"
@@ -106,6 +108,7 @@
         android:enabled="true"
         android:onClick="onClickEditCounter"
         android:textColor="?android:textColorPrimary"
+        android:text="@string/CounterViewActivity_edit_counter"
         app:layout_constraintEnd_toEndOf="@+id/counterScreenToolbar"
         app:layout_constraintTop_toTopOf="@+id/counterScreenToolbar" />
 

@@ -21,7 +21,6 @@ public class AddCounterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_counter);
-        setStrings();
 
         DatePicker startDatePicker = (DatePicker)findViewById(R.id.startDatePicker); // initiate a date picker
 
@@ -30,29 +29,6 @@ public class AddCounterActivity extends AppCompatActivity {
         Date now = new Date();
         long time = now.getTime();
         startDatePicker.setMaxDate(time);
-    }
-
-    private void setStrings() {
-        TextView enterNamePointer = (TextView) findViewById(R.id.AddCounterActivity_enter_counter_name);
-        enterNamePointer.setText(R.string.AddCounterActivity_enter_counter_name);
-
-        TextView enterNameBox = (TextView) findViewById(R.id.AddCounterActivity_counter_name_input);
-        enterNameBox.setHint(R.string.AddCounterActivity_counter_name_input);
-
-        TextView selectStartDatePointer = (TextView) findViewById(R.id.AddCounterActivity_select_start_date);
-        selectStartDatePointer.setText(R.string.AddCounterActivity_select_start_date);
-
-        TextView enterReasonPointer = (TextView) findViewById(R.id.AddCounterActivity_add_a_reason_for_sobriety);
-        enterReasonPointer.setText(getString(R.string.AddCounterActivity_add_a_reason_for_sobriety));
-
-        TextView enterReasonHint = (TextView) findViewById(R.id.AddCounterActivity_add_a_reason_for_sobriety_hint);
-        enterReasonHint.setHint(getString(R.string.AddCounterActivity_add_a_reason_for_sobriety_hint));
-
-        TextView cancel = (TextView) findViewById(R.id.AddCounterActivity_cancel);
-        cancel.setText(R.string.AddCounterActivity_cancel);
-
-        TextView submit = (TextView) findViewById(R.id.AddCounterActivity_submit);
-        submit.setText(R.string.AddCounterActivity_submit);
     }
 
     public void onClickSubmit (View v) throws ParseException {

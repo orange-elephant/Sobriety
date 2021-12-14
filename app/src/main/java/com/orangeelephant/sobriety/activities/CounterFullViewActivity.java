@@ -28,21 +28,9 @@ public class CounterFullViewActivity extends AppCompatActivity {
         this.openCounter = (Counter) getIntent().getSerializableExtra("openCounter");
 
         setContentView(R.layout.activity_counter_full_view);
-        setStrings();
 
         refreshCurrentCounterView();
         setTimeMessageUpdateHandler();
-    }
-
-    private void setStrings() {
-        TextView reset = (TextView) findViewById(R.id.CounterViewActivity_reset_counter);
-        reset.setText(R.string.CounterViewActivity_reset_counter);
-
-        TextView delete = (TextView) findViewById(R.id.CounterViewActivity_delete_counter);
-        delete.setText(R.string.CounterViewActivity_delete_counter);
-
-        Button edit = findViewById(R.id.edit_counter_button);
-        edit.setText(getString(R.string.CounterViewActivity_edit_counter));
     }
 
     public void refreshCurrentCounterView () {
