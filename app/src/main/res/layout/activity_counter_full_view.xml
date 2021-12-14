@@ -20,6 +20,7 @@
             android:id="@+id/CounterViewActivity_counter_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/transparent"
             android:textSize="34sp"
             android:textStyle="bold"
             android:typeface="monospace"
@@ -111,16 +112,4 @@
         android:text="@string/CounterViewActivity_edit_counter"
         app:layout_constraintEnd_toEndOf="@+id/counterScreenToolbar"
         app:layout_constraintTop_toTopOf="@+id/counterScreenToolbar" />
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/confirmationDialogFragmentContainer"
-        android:layout_width="280dp"
-        android:layout_height="135dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
-        app:layout_constraintEnd_toEndOf="@+id/scrollView2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/counterScreenToolbar" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
