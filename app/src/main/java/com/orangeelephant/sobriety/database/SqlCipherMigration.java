@@ -1,6 +1,9 @@
 package com.orangeelephant.sobriety.database;
 
 import android.content.Context;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import com.orangeelephant.sobriety.logging.LogEvent;
 
@@ -13,14 +16,19 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class SqlCipherMigration {
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public SqlCipherMigration(Context context) {
         try {
+            //obtain the necessary info about the current database
             SQLiteDatabase database = new DBhelper(context).getReadableDatabase("");
             File originalFile = new File(database.getPath());
-            byte[] passphrase = new byte[32];
             int version = database.getVersion();
             database.close();
+
             if (version >= DBhelper.SQL_CIPHER_MIGRATION) {
+                SqlcipherKey keyManager = new SqlcipherKey(context);
+                byte[] passphrase = keyManager.getSqlCipherKey();
+
                 migrateDbToSqlcipher(context, originalFile, passphrase, version);
             } else {
                 LogEvent.i("Not migrating as version number " + version + " is lower than " +
@@ -30,6 +38,8 @@ public class SqlCipherMigration {
             LogEvent.i("Database is encrypted already");
         } catch (IOException exception) {
             LogEvent.e("IOException attempting to migrate DB to sql cipher", exception);
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 
