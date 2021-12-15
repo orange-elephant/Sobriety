@@ -13,6 +13,7 @@ public class DBhelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "sobriety_tracker";
     public static Context context;
+    private SqlcipherKey keyManager = null;
 
     public static final int LOG_RECORD_TIME_VERSION = 3;
     public static final int LOG_SOBRIETY_REASON = 4;
@@ -22,6 +23,12 @@ public class DBhelper extends SQLiteOpenHelper {
     public DBhelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
+        try {
+            this.keyManager = new SqlcipherKey(context);
+        } catch (Exception e) {
+
+        }
+
     }
 
     @Override
@@ -54,6 +61,24 @@ public class DBhelper extends SQLiteOpenHelper {
             }
             //wipe set all old values to null since sqlite wont allow dropping column
             sqLiteDatabase.execSQL("UPDATE counters SET sobriety_reason = NULL");
+        }
+    }
+
+    public SQLiteDatabase getReadableDatabase() {
+        byte[] password = keyManager.getSqlCipherKey();
+        if (DATABASE_VERSION >= SQL_CIPHER_MIGRATION && keyManager.getIsEncrypted()) {
+            return super.getReadableDatabase(password);
+        } else {
+            return super.getReadableDatabase("");
+        }
+    }
+
+    public SQLiteDatabase getWritableDatabase() {
+        byte[] password = keyManager.getSqlCipherKey();
+        if (DATABASE_VERSION >= SQL_CIPHER_MIGRATION && keyManager.getIsEncrypted()) {
+            return super.getWritableDatabase(password);
+        } else {
+            return super.getWritableDatabase("");
         }
     }
 }

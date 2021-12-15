@@ -11,6 +11,9 @@ import androidx.annotation.RequiresApi;
 
 import com.orangeelephant.sobriety.logging.LogEvent;
 
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteException;
+
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.KeyStore;
@@ -36,6 +39,7 @@ import javax.crypto.spec.GCMParameterSpec;
 public class SqlcipherKey {
     private static final String sharedPreferenceFile = "com.orangeelephant.sobriety.database_key";
     private static final String encryptedKeyName = "sqlcipherEncryptionKey";
+    private static final String isEncrypted = "isEncrypted";
     private final byte[] sqlCipherKey;
 
     private static final String AndroidKeyStore = "AndroidKeyStore";
@@ -63,6 +67,14 @@ public class SqlcipherKey {
 
     public byte[] getSqlCipherKey() {
         return this.sqlCipherKey;
+    }
+
+    public boolean getIsEncrypted() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPreferenceFile,
+                context.MODE_PRIVATE);
+        Boolean encryptedStatus = sharedPreferences.getBoolean(isEncrypted, false);
+
+        return encryptedStatus;
     }
 
     private void generateKey() throws NoSuchAlgorithmException,
@@ -145,7 +157,6 @@ public class SqlcipherKey {
         SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPreferenceFile,
                 context.MODE_PRIVATE);
         String base64encodedEncryptedKey = sharedPreferences.getString(encryptedKeyName, "");
-        System.out.println(base64encodedEncryptedKey);
         if (base64encodedEncryptedKey == "") {
             LogEvent.i("Encrypted sqlcipher key not found, creating one now.");
             base64encodedEncryptedKey = storeNewSqlcipherKey();

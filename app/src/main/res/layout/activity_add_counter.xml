@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:ems="10"
-        android:text="@string/AddCounterActivity_counter_name_input"
+        android:hint="@string/AddCounterActivity_counter_name_input"
         android:inputType="textPersonName"
         android:paddingTop="10px"
         android:textColor="?android:textColorPrimary"

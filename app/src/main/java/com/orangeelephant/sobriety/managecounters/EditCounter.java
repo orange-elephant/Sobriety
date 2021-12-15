@@ -20,7 +20,7 @@ public class EditCounter {
     }
 
     public void addReason(String reason) {
-        SQLiteDatabase db = new DBhelper(context).getWritableDatabase("");
+        SQLiteDatabase db = new DBhelper(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(DefineTables.Counters.COLUMN_COUNTER_ID, counterID);
         contentValues.put(DefineTables.Counters.COLUMN_SOBRIETY_REASON, reason);
@@ -29,7 +29,7 @@ public class EditCounter {
     }
 
     public void changeReason(String reason, int reasonId) {
-        SQLiteDatabase db = new DBhelper(context).getWritableDatabase("");
+        SQLiteDatabase db = new DBhelper(context).getWritableDatabase();
         String sql = "update " + DefineTables.Counters.TABLE_NAME_REASONS +
                 " set " + DefineTables.Counters.COLUMN_SOBRIETY_REASON + " = '" +
                 reason + "' where _id = " + reasonId;

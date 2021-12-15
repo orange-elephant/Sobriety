@@ -29,7 +29,7 @@ public class CreateNewCounter extends AppCompatActivity {
     }
 
     private void writeToDb(Context context) {
-        SQLiteDatabase db = new DBhelper(context).getWritableDatabase("");
+        SQLiteDatabase db = new DBhelper(context).getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(DefineTables.Counters.COLUMN_NAME, this._name);

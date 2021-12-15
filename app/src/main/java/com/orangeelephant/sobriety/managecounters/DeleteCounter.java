@@ -27,7 +27,7 @@ public class DeleteCounter {
         String sqlCounterRecord = "DELETE FROM " + DefineTables.Counters.TABLE_NAME_COUNTERS +
                 " WHERE _id = " + this.counterID;
 
-        SQLiteDatabase db = new DBhelper(this.context).getWritableDatabase("");
+        SQLiteDatabase db = new DBhelper(this.context).getWritableDatabase();
         db.execSQL(sqlCounterRecord);
 
         String sqlReasonRecords = "DELETE FROM " + DefineTables.Counters.TABLE_NAME_REASONS +

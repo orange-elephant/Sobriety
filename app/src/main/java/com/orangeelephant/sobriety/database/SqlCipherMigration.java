@@ -1,9 +1,7 @@
 package com.orangeelephant.sobriety.database;
 
 import android.content.Context;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
+import android.content.SharedPreferences;
 
 import com.orangeelephant.sobriety.logging.LogEvent;
 
@@ -16,9 +14,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class SqlCipherMigration {
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    private static final String sharedPreferenceFile = "com.orangeelephant.sobriety.database_key";
+    private static final String isEncrypted = "isEncrypted";
+    private static Context context;
+
     public SqlCipherMigration(Context context) {
+        this.context = context;
+
         try {
+            SqlcipherKey keyManager = new SqlcipherKey(context);
+            byte[] passphrase = keyManager.getSqlCipherKey();
+
             //obtain the necessary info about the current database
             SQLiteDatabase database = new DBhelper(context).getReadableDatabase("");
             File originalFile = new File(database.getPath());
@@ -26,9 +32,6 @@ public class SqlCipherMigration {
             database.close();
 
             if (version >= DBhelper.SQL_CIPHER_MIGRATION) {
-                SqlcipherKey keyManager = new SqlcipherKey(context);
-                byte[] passphrase = keyManager.getSqlCipherKey();
-
                 migrateDbToSqlcipher(context, originalFile, passphrase, version);
             } else {
                 LogEvent.i("Not migrating as version number " + version + " is lower than " +
@@ -39,7 +42,7 @@ public class SqlCipherMigration {
         } catch (IOException exception) {
             LogEvent.e("IOException attempting to migrate DB to sql cipher", exception);
         } catch (Exception exception) {
-            exception.printStackTrace();
+            LogEvent.e("Unexpected exception: ", exception);
         }
     }
 
@@ -70,10 +73,10 @@ public class SqlCipherMigration {
      * @param passphrase the passphrase from the user
      * @throws IOException
      */
-    public static void migrateDbToSqlcipher(Context ctxt, File originalFile, byte[] passphrase, int version)
+    public void migrateDbToSqlcipher(Context ctxt, File originalFile, byte[] passphrase, int version)
             throws IOException {
         SQLiteDatabase.loadLibs(ctxt);
-
+System.out.println(passphrase.toString());
         if (originalFile.exists()) {
             File newFile=File.createTempFile("sqlcipherutils", "tmp",
                     ctxt.getCacheDir());
@@ -88,12 +91,21 @@ public class SqlCipherMigration {
             st.close();
             db.close();
             originalFile.delete();
-            System.out.println(originalFile);
             newFile.renameTo(originalFile);
-            System.out.println(newFile);
+
+            saveEncryptionStatusToSharedPref();
+            LogEvent.i("The database was encrypted successfully.");
         }
         else {
             throw new FileNotFoundException(originalFile.getAbsolutePath()+ " not found");
         }
+    }
+
+    private void saveEncryptionStatusToSharedPref() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPreferenceFile,
+                context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(isEncrypted, true);
+        editor.commit();
     }
 }

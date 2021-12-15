@@ -32,7 +32,7 @@ public class LoadCounters {
         String sql = "SELECT * FROM Counters\n" +
                      "ORDER by start_time_unix_millis ASC";
         SQLiteDatabase db;
-        db = new DBhelper(this.context).getReadableDatabase("");
+        db = new DBhelper(this.context).getReadableDatabase();
 
         Cursor cursor = db.rawQuery(sql, null);
 
