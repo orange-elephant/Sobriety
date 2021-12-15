@@ -12,10 +12,12 @@
         <entry key="app/src/main/res/layout/activity_edit_counter.xml" value="0.2811965811965812" />
         <entry key="app/src/main/res/layout/activity_home_screen.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.28205128205128205" />
         <entry key="app/src/main/res/layout/add_counter.xml" value="0.22" />
         <entry key="app/src/main/res/layout/counter_full_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/counter_layout.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_confirmation.xml" value="0.16794871794871793" />
+        <entry key="app/src/main/res/xml/root_preferences.xml" value="0.1423076923076923" />
       </map>
     </option>
   </component>

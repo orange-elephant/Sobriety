@@ -42,4 +42,20 @@
     <string name="ConfirmationFragment_reset">Are you sure you want to reset your progress on this counter?</string>
     <string name="ConfirmationFragment_confirm">Yes</string>
     <string name="ConfirmationFragment_cancel">No</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="display">Display</string>
+    <string name="language">Language</string>
+    <string name="theme">Theme</string>
+    <string name="security">Security</string>
+    <string name="fingerprint_unlock">Fingerprint unlock</string>
+
+    <!-- Theme preferences -->
+    <string name="system_default">System default</string>
+    <string name="light_mode">Light</string>
+    <string name="dark_mode">Dark</string>
+
+    <!-- Security option descriptions -->
+    <string name="fingerprint_unlock_description">Enable this option so that a fingerprint is required to unlock the app.</string>
 </resources>

@@ -47,6 +47,11 @@ public class HomeScreenActivity extends AppCompatActivity implements CounterAdap
         startActivity(intent);
     }
 
+    public void onClickSettings (View v) {
+        Intent intent = new Intent(HomeScreenActivity.this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onItemClick(int position) {
         Counter openCounter = this.adapter.getmCounter()[position];
