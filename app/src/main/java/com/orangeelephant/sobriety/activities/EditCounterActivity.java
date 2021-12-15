@@ -1,7 +1,9 @@
 package com.orangeelephant.sobriety.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +18,9 @@ import net.sqlcipher.database.SQLiteDatabase;
 import java.util.Dictionary;
 
 public class EditCounterActivity extends AppCompatActivity {
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
+
     private EditCounter editCounter;
     private Counter openCounter;
     private Dictionary reasons;
@@ -23,11 +28,20 @@ public class EditCounterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         setContentView(R.layout.activity_edit_counter);
 
         this.openCounter = (Counter) getIntent().getSerializableExtra("openCounter");
         this.editCounter = new EditCounter(this, openCounter.get_id());
         this.reasons = openCounter.getReasons_dict();
+        preferenceChangeListener =
+                new SharedPreferences.OnSharedPreferenceChangeListener() {
+                    @Override
+                    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                        recreate();
+                    }
+                };
+        sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
     }
 
     public void onClickSave(View v) {

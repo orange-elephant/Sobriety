@@ -4,23 +4,28 @@
 
         <ListPreference
             app:key="language"
+            app:enabled="true"
             app:title="@string/language"
             app:useSimpleSummaryProvider="true"
+            app:defaultValue="default"
             app:entries="@array/language"
             app:entryValues="@array/language_codes"/>
 
         <ListPreference
+            app:enabled="false"
             app:key="theme"
             app:title="@string/theme"
             app:useSimpleSummaryProvider="true"
+            app:defaultValue="default"
             app:entries="@array/themes"
-            app:entryValues="@array/themes"/>
+            app:entryValues="@array/themes_key"/>
 
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/security">
         <SwitchPreference
             app:key="fingerprint_lock_enabled"
+            app:enabled="false"
             app:title="@string/fingerprint_unlock"
             app:summary="@string/fingerprint_unlock_description"/>
     </PreferenceCategory>

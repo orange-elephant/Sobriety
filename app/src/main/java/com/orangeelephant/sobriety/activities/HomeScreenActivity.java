@@ -2,11 +2,13 @@ package com.orangeelephant.sobriety.activities;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -19,13 +21,18 @@ import com.orangeelephant.sobriety.adapters.CounterAdapter;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
-public class HomeScreenActivity extends AppCompatActivity implements CounterAdapter.OnItemClicked {
+import java.util.Locale;
 
+public class HomeScreenActivity extends AppCompatActivity implements CounterAdapter.OnItemClicked {
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
     private CounterAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         setContentView(R.layout.activity_home_screen);
         onCreateRecycler();
 
@@ -34,7 +41,16 @@ public class HomeScreenActivity extends AppCompatActivity implements CounterAdap
         actionBar.setDisplayShowTitleEnabled(false);
 
         setTimeMessageUpdateHandler();
+        preferenceChangeListener =
+                new SharedPreferences.OnSharedPreferenceChangeListener() {
+                    @Override
+                    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                        recreate();
+                    }
+                };
+        sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
     }
+
 
     @Override
     public void onResume() {

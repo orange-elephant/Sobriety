@@ -1,7 +1,9 @@
 package com.orangeelephant.sobriety.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
@@ -16,10 +18,13 @@ import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.counter.CreateNewCounter;
 
 public class AddCounterActivity extends AppCompatActivity {
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         setContentView(R.layout.activity_add_counter);
 
         DatePicker startDatePicker = (DatePicker)findViewById(R.id.startDatePicker); // initiate a date picker
@@ -29,6 +34,15 @@ public class AddCounterActivity extends AppCompatActivity {
         Date now = new Date();
         long time = now.getTime();
         startDatePicker.setMaxDate(time);
+
+        preferenceChangeListener =
+                new SharedPreferences.OnSharedPreferenceChangeListener() {
+                    @Override
+                    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                        recreate();
+                    }
+                };
+        sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
     }
 
     public void onClickSubmit (View v) throws ParseException {

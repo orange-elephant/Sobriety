@@ -2,9 +2,11 @@ package com.orangeelephant.sobriety.activities;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -20,17 +22,29 @@ import com.orangeelephant.sobriety.managecounters.DeleteCounter;
 import java.util.Dictionary;
 
 public class CounterFullViewActivity extends AppCompatActivity {
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
+
     private Counter openCounter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         this.openCounter = (Counter) getIntent().getSerializableExtra("openCounter");
 
         setContentView(R.layout.activity_counter_full_view);
 
         refreshCurrentCounterView();
         setTimeMessageUpdateHandler();
+        preferenceChangeListener =
+                new SharedPreferences.OnSharedPreferenceChangeListener() {
+                    @Override
+                    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                        recreate();
+                    }
+                };
+        sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
     }
 
     public void refreshCurrentCounterView () {
