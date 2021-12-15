@@ -20,4 +20,12 @@
     <string name="ConfirmationFragment_confirm">Sí</string>
     <string name="ConfirmationFrgament_title_delete">Eliminar temporizador</string>
     <string name="ConfirmationFrgament_title_reset">Restablecer temporizador</string>
+    <string name="display">Apariencia</string>
+    <string name="language">Idioma</string>
+    <string name="theme">Tema</string>
+    <string name="security">Seguridad</string>
+    <string name="fingerprint_unlock">Desbloquear con huella digital</string>
+    <string name="dark_mode">Oscuro</string>
+    <string name="light_mode">Claro</string>
+    <string name="system_default">Predeterminado del sistema</string>
 </resources>
