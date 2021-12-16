@@ -87,7 +87,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/AddCounterActivity_add_a_reason_for_sobriety_hint"
-            android:text="@string/AddCounterActivity_add_a_reason_for_sobriety_hint"
+            android:hint="@string/AddCounterActivity_add_a_reason_for_sobriety_hint"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </com.google.android.material.textfield.TextInputLayout>
