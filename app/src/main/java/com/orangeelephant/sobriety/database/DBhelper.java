@@ -10,7 +10,7 @@ import net.sqlcipher.database.SQLiteOpenHelper;
 
 public class DBhelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "sobriety_tracker";
     public static Context context;
     private SqlcipherKey keyManager = null;
