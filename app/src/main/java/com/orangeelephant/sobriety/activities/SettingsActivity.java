@@ -12,6 +12,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import com.orangeelephant.sobriety.R;
+import com.orangeelephant.sobriety.logging.LogEvent;
 
 import java.util.Locale;
 
@@ -55,9 +56,11 @@ public class SettingsActivity extends AppCompatActivity {
                                     Locale localeDE = new Locale("de");
                                     setLocale(localeDE);
                                     break;
+                                case "default":
                                 default:
-                                    String default_language = Locale.getDefault().getLanguage();
-                                    Locale localeDefault = new Locale(default_language);
+                                    Locale default_locale = Resources.getSystem().getConfiguration()
+                                            .getLocales().get(0);
+                                    Locale localeDefault = new Locale(default_locale.getLanguage());
                                     setLocale(localeDefault);
                                     break;
 
@@ -99,6 +102,8 @@ public class SettingsActivity extends AppCompatActivity {
         Configuration configuration = resources.getConfiguration();
         configuration.setLocale(locale);
         resources.updateConfiguration(configuration, displayMetrics);
+
+        LogEvent.i("Language changed to " + locale.getLanguage());
         recreate();
     }
 
