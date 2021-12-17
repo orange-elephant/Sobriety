@@ -27,7 +27,6 @@ public class CounterAdapter extends
         void onItemClick(int position);
     }
 
-    // Pass in the contact array into the constructor
     public CounterAdapter(Context context) {
         this.context = context;
         onDataChanged();
@@ -105,10 +104,6 @@ public class CounterAdapter extends
     public void onDataChanged() {
         LoadCounters counters = new LoadCounters(context);
         this.mCounter = counters.getLoadedCounters().toArray(new Counter[0]);
-        this.notifyDataSetChanged();
-    }
-
-    public void refreshTimeMessage() {
         this.notifyDataSetChanged();
     }
 }

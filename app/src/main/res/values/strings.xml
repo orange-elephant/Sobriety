@@ -20,6 +20,7 @@
     <string name="CounterViewActivity_current_sobriety_message">Your current sobriety duration is %1$s</string>
     <string name="CounterViewActivity_no_sobriety_reason_provided">You have not added a reason for your sobriety</string>
     <string name="CounterViewActivity_sobriety_reason">The reason for your sobriety is %1$s</string>
+    <string name="CounterViewActivity_sobriety_reasons">Reasons for sobriety can be listed below, if you have not added any the edit button can be used to do this.</string>
     <string name="CounterViewActivity_edit_counter">Edit</string>
     <string name="CounterViewActivity_reset_counter">Reset</string>
     <string name="CounterViewActivity_delete_counter">Delete</string>

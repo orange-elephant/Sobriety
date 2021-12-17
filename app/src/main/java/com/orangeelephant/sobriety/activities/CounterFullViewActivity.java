@@ -3,6 +3,8 @@ package com.orangeelephant.sobriety.activities;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.orangeelephant.sobriety.R;
+import com.orangeelephant.sobriety.adapters.CounterAdapter;
+import com.orangeelephant.sobriety.adapters.ReasonsAdapter;
 import com.orangeelephant.sobriety.counter.Counter;
 import com.orangeelephant.sobriety.managecounters.ResetCounter;
 import com.orangeelephant.sobriety.managecounters.DeleteCounter;
@@ -26,6 +30,7 @@ public class CounterFullViewActivity extends AppCompatActivity {
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
     private Counter openCounter;
+    private ReasonsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +41,7 @@ public class CounterFullViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_counter_full_view);
 
         refreshCurrentCounterView();
+        onCreateRecycler();
         setTimeMessageUpdateHandler();
         preferenceChangeListener =
                 new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -61,7 +67,7 @@ public class CounterFullViewActivity extends AppCompatActivity {
                 openCounter.getTimeSoberMessage(openCounter.getRecordTimeSoberInMillis()));
         recordTimeSober.setText(recordTimeText);
 
-        TextView sobrietyReason = (TextView) findViewById(R.id.CounterViewActivity_sobriety_reason);
+        /*TextView sobrietyReason = (TextView) findViewById(R.id.CounterViewActivity_sobriety_reason);
         String sobrietyReasonText;
         if (openCounter.getSobrietyReason() != null) {
             sobrietyReasonText = String.format(getString(R.string.CounterViewActivity_sobriety_reason),
@@ -69,7 +75,7 @@ public class CounterFullViewActivity extends AppCompatActivity {
         } else {
             sobrietyReasonText = getString(R.string.CounterViewActivity_no_sobriety_reason_provided);
         }
-        sobrietyReason.setText(sobrietyReasonText);
+        sobrietyReason.setText(sobrietyReasonText);*/
     }
 
     public void onClickResetCounter (View v) {
@@ -138,6 +144,14 @@ public class CounterFullViewActivity extends AppCompatActivity {
         intent.putExtra("openCounter", openCounter);
 
         startActivity(intent);
+    }
+
+    public void onCreateRecycler() {
+        RecyclerView reasonsView = findViewById(R.id.CounterViewActivity_reasons_recycler_view);
+
+        this.adapter = new ReasonsAdapter(openCounter.getReasons_dict());
+        reasonsView.setAdapter(adapter);
+        reasonsView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     // https://stackoverflow.com/questions/11434056/how-to-run-a-method-every-x-seconds

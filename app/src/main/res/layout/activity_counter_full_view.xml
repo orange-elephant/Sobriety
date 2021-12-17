@@ -63,14 +63,24 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/CounterViewActivity_counter_message_long" />
 
+
             <TextView
-                android:id="@+id/CounterViewActivity_sobriety_reason"
-                android:layout_width="324dp"
-                android:layout_height="82dp"
-                android:layout_marginStart="36dp"
-                android:layout_marginTop="36dp"
-                android:textSize="24sp"
-                android:textStyle="italic" />
+                android:id="@+id/CounterViewActivty_reasons_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="40dp"
+                android:text="@string/CounterViewActivity_sobriety_reasons" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/CounterViewActivity_reasons_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+
         </LinearLayout>
     </ScrollView>
 

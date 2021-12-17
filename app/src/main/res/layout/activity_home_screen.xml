@@ -48,13 +48,11 @@
 
     <Button
         android:id="@+id/settings"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/transparent"
         android:drawableRight="@drawable/settings"
-        android:textColor = "?android:textColorPrimary"
-        android:text="@string/settings"
         android:onClick="onClickSettings"
         app:layout_constraintEnd_toEndOf="@+id/homeScreenToolbar"
         app:layout_constraintTop_toTopOf="@+id/homeScreenToolbar" />
@@ -63,14 +61,12 @@
         android:id="@+id/add_counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="56dp"
-        android:drawableLeft="@drawable/add_counter"
+        android:drawableTop="@drawable/add_counter_button"
+        android:background="@color/transparent"
         android:onClick="onClickAddCounter"
-        android:text="@string/HomeActivity_add_counter"
-        android:textColor="?android:textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.844"
+        app:layout_constraintHorizontal_bias="0.946"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
