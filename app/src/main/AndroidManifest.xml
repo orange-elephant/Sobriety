@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.orangeelephant.sobriety">
+    <uses-feature android:name="android.hardware.fingerprint"
+    android:required="false"/>
 
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/app_logo"

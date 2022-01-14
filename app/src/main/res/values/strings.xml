@@ -1,4 +1,11 @@
 <resources>
+    <!--Strings for the app start up activity-->
+    <string name="AppStartup_unlock_title">Fingerprint unlock</string>
+    <string name="AppStartup_unlock_subtitle">Use your fingerprint to gain access</string>
+    <string name="AppStartup_unlock_negative_button">Cancel</string>
+    <string name="AppStartup_unlock_successful">Unlocked successfully</string>
+    <string name="AppStartup_unlock_failed">Unlocking failed</string>
+    <string name="AppStartup_unlock_error">There was an error when unlocking</string>
     <!--Strings for home page activity -->
     <string name="HomeActivity_app_name">Sobriety</string>
     <string name="HomeActivity_add_counter">Add new</string>

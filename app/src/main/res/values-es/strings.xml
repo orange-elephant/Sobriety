@@ -28,4 +28,5 @@
     <string name="dark_mode">Oscuro</string>
     <string name="light_mode">Claro</string>
     <string name="system_default">Predeterminado del sistema</string>
+    <string name="AppStartup_unlock_title">Desbloquear con huella digital</string>
 </resources>
