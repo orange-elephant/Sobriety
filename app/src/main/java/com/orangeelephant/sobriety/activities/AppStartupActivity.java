@@ -26,8 +26,7 @@ import net.sqlcipher.database.SQLiteException;
 import java.util.concurrent.Executor;
 
 public class AppStartupActivity extends AppCompatActivity {
-
-    private static final String sharedPreferenceFile = "com.orangeelephant.sobriety.database_key";
+    private static final String sharedPreferenceFile = "com.orangeelephant.sobriety_preferences";
     private static final String isEncrypted = "isEncrypted";
     private SharedPreferences sharedPreferences;
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
@@ -46,16 +45,17 @@ public class AppStartupActivity extends AppCompatActivity {
             attemptToCreateEncryptedDatabase();
         }
 
-        preferenceChangeListener =
+        /*preferenceChangeListener =
                 new SharedPreferences.OnSharedPreferenceChangeListener() {
                     @Override
                     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                         recreate();
                     }
                 };
-        sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);*/
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        if (sharedPreferences.getBoolean("fingerprint_lock_enabled", false)
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             fingerprintUnlock();
         } else {
             //start app

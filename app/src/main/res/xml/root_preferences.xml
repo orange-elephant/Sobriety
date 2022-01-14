@@ -25,7 +25,7 @@
     <PreferenceCategory app:title="@string/security">
         <SwitchPreference
             app:key="fingerprint_lock_enabled"
-            app:enabled="false"
+            app:enabled="true"
             app:title="@string/fingerprint_unlock"
             app:summary="@string/fingerprint_unlock_description"/>
     </PreferenceCategory>

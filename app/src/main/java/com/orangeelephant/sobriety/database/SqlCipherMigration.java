@@ -14,7 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class SqlCipherMigration {
-    private static final String sharedPreferenceFile = "com.orangeelephant.sobriety.database_key";
+    private static final String sharedPreferenceFile = "com.orangeelephant.sobriety_preferences";
     private static final String isEncrypted = "isEncrypted";
     private static Context context;
 

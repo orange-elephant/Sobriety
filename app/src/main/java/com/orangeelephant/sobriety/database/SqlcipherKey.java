@@ -37,7 +37,7 @@ import javax.crypto.spec.GCMParameterSpec;
 * this can then be decrypted and retrieved when the app is launched.*/
 
 public class SqlcipherKey {
-    private static final String sharedPreferenceFile = "com.orangeelephant.sobriety.database_key";
+    private static final String sharedPreferenceFile = "com.orangeelephant.sobriety_preferences";
     private static final String encryptedKeyName = "sqlcipherEncryptionKey";
     private static final String isEncrypted = "isEncrypted";
     private final byte[] sqlCipherKey;
