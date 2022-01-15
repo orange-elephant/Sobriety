@@ -14,10 +14,10 @@
 
     <!--Strings for the add counter view -->
     <string name="AddCounterActivity_enter_counter_name">Choose the name of your counter:</string>
-    <string name="AddCounterActivity_counter_name_input">Name...</string>
+Ad    <string name="AddCounterActivity_counter_name_input">Name…</string>
     <string name="AddCounterActivity_select_start_date">Select the start date:</string>
     <string name="AddCounterActivity_add_a_reason_for_sobriety">Add a reason for your sobriety (optional):</string>
-    <string name="AddCounterActivity_add_a_reason_for_sobriety_hint">Enter reason here...</string>
+    <string name="AddCounterActivity_add_a_reason_for_sobriety_hint">Enter reason here…</string>
     <string name="AddCounterActivity_cancel">Cancel</string>
     <string name="AddCounterActivity_submit">Submit</string>
 
@@ -33,7 +33,7 @@
     <string name="CounterViewActivity_delete_counter">Delete</string>
 
     <!--Strings for the edit counter view-->
-    <string name="EditCounterActivity_add_sobriety_reason_hint">Add a sobriety reason...</string>
+    <string name="EditCounterActivity_add_sobriety_reason_hint">Add a sobriety reason…</string>
     <string name="EditCounterActivity_save_changes_button">Save</string>
 
     <!--Toast messages -->
@@ -42,6 +42,7 @@
     <string name="Toast_reset_cancelled">Counter was not reset.</string>
     <string name="Toast_counter_reset">Counter was reset successfully.</string>
     <string name="Toast_delete_cancelled">Counter was not deleted.</string>
+    <string name="Settings_fingerprint_not_enabled">Fingerprint unlock couldn\'t be enabled</string>
 
     <!-- Confirmation fragment messages -->
     <string name="ConfirmationFrgament_title_delete">Delete counter</string>
@@ -59,12 +60,16 @@
     <string name="theme">Theme</string>
     <string name="security">Security</string>
     <string name="fingerprint_unlock">Fingerprint unlock</string>
+    <string name="about">About</string>
+    <string name="version">Version</string>
+    <string name="source_code">Source code</string>
 
     <!-- Theme preferences -->
     <string name="system_default">System default</string>
     <string name="light_mode">Light</string>
     <string name="dark_mode">Dark</string>
 
-    <!-- Security option descriptions -->
+    <!-- option descriptions -->
     <string name="fingerprint_unlock_description">Enable this option so that a fingerprint is required to unlock the app.</string>
+    <string name="source_code_description">Follow this link to view the source code of this app.</string>
 </resources>
