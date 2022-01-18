@@ -106,4 +106,8 @@ public class CounterAdapter extends
         this.mCounter = counters.getLoadedCounters().toArray(new Counter[0]);
         this.notifyDataSetChanged();
     }
+
+    public void updateDurationString() {
+        this.notifyDataSetChanged();
+    }
 }
