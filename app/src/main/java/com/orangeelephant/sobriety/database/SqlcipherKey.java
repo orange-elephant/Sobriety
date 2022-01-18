@@ -38,14 +38,16 @@ import javax.crypto.spec.GCMParameterSpec;
 
 public class SqlcipherKey {
     private static final String sharedPreferenceFile = "com.orangeelephant.sobriety_preferences";
+    private static SharedPreferences sharedPreferences;
     private static final String encryptedKeyName = "sqlcipherEncryptionKey";
+    private static final String storedIvName = "fixedIv";
     private static final String isEncrypted = "isEncrypted";
     private final byte[] sqlCipherKey;
 
     private static final String AndroidKeyStore = "AndroidKeyStore";
     private static final String AES_MODE = "AES/GCM/NoPadding";
     private static final String KeyAlias = "sobriety_database_key";
-    private final byte[] FIXED_IV;
+    private byte[] FIXED_IV;
     private final KeyStore keyStore;
     private final java.security.Key keystoreKey;
 
@@ -53,7 +55,8 @@ public class SqlcipherKey {
 
     public SqlcipherKey(Context context) throws Exception {
         this.context = context;
-        this.FIXED_IV = manageIV();
+        this.sharedPreferences = context.getSharedPreferences(sharedPreferenceFile,
+                context.MODE_PRIVATE);
 
         this.keyStore = KeyStore.getInstance(AndroidKeyStore);
         keyStore.load(null);
@@ -61,6 +64,8 @@ public class SqlcipherKey {
             generateKey();
         }
         this.keystoreKey = getKey(context);
+
+        this.FIXED_IV = manageIV();
 
         sqlCipherKey = decryptSqlcipherKey(getEncryptedKeyFromPreferences());
     }
@@ -70,8 +75,6 @@ public class SqlcipherKey {
     }
 
     public boolean getIsEncrypted() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPreferenceFile,
-                context.MODE_PRIVATE);
         Boolean encryptedStatus = sharedPreferences.getBoolean(isEncrypted, false);
 
         return encryptedStatus;
@@ -98,22 +101,16 @@ public class SqlcipherKey {
         return keyStore.getKey(KeyAlias, null);
     }
 
-    private String storeNewSqlcipherKey() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException,
+    private String storeSqlcipherKey(byte[] sqlCipherKey) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException,
             BadPaddingException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException {
-        // generate a 32 byte random key
-        Random random = new Random();
-        byte[] byteArray = new byte[32];
-        random.nextBytes(byteArray);
 
         //encrypt the key with the android keystore
         Cipher cipher = Cipher.getInstance(AES_MODE);
         cipher.init(Cipher.ENCRYPT_MODE, keystoreKey,
                 new GCMParameterSpec(128, FIXED_IV));
-        byte[] encodedBytes = cipher.doFinal(byteArray);
+        byte[] encodedBytes = cipher.doFinal(sqlCipherKey);
 
         String base64encodedBytes = Base64.encodeToString(encodedBytes, Base64.DEFAULT);
-        SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPreferenceFile,
-                context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(encryptedKeyName, base64encodedBytes);
         editor.commit();
@@ -133,33 +130,55 @@ public class SqlcipherKey {
         return decodedBytes;
     }
 
-    private byte[] manageIV() {
-        byte[] FIXED_IV = new byte[12];
-        FIXED_IV[0] = 0x00;
-        FIXED_IV[1] = 0x00;
-        FIXED_IV[2] = 0x00;
-        FIXED_IV[3] = 0x00;
-        FIXED_IV[4] = 0x00;
-        FIXED_IV[5] = 0x00;
-        FIXED_IV[6] = 0x00;
-        FIXED_IV[7] = 0x00;
-        FIXED_IV[8] = 0x00;
-        FIXED_IV[9] = 0x00;
-        FIXED_IV[10] = 0x00;
-        FIXED_IV[11] = 0x00;
+    private byte[] manageIV() throws BadPaddingException, InvalidKeyException, NoSuchAlgorithmException,
+            NoSuchPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
+
+        String base64encodedIV = sharedPreferences.getString(storedIvName, "");
+
+        if (base64encodedIV == "" && !getIsEncrypted()) {
+            base64encodedIV = createNewRandomIv();
+            LogEvent.i("Stored key was not encrypted with a random IV and is not currently used, generating a new key");
+            storeSqlcipherKey(generateRandomBytes(32));
+        } else if (base64encodedIV == "" && getIsEncrypted()) {
+            LogEvent.i("Stored key was not encrypted with a random IV but is in use, encrypting again with new IV");
+            this.FIXED_IV = new byte[12];
+            byte[] currentKey = decryptSqlcipherKey(getEncryptedKeyFromPreferences());
+            base64encodedIV = createNewRandomIv();
+            storeSqlcipherKey(currentKey);
+        }
+
+        byte[] FIXED_IV = Base64.decode(base64encodedIV, Base64.DEFAULT);
 
         return FIXED_IV;
+    }
+
+    private String createNewRandomIv() {
+        FIXED_IV = generateRandomBytes(12);
+        String base64encodedBytes = Base64.encodeToString(FIXED_IV, Base64.DEFAULT);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(storedIvName, base64encodedBytes);
+        editor.commit();
+
+        return base64encodedBytes;
+    }
+
+    private byte[] generateRandomBytes(int numBytes) {
+        //generate random bytes of specified length
+        byte[] bytes = new byte[numBytes];
+        Random random = new Random();
+        random.nextBytes(bytes);
+
+        return bytes;
     }
 
     private byte[] getEncryptedKeyFromPreferences() throws BadPaddingException, InvalidKeyException,
             NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
         //read the encrypted key from shared preferences
-        SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPreferenceFile,
-                context.MODE_PRIVATE);
         String base64encodedEncryptedKey = sharedPreferences.getString(encryptedKeyName, "");
         if (base64encodedEncryptedKey == "") {
             LogEvent.i("Encrypted sqlcipher key not found, creating one now.");
-            base64encodedEncryptedKey = storeNewSqlcipherKey();
+            base64encodedEncryptedKey = storeSqlcipherKey(generateRandomBytes(32));
         }
         byte[] encryptedSqlcipherKey = Base64.decode(base64encodedEncryptedKey, Base64.DEFAULT);
 
