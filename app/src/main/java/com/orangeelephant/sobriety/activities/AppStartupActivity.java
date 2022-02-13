@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.orangeelephant.sobriety.database.DBhelper;
 import com.orangeelephant.sobriety.database.SqlCipherMigration;
 import com.orangeelephant.sobriety.database.SqlcipherKey;
-import com.orangeelephant.sobriety.logging.LogEvent;
+import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 import com.orangeelephant.sobriety.R;
 
 import net.sqlcipher.database.SQLiteDatabase;
@@ -58,7 +58,12 @@ public class AppStartupActivity extends AppCompatActivity {
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             fingerprintUnlock();
         } else {
-            //start app
+            try {
+                SqlcipherKey sqlcipherKey = new SqlcipherKey(this);
+                ApplicationDependencies.getApplicationDependencies().setSqlcipherKey(sqlcipherKey);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
             Intent intent = new Intent(AppStartupActivity.this, HomeScreenActivity.class);
             startActivity(intent);
         }
@@ -123,6 +128,12 @@ public class AppStartupActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT)
                         .show();
 
+                try {
+                    SqlcipherKey sqlcipherKey = new SqlcipherKey(AppStartupActivity.this);
+                    ApplicationDependencies.getApplicationDependencies().setSqlcipherKey(sqlcipherKey);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
                 //start app
                 Intent intent = new Intent(AppStartupActivity.this, HomeScreenActivity.class);
                 startActivity(intent);

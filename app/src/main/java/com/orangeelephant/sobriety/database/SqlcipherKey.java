@@ -51,12 +51,9 @@ public class SqlcipherKey {
     private final KeyStore keyStore;
     private final java.security.Key keystoreKey;
 
-    private final Context context;
-
     public SqlcipherKey(Context context) throws Exception {
-        this.context = context;
-        this.sharedPreferences = context.getSharedPreferences(sharedPreferenceFile,
-                context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(sharedPreferenceFile,
+                Context.MODE_PRIVATE);
 
         this.keyStore = KeyStore.getInstance(AndroidKeyStore);
         keyStore.load(null);
@@ -75,9 +72,7 @@ public class SqlcipherKey {
     }
 
     public boolean getIsEncrypted() {
-        Boolean encryptedStatus = sharedPreferences.getBoolean(isEncrypted, false);
-
-        return encryptedStatus;
+        return sharedPreferences.getBoolean(isEncrypted, false);
     }
 
     private void generateKey() throws NoSuchAlgorithmException,
@@ -125,9 +120,7 @@ public class SqlcipherKey {
         cipher.init(Cipher.DECRYPT_MODE, keystoreKey,
                 new GCMParameterSpec(128, FIXED_IV));
 
-        byte[] decodedBytes = cipher.doFinal(encryptedKey);
-
-        return decodedBytes;
+        return cipher.doFinal(encryptedKey);
     }
 
     private byte[] manageIV() throws BadPaddingException, InvalidKeyException, NoSuchAlgorithmException,
@@ -135,11 +128,11 @@ public class SqlcipherKey {
 
         String base64encodedIV = sharedPreferences.getString(storedIvName, "");
 
-        if (base64encodedIV == "" && !getIsEncrypted()) {
+        if (base64encodedIV.equals("") && !getIsEncrypted()) {
             base64encodedIV = createNewRandomIv();
             LogEvent.i("Stored key was not encrypted with a random IV and is not currently used, generating a new key");
             storeSqlcipherKey(generateRandomBytes(32));
-        } else if (base64encodedIV == "" && getIsEncrypted()) {
+        } else if (base64encodedIV.equals("") && getIsEncrypted()) {
             LogEvent.i("Stored key was not encrypted with a random IV but is in use, encrypting again with new IV");
             this.FIXED_IV = new byte[12];
             byte[] currentKey = decryptSqlcipherKey(getEncryptedKeyFromPreferences());
@@ -147,9 +140,7 @@ public class SqlcipherKey {
             storeSqlcipherKey(currentKey);
         }
 
-        byte[] FIXED_IV = Base64.decode(base64encodedIV, Base64.DEFAULT);
-
-        return FIXED_IV;
+        return Base64.decode(base64encodedIV, Base64.DEFAULT);
     }
 
     private String createNewRandomIv() {
@@ -176,12 +167,11 @@ public class SqlcipherKey {
             NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
         //read the encrypted key from shared preferences
         String base64encodedEncryptedKey = sharedPreferences.getString(encryptedKeyName, "");
-        if (base64encodedEncryptedKey == "") {
+        if (base64encodedEncryptedKey.equals("")) {
             LogEvent.i("Encrypted sqlcipher key not found, creating one now.");
             base64encodedEncryptedKey = storeSqlcipherKey(generateRandomBytes(32));
         }
-        byte[] encryptedSqlcipherKey = Base64.decode(base64encodedEncryptedKey, Base64.DEFAULT);
 
-        return encryptedSqlcipherKey;
+        return Base64.decode(base64encodedEncryptedKey, Base64.DEFAULT);
     }
 }
