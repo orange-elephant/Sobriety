@@ -1,31 +1,43 @@
 package com.orangeelephant.sobriety.dependencies;
 
 
+import android.app.Application;
+
+import com.orangeelephant.sobriety.database.DatabaseManager;
 import com.orangeelephant.sobriety.database.SqlcipherKey;
 
 /**
- * A singleton class to store and retrieve other singletons required
+ * A class to store and retrieve other singletons required
  * by the application
  */
 public class ApplicationDependencies {
-    private static ApplicationDependencies applicationDependencies = null;
 
-    private volatile SqlcipherKey sqlcipherKey;
+    private static volatile Application     application;
+    private static volatile SqlcipherKey    sqlcipherKey;
+    private static volatile DatabaseManager databaseManager;
 
     private ApplicationDependencies() {}
 
-    public static ApplicationDependencies getApplicationDependencies() {
-        if (applicationDependencies == null) {
-            applicationDependencies = new ApplicationDependencies();
-        }
-        return applicationDependencies;
+    public static void init(Application application) {
+        ApplicationDependencies.application = application;
     }
 
-    public void setSqlcipherKey(SqlcipherKey sqlcipherKey) {
-        this.sqlcipherKey = sqlcipherKey;
+    public boolean isInitialised() {
+        return application != null;
     }
 
-    public SqlcipherKey getSqlCipherKey() {
+    public static void setSqlcipherKey(SqlcipherKey sqlcipherKey) {
+        ApplicationDependencies.sqlcipherKey = sqlcipherKey;
+    }
+
+    public static SqlcipherKey getSqlCipherKey() {
         return sqlcipherKey;
+    }
+
+    public static DatabaseManager getDatabaseManager() {
+        if (databaseManager == null) {
+            databaseManager = new DatabaseManager(application);
+        }
+        return databaseManager;
     }
 }

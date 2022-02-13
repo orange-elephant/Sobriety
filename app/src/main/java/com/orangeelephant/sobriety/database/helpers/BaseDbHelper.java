@@ -22,7 +22,7 @@ public abstract class BaseDbHelper extends SQLiteOpenHelper {
         this.DATABASE_VERSION = databaseVersion;
         this.SQL_CIPHER_MIGRATION = sqlCipherMigration;
         this.context = context;
-        this.keyManager = ApplicationDependencies.getApplicationDependencies().getSqlCipherKey();
+        this.keyManager = ApplicationDependencies.getSqlCipherKey();
     }
 
     public SQLiteDatabase getReadableDatabase() {

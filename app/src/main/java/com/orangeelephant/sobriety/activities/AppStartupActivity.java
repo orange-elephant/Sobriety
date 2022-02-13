@@ -14,36 +14,26 @@ import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.widget.Toast;
 
-import com.orangeelephant.sobriety.database.DBhelper;
-import com.orangeelephant.sobriety.database.SqlCipherMigration;
 import com.orangeelephant.sobriety.database.SqlcipherKey;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 import com.orangeelephant.sobriety.R;
+import com.orangeelephant.sobriety.logging.LogEvent;
 
-import net.sqlcipher.database.SQLiteDatabase;
-import net.sqlcipher.database.SQLiteException;
 
 import java.util.concurrent.Executor;
 
 public class AppStartupActivity extends AppCompatActivity {
     private static final String sharedPreferenceFile = "com.orangeelephant.sobriety_preferences";
-    private static final String isEncrypted = "isEncrypted";
     private SharedPreferences sharedPreferences;
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = this.getSharedPreferences(sharedPreferenceFile, this.MODE_PRIVATE);
+        sharedPreferences = this.getSharedPreferences(sharedPreferenceFile, MODE_PRIVATE);
 
-        //load libraries necessary for sqlcipher library to function
-        SQLiteDatabase.loadLibs(this);
-
-        // if shared preferences indicates db isn't encrypted, attempt migration
-        if (! sharedPreferences.getBoolean(isEncrypted, false)
-                && DBhelper.DATABASE_VERSION >= DBhelper.SQL_CIPHER_MIGRATION) {
-            attemptToCreateEncryptedDatabase();
-        }
+        //initialise ApplicationDependencies
+        ApplicationDependencies.init(getApplication());
 
         /*preferenceChangeListener =
                 new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -60,7 +50,8 @@ public class AppStartupActivity extends AppCompatActivity {
         } else {
             try {
                 SqlcipherKey sqlcipherKey = new SqlcipherKey(this);
-                ApplicationDependencies.getApplicationDependencies().setSqlcipherKey(sqlcipherKey);
+                ApplicationDependencies.setSqlcipherKey(sqlcipherKey);
+                ApplicationDependencies.getDatabaseManager();
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
@@ -73,22 +64,6 @@ public class AppStartupActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-    }
-
-    private void attemptToCreateEncryptedDatabase() {
-        try {
-            SqlcipherKey sqlcipherKey = new SqlcipherKey(this);
-            SQLiteDatabase db = new CountersDatabaseHelper(this).getReadableDatabase(sqlcipherKey.getSqlCipherKey());
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean(isEncrypted, true);
-            editor.commit();
-            LogEvent.i("A new encrypted database was created");
-        } catch (SQLiteException exception) {
-            LogEvent.i("Couldn't create a database with the provided key, an unencrypted database probably exists.");
-            new SqlCipherMigration(this, new CountersDatabaseHelper(this));
-        } catch (Exception exception) {
-            LogEvent.e("Exception loading sqlcipher key", exception);
-        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -130,7 +105,8 @@ public class AppStartupActivity extends AppCompatActivity {
 
                 try {
                     SqlcipherKey sqlcipherKey = new SqlcipherKey(AppStartupActivity.this);
-                    ApplicationDependencies.getApplicationDependencies().setSqlcipherKey(sqlcipherKey);
+                    ApplicationDependencies.setSqlcipherKey(sqlcipherKey);
+                    ApplicationDependencies.getDatabaseManager();
                 } catch (Exception exception) {
                     exception.printStackTrace();
                 }
