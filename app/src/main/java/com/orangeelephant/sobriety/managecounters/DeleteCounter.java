@@ -1,12 +1,10 @@
 package com.orangeelephant.sobriety.managecounters;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.widget.Toast;
 
-import com.orangeelephant.sobriety.R;
-import com.orangeelephant.sobriety.database.DBhelper;
 import com.orangeelephant.sobriety.database.DefineTables;
+import com.orangeelephant.sobriety.database.helpers.CountersDatabaseHelper;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
@@ -27,7 +25,7 @@ public class DeleteCounter {
         String sqlCounterRecord = "DELETE FROM " + DefineTables.Counters.TABLE_NAME_COUNTERS +
                 " WHERE _id = " + this.counterID;
 
-        SQLiteDatabase db = new DBhelper(this.context).getWritableDatabase();
+        SQLiteDatabase db = new CountersDatabaseHelper(this.context).getWritableDatabase();
         db.execSQL(sqlCounterRecord);
 
         String sqlReasonRecords = "DELETE FROM " + DefineTables.Counters.TABLE_NAME_REASONS +

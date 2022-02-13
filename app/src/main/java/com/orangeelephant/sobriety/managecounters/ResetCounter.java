@@ -5,8 +5,8 @@ import android.database.Cursor;
 
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.counter.Counter;
-import com.orangeelephant.sobriety.database.DBhelper;
 import com.orangeelephant.sobriety.database.DefineTables;
+import com.orangeelephant.sobriety.database.helpers.CountersDatabaseHelper;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
@@ -43,7 +43,7 @@ public class ResetCounter {
                 " FROM " + DefineTables.Counters.TABLE_NAME_COUNTERS +
                 " WHERE _id = " + this.counterId;
 
-        net.sqlcipher.database.SQLiteDatabase db = new DBhelper(this.context).getReadableDatabase();
+        net.sqlcipher.database.SQLiteDatabase db = new CountersDatabaseHelper(this.context).getReadableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
         cursor.moveToFirst();
 
@@ -74,7 +74,7 @@ public class ResetCounter {
                     ", " + DefineTables.Counters.COLUMN_START_TIME + " = " + this.timeNow +
                     " WHERE _id = " + this.counterId;
 
-        SQLiteDatabase db = new DBhelper(this.context).getReadableDatabase();
+        SQLiteDatabase db = new CountersDatabaseHelper(this.context).getReadableDatabase();
         db.execSQL(sql);
     }
 }

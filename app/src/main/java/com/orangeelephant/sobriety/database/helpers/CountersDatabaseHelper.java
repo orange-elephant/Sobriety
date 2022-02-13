@@ -1,34 +1,25 @@
-package com.orangeelephant.sobriety.database;
+package com.orangeelephant.sobriety.database.helpers;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.orangeelephant.sobriety.database.DefineTables;
+
 import net.sqlcipher.database.SQLiteDatabase;
-import net.sqlcipher.database.SQLiteOpenHelper;
 
-
-public class DBhelper extends SQLiteOpenHelper {
+public class CountersDatabaseHelper extends BaseDbHelper {
 
     public static final int DATABASE_VERSION = 6;
     public static final String DATABASE_NAME = "sobriety_tracker";
-    public static Context context;
-    private SqlcipherKey keyManager = null;
 
     public static final int LOG_RECORD_TIME_VERSION = 3;
     public static final int LOG_SOBRIETY_REASON = 4;
     public static final int ADD_REASONS_TABLE = 5;
     public static final int SQL_CIPHER_MIGRATION = 6;
 
-    public DBhelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
-        try {
-            this.keyManager = new SqlcipherKey(context);
-        } catch (Exception e) {
-
-        }
-
+    public CountersDatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, DATABASE_VERSION, SQL_CIPHER_MIGRATION);
     }
 
     @Override
@@ -61,24 +52,6 @@ public class DBhelper extends SQLiteOpenHelper {
             }
             //wipe set all old values to null since sqlite wont allow dropping column
             sqLiteDatabase.execSQL("UPDATE counters SET sobriety_reason = NULL");
-        }
-    }
-
-    public SQLiteDatabase getReadableDatabase() {
-        byte[] password = keyManager.getSqlCipherKey();
-        if (DATABASE_VERSION >= SQL_CIPHER_MIGRATION && keyManager.getIsEncrypted()) {
-            return super.getReadableDatabase(password);
-        } else {
-            return super.getReadableDatabase("");
-        }
-    }
-
-    public SQLiteDatabase getWritableDatabase() {
-        byte[] password = keyManager.getSqlCipherKey();
-        if (DATABASE_VERSION >= SQL_CIPHER_MIGRATION && keyManager.getIsEncrypted()) {
-            return super.getWritableDatabase(password);
-        } else {
-            return super.getWritableDatabase("");
         }
     }
 }

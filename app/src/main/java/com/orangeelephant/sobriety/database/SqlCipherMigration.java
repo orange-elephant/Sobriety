@@ -3,6 +3,7 @@ package com.orangeelephant.sobriety.database;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.orangeelephant.sobriety.database.helpers.BaseDbHelper;
 import com.orangeelephant.sobriety.logging.LogEvent;
 
 import net.sqlcipher.database.SQLiteDatabase;
@@ -16,9 +17,9 @@ import java.io.IOException;
 public class SqlCipherMigration {
     private static final String sharedPreferenceFile = "com.orangeelephant.sobriety_preferences";
     private static final String isEncrypted = "isEncrypted";
-    private static Context context;
+    private final Context context;
 
-    public SqlCipherMigration(Context context) {
+    public SqlCipherMigration(Context context, BaseDbHelper dbHelper) {
         this.context = context;
 
         if (! getEncryptionStatusFromSharedPref()) {
@@ -27,16 +28,16 @@ public class SqlCipherMigration {
                 byte[] passphrase = keyManager.getSqlCipherKey();
 
                 //obtain the necessary info about the current database
-                SQLiteDatabase database = new DBhelper(context).getReadableDatabase("");
+                SQLiteDatabase database = dbHelper.getReadableDatabase("");
                 File originalFile = new File(database.getPath());
                 int version = database.getVersion();
                 database.close();
 
-                if (version >= DBhelper.SQL_CIPHER_MIGRATION) {
+                if (version >= dbHelper.getSqlCipherMigrationVersion()) {
                     migrateDbToSqlcipher(context, originalFile, passphrase, version);
                 } else {
                     LogEvent.i("Not migrating as version number " + version + " is lower than " +
-                            "sqlcipher migration at version number " + DBhelper.SQL_CIPHER_MIGRATION);
+                            "sqlcipher migration at version number " + dbHelper.getSqlCipherMigrationVersion());
                 }
             } catch (SQLiteException exception) {
                 LogEvent.i("Database is encrypted already");
@@ -106,7 +107,7 @@ public class SqlCipherMigration {
 
     private void saveEncryptionStatusToSharedPref(Boolean setStatus) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPreferenceFile,
-                context.MODE_PRIVATE);
+                Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(isEncrypted, setStatus);
         editor.commit();
@@ -114,7 +115,7 @@ public class SqlCipherMigration {
 
     private boolean getEncryptionStatusFromSharedPref() {
         SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPreferenceFile,
-                context.MODE_PRIVATE);
+                Context.MODE_PRIVATE);
         // if not found assume false
         return sharedPreferences.getBoolean(isEncrypted, false);
     }

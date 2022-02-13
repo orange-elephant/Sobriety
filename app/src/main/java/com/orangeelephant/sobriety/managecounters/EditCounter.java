@@ -4,8 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.orangeelephant.sobriety.database.DBhelper;
 import com.orangeelephant.sobriety.database.DefineTables;
+import com.orangeelephant.sobriety.database.helpers.CountersDatabaseHelper;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
@@ -20,7 +20,7 @@ public class EditCounter {
     }
 
     public void addReason(String reason) {
-        SQLiteDatabase db = new DBhelper(context).getWritableDatabase();
+        SQLiteDatabase db = new CountersDatabaseHelper(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(DefineTables.Counters.COLUMN_COUNTER_ID, counterID);
         contentValues.put(DefineTables.Counters.COLUMN_SOBRIETY_REASON, reason);
@@ -29,7 +29,7 @@ public class EditCounter {
     }
 
     public void changeReason(String reason, int reasonId) {
-        SQLiteDatabase db = new DBhelper(context).getWritableDatabase();
+        SQLiteDatabase db = new CountersDatabaseHelper(context).getWritableDatabase();
         String sql = "update " + DefineTables.Counters.TABLE_NAME_REASONS +
                 " set " + DefineTables.Counters.COLUMN_SOBRIETY_REASON + " = '" +
                 reason + "' where _id = " + reasonId;

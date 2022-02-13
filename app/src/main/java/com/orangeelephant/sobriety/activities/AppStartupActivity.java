@@ -78,14 +78,14 @@ public class AppStartupActivity extends AppCompatActivity {
     private void attemptToCreateEncryptedDatabase() {
         try {
             SqlcipherKey sqlcipherKey = new SqlcipherKey(this);
-            SQLiteDatabase db = new DBhelper(this).getReadableDatabase(sqlcipherKey.getSqlCipherKey());
+            SQLiteDatabase db = new CountersDatabaseHelper(this).getReadableDatabase(sqlcipherKey.getSqlCipherKey());
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean(isEncrypted, true);
             editor.commit();
             LogEvent.i("A new encrypted database was created");
         } catch (SQLiteException exception) {
             LogEvent.i("Couldn't create a database with the provided key, an unencrypted database probably exists.");
-            new SqlCipherMigration(this);
+            new SqlCipherMigration(this, new CountersDatabaseHelper(this));
         } catch (Exception exception) {
             LogEvent.e("Exception loading sqlcipher key", exception);
         }

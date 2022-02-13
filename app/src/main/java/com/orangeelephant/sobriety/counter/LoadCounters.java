@@ -4,12 +4,11 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.orangeelephant.sobriety.R;
-import com.orangeelephant.sobriety.database.DBhelper;
+import com.orangeelephant.sobriety.database.helpers.CountersDatabaseHelper;
 import com.orangeelephant.sobriety.logging.LogEvent;
 
 import net.sqlcipher.CursorIndexOutOfBoundsException;
 import net.sqlcipher.database.SQLiteDatabase;
-import net.sqlcipher.database.SQLiteException;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
@@ -32,7 +31,7 @@ public class LoadCounters {
         String sql = "SELECT * FROM Counters\n" +
                      "ORDER by start_time_unix_millis ASC";
         SQLiteDatabase db;
-        db = new DBhelper(this.context).getReadableDatabase();
+        db = new CountersDatabaseHelper(this.context).getReadableDatabase();
 
         Cursor cursor = db.rawQuery(sql, null);
 
