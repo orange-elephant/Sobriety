@@ -35,7 +35,6 @@ public class SqlcipherKey extends SaveSecretToSharedPrefUtil {
             LogEvent.e("Couldn't decrypt cipherKey", e);
             throw new KeyStoreException();
         }
-
     }
 
     public byte[] getSqlCipherKey() {
