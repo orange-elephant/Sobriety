@@ -2,6 +2,7 @@ package com.orangeelephant.sobriety.dependencies;
 
 
 import android.app.Application;
+import android.content.Context;
 
 import com.orangeelephant.sobriety.database.DatabaseManager;
 import com.orangeelephant.sobriety.database.SqlcipherKey;
@@ -39,5 +40,9 @@ public class ApplicationDependencies {
             databaseManager = new DatabaseManager(application);
         }
         return databaseManager;
+    }
+
+    public static Context getApplicationContext() {
+        return application.getApplicationContext();
     }
 }

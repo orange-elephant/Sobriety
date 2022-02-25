@@ -29,9 +29,13 @@ public class BackupSecret extends SaveSecretToSharedPrefUtil {
     private String passphrase;
     private byte[] backupCipherKey;
 
-    public BackupSecret(Context context) throws Exception {
+    public BackupSecret(Context context, @Nullable byte[] salt) throws Exception {
         super(context, encryptedKeyName);
-        this.salt = getSaltFromSharedPreferences();
+        if (salt == null) {
+            this.salt = getSaltFromSharedPreferences();
+        } else {
+            this.salt = salt;
+        }
     }
 
 
@@ -115,5 +119,9 @@ public class BackupSecret extends SaveSecretToSharedPrefUtil {
 
     public boolean verifyPassphrase(String passphrase) throws NoSecretExistsException, KeyStoreException {
         return deriveSecretFromPassphrase(passphrase).equals(getBackupCipherKey());
+    }
+
+    public String getSalt() {
+        return Base64.encodeToString(salt, Base64.DEFAULT);
     }
 }
