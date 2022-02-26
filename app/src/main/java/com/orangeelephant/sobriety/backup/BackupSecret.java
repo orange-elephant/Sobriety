@@ -58,7 +58,7 @@ public class BackupSecret extends SaveSecretToSharedPrefUtil {
     providing your own salt and i was unsure if this would work across multiple devices as needed
     for backups.
      */
-    static @NonNull byte[] getBackupKey(@NonNull String passphrase, @Nullable byte[] salt) {
+    private static @NonNull byte[] getBackupKey(@NonNull String passphrase, @Nullable byte[] salt) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-512");
             byte[] input = passphrase.replace(" ", "").getBytes();

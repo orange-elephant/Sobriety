@@ -159,7 +159,7 @@ public abstract class SaveSecretToSharedPrefUtil {
         return base64encodedBytes;
     }
 
-    protected byte[] generateRandomBytes(int numBytes) {
+    public byte[] generateRandomBytes(int numBytes) {
         //generate random bytes of specified length
         byte[] bytes = new byte[numBytes];
         Random random = new Random();

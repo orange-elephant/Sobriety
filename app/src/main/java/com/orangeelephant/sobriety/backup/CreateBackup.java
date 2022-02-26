@@ -10,6 +10,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.KeyManagementException;
 import java.util.ArrayList;
 
 public class CreateBackup extends BackupBase {
@@ -20,21 +21,34 @@ public class CreateBackup extends BackupBase {
         super();
         this.database = new CountersDatabaseHelper(context).getReadableDatabase();
 
+        try {
+            backupSecret = new BackupSecret(context, null);
+        } catch (Exception e) {
+            LogEvent.e("Couldn't create a new instance of backupSecret", e);
+        }
     }
 
     @Override
     public void setPassphrase(String passphrase) {
-        try {
-            backupSecret = new BackupSecret(context, null);
-        } catch (Exception e) {
-            LogEvent.e("Couldn't set up the passphrase for creating backup", e);
-        }
+        backupSecret.setPassphrase(passphrase);
     }
 
-    public JSONObject getDatabaseAsJson() throws JSONException {
+    public JSONObject getEncryptedDataAsJson() throws JSONException, NoSecretExistsException, KeyManagementException {
+        String encryptedData = encryptString(getDatabaseAsJson().toString());
+
+        JSONObject encryptedDataAsJson = new JSONObject();
+        encryptedDataAsJson.put("Salt", backupSecret.getSalt());
+        encryptedDataAsJson.put("IV", getIv());
+        encryptedDataAsJson.put("EncryptedData", encryptedData);
+
+        LogEvent.i(encryptedDataAsJson.toString());
+
+        return encryptedDataAsJson;
+    }
+
+    private JSONObject getDatabaseAsJson() throws JSONException {
         JSONObject databaseAsJson = new JSONObject();
         databaseAsJson.put("DatabaseVersion", CountersDatabaseHelper.DATABASE_VERSION);
-        databaseAsJson.put("Salt", backupSecret.getSalt());
 
         ArrayList<String> tableNames =
                 DatabaseManager.getTableNames(database);
@@ -70,6 +84,7 @@ public class CreateBackup extends BackupBase {
             }
             databaseAsJson.put(tableName, tableAsJson);
         }
+        LogEvent.i(databaseAsJson.toString());
 
         return databaseAsJson;
     }
