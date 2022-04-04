@@ -35,13 +35,7 @@ public class AddCounterActivity extends AppCompatActivity {
         long time = now.getTime();
         startDatePicker.setMaxDate(time);
 
-        preferenceChangeListener =
-                new SharedPreferences.OnSharedPreferenceChangeListener() {
-                    @Override
-                    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                        recreate();
-                    }
-                };
+        preferenceChangeListener = (sharedPreferences, key) -> recreate();
         sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
     }
 
@@ -63,8 +57,7 @@ public class AddCounterActivity extends AppCompatActivity {
         Date startDate = date.parse(dateString);
         Long time = startDate.getTime();
 
-        CreateNewCounter newCounter = new CreateNewCounter();
-        newCounter.create(this, nameText, reasonText, time);
+        new CreateNewCounter(this, nameText, reasonText, time);
 
         onBackPressed();
     }
@@ -73,8 +66,4 @@ public class AddCounterActivity extends AppCompatActivity {
         onBackPressed();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
 }

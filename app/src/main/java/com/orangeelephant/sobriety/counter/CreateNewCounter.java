@@ -11,14 +11,11 @@ import com.orangeelephant.sobriety.database.helpers.CountersDatabaseHelper;
 import net.sqlcipher.database.SQLiteDatabase;
 
 public class CreateNewCounter extends AppCompatActivity {
-    public CreateNewCounter() {
-    }
+    private final String _name;
+    private final String _reason;
+    private final Long _startTime;
 
-    private String _name;
-    private String _reason;
-    private Long _startTime;
-
-    public void create(Context context, String name, String reason, Long startTime) {
+    public CreateNewCounter(Context context, String name, String reason, Long startTime) {
         this._name = name;
         this._reason = reason;
         this._startTime = startTime;
