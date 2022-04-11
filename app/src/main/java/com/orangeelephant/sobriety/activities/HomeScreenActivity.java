@@ -5,23 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.widget.TextView;
 
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.counter.Counter;
-import com.orangeelephant.sobriety.counter.LoadCounters;
-import com.orangeelephant.sobriety.adapters.CounterAdapter;
-
-import net.sqlcipher.database.SQLiteDatabase;
-
-import java.util.Locale;
+import com.orangeelephant.sobriety.activities.adapters.CounterAdapter;
 
 public class HomeScreenActivity extends AppCompatActivity implements CounterAdapter.OnItemClicked {
     private SharedPreferences sharedPreferences;

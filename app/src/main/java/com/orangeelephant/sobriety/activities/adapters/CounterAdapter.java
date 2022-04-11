@@ -1,4 +1,4 @@
-package com.orangeelephant.sobriety.adapters;
+package com.orangeelephant.sobriety.activities.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

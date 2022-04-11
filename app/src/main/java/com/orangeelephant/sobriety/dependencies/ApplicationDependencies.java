@@ -20,7 +20,10 @@ public class ApplicationDependencies {
     private ApplicationDependencies() {}
 
     public static void init(Application application) {
-        ApplicationDependencies.application = application;
+        if (ApplicationDependencies.application == null) {
+            ApplicationDependencies.application = application;
+        }
+
     }
 
     public boolean isInitialised() {
@@ -32,6 +35,9 @@ public class ApplicationDependencies {
     }
 
     public static SqlcipherKey getSqlCipherKey() {
+        if (ApplicationDependencies.sqlcipherKey == null) {
+            throw new IllegalStateException("SQLCipherKey has not been loaded");
+        }
         return sqlcipherKey;
     }
 

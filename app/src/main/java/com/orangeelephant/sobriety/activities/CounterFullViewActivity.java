@@ -12,13 +12,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.orangeelephant.sobriety.R;
-import com.orangeelephant.sobriety.adapters.CounterAdapter;
-import com.orangeelephant.sobriety.adapters.ReasonsAdapter;
+import com.orangeelephant.sobriety.activities.adapters.ReasonsAdapter;
 import com.orangeelephant.sobriety.counter.Counter;
 import com.orangeelephant.sobriety.managecounters.ResetCounter;
 import com.orangeelephant.sobriety.managecounters.DeleteCounter;
