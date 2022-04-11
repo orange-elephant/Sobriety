@@ -14,6 +14,7 @@ import java.security.InvalidKeyException;
 import java.security.KeyStoreException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -117,8 +118,9 @@ public class BackupSecret extends SaveSecretToSharedPrefUtil {
         return backupCipherKey;
     }
 
+    //fails!!
     public boolean verifyPassphrase(String passphrase) throws NoSecretExistsException, KeyStoreException {
-        return deriveSecretFromPassphrase(passphrase).equals(getBackupCipherKey());
+        return Arrays.equals(deriveSecretFromPassphrase(passphrase), getBackupCipherKey());
     }
 
     public String getSalt() {

@@ -55,8 +55,26 @@ public abstract class BackupBase {
             byte[] encrypted = cipher.doFinal(toEncrypt.getBytes(StandardCharsets.UTF_8));
 
             return Base64.encodeToString(encrypted, Base64.DEFAULT);
-        } catch (InvalidKeyException | IllegalBlockSizeException | BadPaddingException | KeyStoreException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException e) {
+        } catch (InvalidKeyException | IllegalBlockSizeException | BadPaddingException |
+                KeyStoreException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException e) {
             LogEvent.e("Exception trying to retrieve backup cipher", e);
+            throw new KeyManagementException();
+        }
+    }
+
+    protected String decryptBytes(byte[] toDecrypt, byte[] iv) throws KeyManagementException {
+        try {
+            Cipher cipher = Cipher.getInstance(AES_MODE);
+            IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+            byte[] cipherKey = backupSecret.getBackupCipherKey();
+            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(cipherKey, "AES"), ivParameterSpec);
+
+            byte[] decrypted = cipher.doFinal(toDecrypt);
+
+            return new String(decrypted);
+        } catch (NoSecretExistsException | NoSuchPaddingException | NoSuchAlgorithmException | KeyStoreException |
+                InvalidKeyException | BadPaddingException | IllegalBlockSizeException | InvalidAlgorithmParameterException e) {
+            LogEvent.e("Failed to decrypt string", e);
             throw new KeyManagementException();
         }
     }

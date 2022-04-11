@@ -1,12 +1,12 @@
 package com.orangeelephant.sobriety.backup;
 
-import com.orangeelephant.sobriety.database.DatabaseManager;
 import com.orangeelephant.sobriety.database.helpers.CountersDatabaseHelper;
 import com.orangeelephant.sobriety.logging.LogEvent;
+import com.orangeelephant.sobriety.util.SqlUtil;
 
 import net.sqlcipher.Cursor;
-import net.sqlcipher.database.SQLiteDatabase;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,11 +51,11 @@ public class CreateBackup extends BackupBase {
         databaseAsJson.put("DatabaseVersion", CountersDatabaseHelper.DATABASE_VERSION);
 
         ArrayList<String> tableNames =
-                DatabaseManager.getTableNames(database);
+                SqlUtil.getTableNames(database);
 
         for (String tableName: tableNames) {
-            JSONObject tableAsJson = new JSONObject();
-            Cursor cursor = database.rawQuery("SELECT * FROM " + tableName, null);
+            JSONArray tableAsJson = new JSONArray();
+            Cursor cursor = SqlUtil.getAllRecordsFromTable(database, tableName);
             while (cursor.moveToNext()) {
                 JSONObject recordAsJson = new JSONObject();
                 for (int i=0; i < cursor.getColumnCount(); i++) {
@@ -79,12 +79,10 @@ public class CreateBackup extends BackupBase {
                             break;
                     }
                 }
-                String recordId = String.valueOf(cursor.getInt(0));
-                tableAsJson.put(recordId, recordAsJson);
+                tableAsJson.put(recordAsJson);
             }
             databaseAsJson.put(tableName, tableAsJson);
         }
-        LogEvent.i(databaseAsJson.toString());
 
         return databaseAsJson;
     }

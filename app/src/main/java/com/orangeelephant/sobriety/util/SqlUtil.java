@@ -37,6 +37,7 @@ public class SqlUtil {
      */
     public static void saveCounterObjectToDb(SQLiteDatabase db, Counter counterToSave) {
         ContentValues contentValues = new ContentValues();
+
         contentValues.put(DefineTables.Counters.COLUMN_NAME, counterToSave.getName());
         contentValues.put(DefineTables.Counters.COLUMN_START_TIME, counterToSave.getStart_time_in_millis());
         contentValues.put(DefineTables.Counters.COLUMN_RECORD_CLEAN_TIME, counterToSave.getRecord_time_sober_in_millis());
