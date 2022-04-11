@@ -81,4 +81,12 @@ public class Counter implements Serializable {
     public Dictionary getReasons_dict() {
         return this.reasons_dict;
     }
+
+    public long getStart_time_in_millis() {
+        return start_time_in_millis;
+    }
+
+    public long getRecord_time_sober_in_millis() {
+        return record_time_sober_in_millis;
+    }
 }

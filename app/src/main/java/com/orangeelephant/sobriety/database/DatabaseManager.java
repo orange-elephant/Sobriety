@@ -3,7 +3,6 @@ package com.orangeelephant.sobriety.database;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 
 import com.orangeelephant.sobriety.database.helpers.CountersDatabaseHelper;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
@@ -12,7 +11,6 @@ import com.orangeelephant.sobriety.logging.LogEvent;
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteException;
 
-import java.util.ArrayList;
 
 public class DatabaseManager {
     private static final String sharedPreferenceFile = "com.orangeelephant.sobriety_preferences";
@@ -49,16 +47,5 @@ public class DatabaseManager {
         } catch (Exception exception) {
             LogEvent.e("Exception loading sqlcipher key", exception);
         }
-    }
-
-    public static ArrayList<String> getTableNames(SQLiteDatabase db) {
-        String sql = "SELECT name FROM sqlite_master WHERE type='table';";
-        Cursor cursor = db.rawQuery(sql, null);
-        ArrayList<String> tableNames = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            tableNames.add(cursor.getString(0));
-        }
-
-        return tableNames;
     }
 }
