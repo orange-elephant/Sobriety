@@ -11,6 +11,8 @@ import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.NoSuchElementException;
 
 public class SqlUtil {
 
@@ -42,6 +44,23 @@ public class SqlUtil {
         contentValues.put(DefineTables.Counters.COLUMN_START_TIME, counterToSave.getStart_time_in_millis());
         contentValues.put(DefineTables.Counters.COLUMN_RECORD_CLEAN_TIME, counterToSave.getRecord_time_sober_in_millis());
 
-        db.insert(DefineTables.Counters.TABLE_NAME_COUNTERS, null, contentValues);
+        long counterRowId = db.insert(DefineTables.Counters.TABLE_NAME_COUNTERS, null, contentValues);
+
+        Dictionary reasonsDict = counterToSave.getReasons_dict();
+        System.out.println(reasonsDict.size());
+        for (int i = 0; i < reasonsDict.size(); i++) {
+            try {
+                String reason = reasonsDict.elements().nextElement().toString();
+                System.out.println(reason);
+                ContentValues reasonContentValues = new ContentValues();
+                reasonContentValues.put(DefineTables.Counters.COLUMN_COUNTER_ID, counterRowId);
+                reasonContentValues.put(DefineTables.Counters.COLUMN_SOBRIETY_REASON, reason);
+
+                db.insert(DefineTables.Counters.TABLE_NAME_REASONS, null, reasonContentValues);
+            } catch (NoSuchElementException e) {
+                LogEvent.i("No more reasons to save for this counter");
+                break;
+            }
+        }
     }
 }

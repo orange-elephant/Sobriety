@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.security.KeyManagementException;
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class ImportBackup extends BackupBase {
@@ -47,11 +48,13 @@ public class ImportBackup extends BackupBase {
         CountersDatabaseHelper db = new CountersDatabaseHelper(context);
         //for testing
         db.getWritableDatabase().execSQL("DELETE FROM " + DefineTables.Counters.TABLE_NAME_COUNTERS);
+        db.getWritableDatabase().execSQL("DELETE FROM " + DefineTables.Counters.TABLE_NAME_REASONS);
         try {
             if (CountersDatabaseHelper.DATABASE_VERSION >= decrypted.getInt("DatabaseVersion")) {
                 JSONArray countersArray = decrypted.getJSONArray("counters");
 
-                int countersImported = 0;
+                ArrayList<Counter> countersRetrieved = new ArrayList<>();
+                int numCountersImported = 0;
                 for (int i = 0; i <= countersArray.length() - 1; i++) {
                     JSONObject counter = countersArray.getJSONObject(i);
 
@@ -62,10 +65,27 @@ public class ImportBackup extends BackupBase {
 
                     Counter toSave = new Counter(id, name, startTime, recordTime, new Hashtable(), "");
 
-                    SqlUtil.saveCounterObjectToDb(db.getWritableDatabase(), toSave);
-                    countersImported++;
+                    countersRetrieved.add(toSave);
+                    numCountersImported++;
                 }
-                LogEvent.i("Imported " + countersImported + " counters");
+                LogEvent.i("Imported " + numCountersImported + " counters");
+
+                JSONArray reasonsArray = decrypted.getJSONArray("reasons");
+
+                for (int i = 0; i <= reasonsArray.length() - 1; i++) {
+                    JSONObject reason = reasonsArray.getJSONObject(i);
+                    for (Counter counter: countersRetrieved) {
+                        if (counter.get_id() == reason.getInt("counter_id")) {
+                            counter.getReasons_dict().put(reason.getInt("_id"), reason.getString("sobriety_reason"));
+                            LogEvent.i("Reason added");
+                            break;
+                        }
+                    }
+                }
+
+                for (Counter counter: countersRetrieved) {
+                    SqlUtil.saveCounterObjectToDb(db.getWritableDatabase(), counter);
+                }
             } else {
                 throw new IllegalArgumentException("Cant import backup to an older database version!");
             }
