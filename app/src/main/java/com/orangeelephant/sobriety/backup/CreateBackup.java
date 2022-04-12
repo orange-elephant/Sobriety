@@ -66,7 +66,9 @@ public class CreateBackup extends BackupBase {
                             recordAsJson.put(cursor.getColumnName(i), cursor.getString(i));
                             break;
                         case Cursor.FIELD_TYPE_INTEGER:
-                            recordAsJson.put(cursor.getColumnName(i), cursor.getInt(i));
+                            //timestamps exceed int size limit in java,
+                            //sqlite seems to cope with them as int
+                            recordAsJson.put(cursor.getColumnName(i), cursor.getLong(i));
                             break;
                         case Cursor.FIELD_TYPE_FLOAT:
                             recordAsJson.put(cursor.getColumnName(i), cursor.getFloat(i));
