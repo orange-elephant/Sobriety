@@ -1,5 +1,6 @@
 package com.orangeelephant.sobriety.backup;
 
+import android.os.Environment;
 import android.util.Base64;
 
 import com.orangeelephant.sobriety.counter.Counter;
@@ -12,13 +13,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.security.KeyManagementException;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Scanner;
 
 public class ImportBackup extends BackupBase {
-    public ImportBackup(JSONObject jsonObject) throws JSONException {
+    public ImportBackup() throws JSONException, FileNotFoundException {
         super();
+
+        JSONObject jsonObject = readBackupFile();
+
         byte[] salt = Base64.decode(jsonObject.getString("Salt"), Base64.DEFAULT);
         byte[] encrypted = Base64.decode(jsonObject.getString("EncryptedData"), Base64.DEFAULT);
         byte[] iv = Base64.decode(jsonObject.getString("IV"), Base64.DEFAULT);
@@ -92,5 +99,17 @@ public class ImportBackup extends BackupBase {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private JSONObject readBackupFile() throws FileNotFoundException, JSONException{
+        String fileName = "sobriety.backup";
+        String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString();
+        File backupFile = new File(root, fileName);
+
+        JSONObject backupAsJson;
+
+        Scanner fileScanner = new Scanner(backupFile);
+        backupAsJson = new JSONObject(fileScanner.next());
+        return backupAsJson;
     }
 }

@@ -1,5 +1,7 @@
 package com.orangeelephant.sobriety.backup;
 
+import android.os.Environment;
+
 import com.orangeelephant.sobriety.database.helpers.CountersDatabaseHelper;
 import com.orangeelephant.sobriety.logging.LogEvent;
 import com.orangeelephant.sobriety.util.SqlUtil;
@@ -10,12 +12,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.util.ArrayList;
 
 public class CreateBackup extends BackupBase {
     protected BackupSecret backupSecret = null;
-    protected JSONObject databaseAsJson;
 
     public CreateBackup() {
         super();
@@ -33,7 +38,7 @@ public class CreateBackup extends BackupBase {
         backupSecret.setPassphrase(passphrase);
     }
 
-    public JSONObject getEncryptedDataAsJson() throws JSONException, NoSecretExistsException, KeyManagementException {
+    private JSONObject getEncryptedDataAsJson() throws JSONException, NoSecretExistsException, KeyManagementException {
         String encryptedData = encryptString(getDatabaseAsJson().toString());
 
         JSONObject encryptedDataAsJson = new JSONObject();
@@ -87,5 +92,27 @@ public class CreateBackup extends BackupBase {
         }
 
         return databaseAsJson;
+    }
+
+    public void saveToExternalStorage() throws JSONException, NoSecretExistsException, KeyManagementException {
+        JSONObject encryptedDataAsJson = getEncryptedDataAsJson();
+
+        String fileName = "sobriety.backup";
+        String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString();
+        File backupFile = new File(root, fileName);
+        if (backupFile.exists()) {
+            backupFile.delete();
+        }
+        try {
+            backupFile.createNewFile();
+            FileOutputStream fileOutputStream = new FileOutputStream(backupFile);
+            fileOutputStream.write(encryptedDataAsJson.toString().getBytes(StandardCharsets.UTF_8));
+            fileOutputStream.flush();
+            fileOutputStream.close();
+
+            LogEvent.i("Backup saved to " + root + "/" + fileName);
+        } catch (IOException e) {
+            LogEvent.e("Failed to create backup file", e);
+        }
     }
 }
