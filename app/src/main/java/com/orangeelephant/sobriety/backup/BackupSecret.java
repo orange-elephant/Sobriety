@@ -7,7 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.orangeelephant.sobriety.logging.LogEvent;
-import com.orangeelephant.sobriety.util.SaveSecretToSharedPrefUtil;
+import com.orangeelephant.sobriety.util.RandomUtil;
+import com.orangeelephant.sobriety.util.SaveSecretToSharedPref;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -21,7 +22,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 
-public class BackupSecret extends SaveSecretToSharedPrefUtil {
+public class BackupSecret extends SaveSecretToSharedPref {
     private static final String encryptedKeyName = "backupEncryptionKey";
     private static final String passphraseSaltName = "passphraseSalt";
     private static final int DIGEST_ROUNDS = 250_000;
@@ -91,7 +92,7 @@ public class BackupSecret extends SaveSecretToSharedPrefUtil {
     }
 
     private String storeNewPassphraseSalt() {
-        byte[] salt = generateRandomBytes(32);
+        byte[] salt = RandomUtil.generateRandomBytes(32);
         String base64encodedBytes = Base64.encodeToString(salt, Base64.DEFAULT);
 
         saveStringToSharedPrefs(passphraseSaltName, base64encodedBytes);

@@ -35,7 +35,7 @@ import javax.crypto.spec.GCMParameterSpec;
  * keystore. By default 32 random bytes are stored as a key, however the method
  * protected byte[] createNewSecretToStore() can be overridden to specify a custom generated secret
  */
-public abstract class SaveSecretToSharedPrefUtil {
+public abstract class SaveSecretToSharedPref {
     protected static final String sharedPreferenceFile = "com.orangeelephant.sobriety_preferences";
     private static final String isEncrypted = "isEncrypted";
     protected static SharedPreferences sharedPreferences;
@@ -49,7 +49,7 @@ public abstract class SaveSecretToSharedPrefUtil {
     private final java.security.Key keystoreKey;
     private final String encryptedKeyName;
 
-    public SaveSecretToSharedPrefUtil(Context context, String encryptedKeyName) throws KeyStoreException {
+    public SaveSecretToSharedPref(Context context, String encryptedKeyName) throws KeyStoreException {
         sharedPreferences = context.getSharedPreferences(sharedPreferenceFile,
                 Context.MODE_PRIVATE);
         this.encryptedKeyName = encryptedKeyName;
@@ -149,7 +149,7 @@ public abstract class SaveSecretToSharedPrefUtil {
     }
 
     private String createNewRandomIv() {
-        FIXED_IV = generateRandomBytes(12);
+        FIXED_IV = RandomUtil.generateRandomBytes(12);
         String base64encodedBytes = Base64.encodeToString(FIXED_IV, Base64.DEFAULT);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -157,15 +157,6 @@ public abstract class SaveSecretToSharedPrefUtil {
         editor.commit();
 
         return base64encodedBytes;
-    }
-
-    public byte[] generateRandomBytes(int numBytes) {
-        //generate random bytes of specified length
-        byte[] bytes = new byte[numBytes];
-        Random random = new Random();
-        random.nextBytes(bytes);
-
-        return bytes;
     }
 
     public boolean getIsEncrypted() {

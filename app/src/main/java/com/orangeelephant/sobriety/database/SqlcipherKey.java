@@ -4,7 +4,8 @@ import android.content.Context;
 
 import com.orangeelephant.sobriety.backup.NoSecretExistsException;
 import com.orangeelephant.sobriety.logging.LogEvent;
-import com.orangeelephant.sobriety.util.SaveSecretToSharedPrefUtil;
+import com.orangeelephant.sobriety.util.RandomUtil;
+import com.orangeelephant.sobriety.util.SaveSecretToSharedPref;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -16,7 +17,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 
-public class SqlcipherKey extends SaveSecretToSharedPrefUtil {
+public class SqlcipherKey extends SaveSecretToSharedPref {
     private static final String encryptedKeyName = "sqlcipherEncryptionKey";
 
     private byte[] sqlCipherKey;
@@ -44,6 +45,6 @@ public class SqlcipherKey extends SaveSecretToSharedPrefUtil {
     @Override
     protected byte[] createNewSecretToStore() {
         LogEvent.i("Generating random bytes as secret");
-        return generateRandomBytes(32);
+        return RandomUtil.generateRandomBytes(32);
     }
 }

@@ -5,6 +5,7 @@ import android.util.Base64;
 
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 import com.orangeelephant.sobriety.logging.LogEvent;
+import com.orangeelephant.sobriety.util.RandomUtil;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
@@ -49,7 +50,7 @@ public abstract class BackupBase {
         try {
             cipherKey = backupSecret.getBackupCipherKey();
             Cipher cipher = Cipher.getInstance(AES_MODE);
-            iv = new IvParameterSpec(backupSecret.generateRandomBytes(12));
+            iv = new IvParameterSpec(RandomUtil.generateRandomBytes(12));
             cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(cipherKey, "AES"), iv);
 
             byte[] encrypted = cipher.doFinal(toEncrypt.getBytes(StandardCharsets.UTF_8));
