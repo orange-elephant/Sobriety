@@ -43,7 +43,7 @@ public class ApplicationDependencies {
 
     public static DatabaseManager getDatabaseManager() {
         if (databaseManager == null) {
-            databaseManager = new DatabaseManager(application);
+            databaseManager = new DatabaseManager();
         }
         return databaseManager;
     }

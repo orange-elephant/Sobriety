@@ -37,13 +37,11 @@ import javax.crypto.spec.GCMParameterSpec;
  */
 public abstract class SaveSecretToSharedPref {
     protected static final String sharedPreferenceFile = "com.orangeelephant.sobriety_preferences";
-    private static final String isEncrypted = "isEncrypted";
     protected static SharedPreferences sharedPreferences;
 
     private static final String AndroidKeyStore = "AndroidKeyStore";
     private static final String AES_MODE = "AES/GCM/NoPadding";
     private static final String KeyAlias = "sobriety_database_key";
-    private static final String storedIvName = "fixedIv";
     private byte[] FIXED_IV;
     private final KeyStore keyStore;
     private final java.security.Key keystoreKey;
@@ -119,7 +117,7 @@ public abstract class SaveSecretToSharedPref {
     }
 
     private byte[] manageIV() {
-        String base64encodedIV = sharedPreferences.getString(storedIvName, "");
+        String base64encodedIV = SobrietyPreferences.getEncryptionFixedIv();
 
         if (base64encodedIV.equals("")) {
             try {
@@ -152,15 +150,9 @@ public abstract class SaveSecretToSharedPref {
         FIXED_IV = RandomUtil.generateRandomBytes(12);
         String base64encodedBytes = Base64.encodeToString(FIXED_IV, Base64.DEFAULT);
 
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(storedIvName, base64encodedBytes);
-        editor.commit();
+        SobrietyPreferences.setEncryptionFixedIv(base64encodedBytes);
 
         return base64encodedBytes;
-    }
-
-    public boolean getIsEncrypted() {
-        return sharedPreferences.getBoolean(isEncrypted, false);
     }
     
     protected void saveStringToSharedPrefs(String name, String valueToStore) {

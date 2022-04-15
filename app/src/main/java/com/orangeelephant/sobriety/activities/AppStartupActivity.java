@@ -17,34 +17,20 @@ import android.widget.Toast;
 import com.orangeelephant.sobriety.database.SqlcipherKey;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 import com.orangeelephant.sobriety.R;
-import com.orangeelephant.sobriety.logging.LogEvent;
-
+import com.orangeelephant.sobriety.util.SobrietyPreferences;
 
 import java.util.concurrent.Executor;
 
 public class AppStartupActivity extends AppCompatActivity {
-    private static final String sharedPreferenceFile = "com.orangeelephant.sobriety_preferences";
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = this.getSharedPreferences(sharedPreferenceFile, MODE_PRIVATE);
 
         //initialise ApplicationDependencies
         ApplicationDependencies.init(getApplication());
 
-        /*preferenceChangeListener =
-                new SharedPreferences.OnSharedPreferenceChangeListener() {
-                    @Override
-                    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                        recreate();
-                    }
-                };
-        sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);*/
-
-        if (sharedPreferences.getBoolean("fingerprint_lock_enabled", false)
+        if (SobrietyPreferences.getFingerprintLockEnabled()
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             fingerprintUnlock();
         } else {
@@ -52,6 +38,11 @@ public class AppStartupActivity extends AppCompatActivity {
                 SqlcipherKey sqlcipherKey = new SqlcipherKey(this);
                 ApplicationDependencies.setSqlcipherKey(sqlcipherKey);
                 ApplicationDependencies.getDatabaseManager();
+
+                if (SobrietyPreferences.getIsFirstOpen()) {
+                    onFirstOpen();
+                }
+
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
@@ -61,9 +52,8 @@ public class AppStartupActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    private void onFirstOpen() {
+        SobrietyPreferences.setIsFirstOpen(false);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)

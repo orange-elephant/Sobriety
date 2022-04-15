@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import com.orangeelephant.sobriety.logging.LogEvent;
 import com.orangeelephant.sobriety.util.RandomUtil;
 import com.orangeelephant.sobriety.util.SaveSecretToSharedPref;
+import com.orangeelephant.sobriety.util.SobrietyPreferences;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -24,14 +25,13 @@ import javax.crypto.NoSuchPaddingException;
 
 public class BackupSecret extends SaveSecretToSharedPref {
     private static final String encryptedKeyName = "backupEncryptionKey";
-    private static final String passphraseSaltName = "passphraseSalt";
     private static final int DIGEST_ROUNDS = 250_000;
 
     private final byte[] salt;
     private String passphrase;
     private byte[] backupCipherKey;
 
-    public BackupSecret(Context context, @Nullable byte[] salt) throws Exception {
+    public BackupSecret(Context context, @Nullable byte[] salt) throws KeyStoreException {
         super(context, encryptedKeyName);
         if (salt == null) {
             this.salt = getSaltFromSharedPreferences();
@@ -82,7 +82,7 @@ public class BackupSecret extends SaveSecretToSharedPref {
     }
 
     private byte[] getSaltFromSharedPreferences() {
-        String base64encodedSalt = sharedPreferences.getString(passphraseSaltName, "");
+        String base64encodedSalt = SobrietyPreferences.getBackupEncryptionPassphraseSalt();
         if (base64encodedSalt.equals("")) {
             LogEvent.i("No salt is stored, creating one now");
             base64encodedSalt = storeNewPassphraseSalt();
@@ -95,7 +95,7 @@ public class BackupSecret extends SaveSecretToSharedPref {
         byte[] salt = RandomUtil.generateRandomBytes(32);
         String base64encodedBytes = Base64.encodeToString(salt, Base64.DEFAULT);
 
-        saveStringToSharedPrefs(passphraseSaltName, base64encodedBytes);
+        SobrietyPreferences.setBackupEncryptionPassphraseSalt(base64encodedBytes);
 
         return base64encodedBytes;
     }

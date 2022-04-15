@@ -1,35 +1,29 @@
 package com.orangeelephant.sobriety.database;
 
-import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import com.orangeelephant.sobriety.database.helpers.CountersDatabaseHelper;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 import com.orangeelephant.sobriety.logging.LogEvent;
+import com.orangeelephant.sobriety.util.SobrietyPreferences;
 
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteException;
 
-
 public class DatabaseManager {
-    private static final String sharedPreferenceFile = "com.orangeelephant.sobriety_preferences";
-    private static final String isEncrypted = "isEncrypted";
     private final Context context;
 
-    private final SharedPreferences sharedPreferences;
     private final SqlcipherKey sqlcipherKey;
 
-    public DatabaseManager(Application application) {
-        this.context = application.getApplicationContext();
+    public DatabaseManager() {
+        this.context = ApplicationDependencies.getApplicationContext();
         this.sqlcipherKey = ApplicationDependencies.getSqlCipherKey();
 
         //load libraries necessary for sqlcipher library to function
         SQLiteDatabase.loadLibs(context);
 
-        sharedPreferences = context.getSharedPreferences(sharedPreferenceFile, Context.MODE_PRIVATE);
         // if shared preferences indicates db isn't encrypted, attempt migration
-        if (! sharedPreferences.getBoolean(isEncrypted, false)) {
+        if (!SobrietyPreferences.getIsDatabaseEncrypted()) {
             attemptToCreateEncryptedDatabase();
         }
     }
@@ -37,9 +31,7 @@ public class DatabaseManager {
     private void attemptToCreateEncryptedDatabase() {
         try {
             SQLiteDatabase db = new CountersDatabaseHelper(context).getReadableDatabase(sqlcipherKey.getSqlCipherKey());
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean(isEncrypted, true);
-            editor.commit();
+            SobrietyPreferences.setIsDatabaseEncrypted(true);
             LogEvent.i("A new encrypted database was created");
         } catch (SQLiteException exception) {
             LogEvent.i("Couldn't create a database with the provided key, an unencrypted database probably exists.");

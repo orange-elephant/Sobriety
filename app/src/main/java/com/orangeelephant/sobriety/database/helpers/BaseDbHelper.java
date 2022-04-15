@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.orangeelephant.sobriety.database.SqlcipherKey;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
+import com.orangeelephant.sobriety.util.SobrietyPreferences;
 
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteOpenHelper;
@@ -27,7 +28,7 @@ public abstract class BaseDbHelper extends SQLiteOpenHelper {
 
     public SQLiteDatabase getReadableDatabase() {
         byte[] password = keyManager.getSqlCipherKey();
-        if (DATABASE_VERSION >= SQL_CIPHER_MIGRATION && keyManager.getIsEncrypted()) {
+        if (DATABASE_VERSION >= SQL_CIPHER_MIGRATION && SobrietyPreferences.getIsDatabaseEncrypted()) {
             return super.getReadableDatabase(password);
         } else {
             return super.getReadableDatabase("");
@@ -36,7 +37,7 @@ public abstract class BaseDbHelper extends SQLiteOpenHelper {
 
     public SQLiteDatabase getWritableDatabase() {
         byte[] password = keyManager.getSqlCipherKey();
-        if (DATABASE_VERSION >= SQL_CIPHER_MIGRATION && keyManager.getIsEncrypted()) {
+        if (DATABASE_VERSION >= SQL_CIPHER_MIGRATION && SobrietyPreferences.getIsDatabaseEncrypted()) {
             return super.getWritableDatabase(password);
         } else {
             return super.getWritableDatabase("");
