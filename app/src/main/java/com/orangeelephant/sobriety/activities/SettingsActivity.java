@@ -8,10 +8,10 @@ import android.util.DisplayMetrics;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import com.orangeelephant.sobriety.R;
+import com.orangeelephant.sobriety.activities.fragments.preferences.PreferenceFragment;
 import com.orangeelephant.sobriety.logging.LogEvent;
 
 import java.util.Locale;
@@ -27,7 +27,7 @@ public class SettingsActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.settings, new SettingsFragment())
+                    .replace(R.id.settings, new PreferenceFragment())
                     .commit();
         }
         ActionBar actionBar = getSupportActionBar();
@@ -39,6 +39,7 @@ public class SettingsActivity extends AppCompatActivity {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         preferenceChangeListener =
                 new SharedPreferences.OnSharedPreferenceChangeListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.R)
                     @Override
                     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                         if (key.equals("language")) {
@@ -107,10 +108,16 @@ public class SettingsActivity extends AppCompatActivity {
         recreate();
     }
 
-    public static class SettingsFragment extends PreferenceFragmentCompat {
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.root_preferences, rootKey);
+    public void setTheme() {
+        this.setTheme();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public boolean checkFingerprintLockCapable() {
+        //only offering for api 29 and above
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            return false;
         }
+        return false;
     }
 }

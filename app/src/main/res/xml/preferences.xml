@@ -26,7 +26,7 @@
     <PreferenceCategory app:title="@string/security">
         <SwitchPreference
             app:key="fingerprint_lock_enabled"
-            app:enabled="true"
+            app:enabled="false"
             app:title="@string/fingerprint_unlock"
             app:summary="@string/fingerprint_unlock_description"/>
     </PreferenceCategory>
@@ -34,8 +34,8 @@
     <PreferenceCategory app:title="@string/about">
         <Preference
             app:key="app_version"
-            app:selectable="true"
-            app:enableCopying="true"
+            app:selectable="false"
+            app:enableCopying="false"
             app:title="@string/version"
             app:summary="0.5.0"/>
 
