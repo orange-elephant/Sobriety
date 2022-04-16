@@ -35,7 +35,7 @@ public class AppStartupActivity extends AppCompatActivity {
             fingerprintUnlock();
         } else {
             try {
-                SqlcipherKey sqlcipherKey = new SqlcipherKey(this);
+                SqlcipherKey sqlcipherKey = new SqlcipherKey();
                 ApplicationDependencies.setSqlcipherKey(sqlcipherKey);
                 ApplicationDependencies.getDatabaseManager();
 
@@ -94,7 +94,7 @@ public class AppStartupActivity extends AppCompatActivity {
                         .show();
 
                 try {
-                    SqlcipherKey sqlcipherKey = new SqlcipherKey(AppStartupActivity.this);
+                    SqlcipherKey sqlcipherKey = new SqlcipherKey();
                     ApplicationDependencies.setSqlcipherKey(sqlcipherKey);
                     ApplicationDependencies.getDatabaseManager();
                 } catch (Exception exception) {

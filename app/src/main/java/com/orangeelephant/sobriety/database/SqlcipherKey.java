@@ -1,38 +1,37 @@
 package com.orangeelephant.sobriety.database;
 
-import android.content.Context;
+import android.util.Base64;
 
-import com.orangeelephant.sobriety.backup.NoSecretExistsException;
 import com.orangeelephant.sobriety.logging.LogEvent;
+import com.orangeelephant.sobriety.util.KeyStoreUtil;
 import com.orangeelephant.sobriety.util.RandomUtil;
-import com.orangeelephant.sobriety.util.SaveSecretToSharedPref;
+import com.orangeelephant.sobriety.util.SobrietyPreferences;
 
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
+import java.security.GeneralSecurityException;
 import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 
-public class SqlcipherKey extends SaveSecretToSharedPref {
-    private static final String encryptedKeyName = "sqlcipherEncryptionKey";
-
+public class SqlcipherKey {
     private byte[] sqlCipherKey;
 
-    public SqlcipherKey(Context context) throws KeyStoreException {
-        super(context, encryptedKeyName);
+    public SqlcipherKey() throws KeyStoreException {
+        String base64CipherKey = SobrietyPreferences.getSqlcipherEncryptionKey();
+        if (base64CipherKey == "") {
+            try {
+                LogEvent.i("No SqlcipherKey exists, creating one now.");
+                sqlCipherKey = createNewSecretToStore();
+                byte[] encryptedCipherKey = KeyStoreUtil.encryptBytes(sqlCipherKey);
+                SobrietyPreferences.setSqlcipherEncryptionKey(Base64.encodeToString(encryptedCipherKey, Base64.DEFAULT));
+            } catch (GeneralSecurityException e) {
+                LogEvent.e("Couldn't create a new sqlCipherEncryptionKey", e);
+                throw new KeyStoreException();
+            }
+        }
+
+        byte[] encryptedCipherKey = Base64.decode(base64CipherKey, Base64.DEFAULT);
         try {
-            sqlCipherKey = decryptCipherKey(getEncryptedKeyFromPreferences());
-        } catch (NoSecretExistsException e) {
-            LogEvent.i("No SqlcipherKey exists, creating one now.");
-            sqlCipherKey = createNewSecretToStore();
-            storeCipherKey(sqlCipherKey);
-        } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException |
-                BadPaddingException | NoSuchPaddingException |
-                InvalidKeyException | IllegalBlockSizeException e) {
+            sqlCipherKey = KeyStoreUtil.decryptBytes(encryptedCipherKey);
+        } catch (GeneralSecurityException e) {
             LogEvent.e("Couldn't decrypt cipherKey", e);
             throw new KeyStoreException();
         }
@@ -42,8 +41,7 @@ public class SqlcipherKey extends SaveSecretToSharedPref {
         return this.sqlCipherKey;
     }
 
-    @Override
-    protected byte[] createNewSecretToStore() {
+    private byte[] createNewSecretToStore() {
         LogEvent.i("Generating random bytes as secret");
         return RandomUtil.generateRandomBytes(32);
     }

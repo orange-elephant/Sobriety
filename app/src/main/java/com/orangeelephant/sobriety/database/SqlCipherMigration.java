@@ -1,10 +1,10 @@
 package com.orangeelephant.sobriety.database;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import com.orangeelephant.sobriety.database.helpers.BaseDbHelper;
 import com.orangeelephant.sobriety.logging.LogEvent;
+import com.orangeelephant.sobriety.util.SobrietyPreferences;
 
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteException;
@@ -15,16 +15,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class SqlCipherMigration {
-    private static final String sharedPreferenceFile = "com.orangeelephant.sobriety_preferences";
-    private static final String isEncrypted = "isEncrypted";
-    private final Context context;
 
     public SqlCipherMigration(Context context, BaseDbHelper dbHelper) {
-        this.context = context;
 
-        if (! getEncryptionStatusFromSharedPref()) {
+        if (!SobrietyPreferences.getIsDatabaseEncrypted()) {
             try {
-                SqlcipherKey keyManager = new SqlcipherKey(context);
+                SqlcipherKey keyManager = new SqlcipherKey();
                 byte[] passphrase = keyManager.getSqlCipherKey();
 
                 //obtain the necessary info about the current database
@@ -97,26 +93,11 @@ public class SqlCipherMigration {
             originalFile.delete();
             newFile.renameTo(originalFile);
 
-            saveEncryptionStatusToSharedPref(true);
+            SobrietyPreferences.setIsDatabaseEncrypted(true);
             LogEvent.i("The database was encrypted successfully.");
         }
         else {
             throw new FileNotFoundException(originalFile.getAbsolutePath()+ " not found");
         }
-    }
-
-    private void saveEncryptionStatusToSharedPref(Boolean setStatus) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPreferenceFile,
-                Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(isEncrypted, setStatus);
-        editor.commit();
-    }
-
-    private boolean getEncryptionStatusFromSharedPref() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPreferenceFile,
-                Context.MODE_PRIVATE);
-        // if not found assume false
-        return sharedPreferences.getBoolean(isEncrypted, false);
     }
 }
