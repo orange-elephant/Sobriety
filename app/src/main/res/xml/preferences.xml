@@ -37,7 +37,7 @@
             app:selectable="false"
             app:enableCopying="false"
             app:title="@string/version"
-            app:summary="0.5.0"/>
+            app:summary="0.5.1"/>
 
         <Preference
             app:title="@string/source_code"
