@@ -4,6 +4,8 @@ import android.os.Environment;
 import android.util.Base64;
 
 import com.orangeelephant.sobriety.counter.Counter;
+import com.orangeelephant.sobriety.database.CountersDatabase;
+import com.orangeelephant.sobriety.database.ReasonsDatabase;
 import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
 import com.orangeelephant.sobriety.logging.LogEvent;
 import com.orangeelephant.sobriety.util.SqlUtil;
@@ -55,8 +57,8 @@ public class ImportBackup extends BackupBase {
     private void saveToDb(JSONObject decrypted) {
         DBOpenHelper db = new DBOpenHelper(context);
         //for testing
-        db.getWritableDatabase().execSQL("DELETE FROM " + DefineTables.Counters.TABLE_NAME_COUNTERS);
-        db.getWritableDatabase().execSQL("DELETE FROM " + DefineTables.Counters.TABLE_NAME_REASONS);
+        db.getWritableDatabase().execSQL("DELETE FROM " + CountersDatabase.TABLE_NAME_COUNTERS);
+        db.getWritableDatabase().execSQL("DELETE FROM " + ReasonsDatabase.TABLE_NAME_REASONS);
         try {
             if (DBOpenHelper.DATABASE_VERSION >= decrypted.getInt("DatabaseVersion")) {
                 JSONArray countersArray = decrypted.getJSONArray("counters");

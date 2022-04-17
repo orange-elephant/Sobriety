@@ -4,7 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.orangeelephant.sobriety.database.DefineTables;
+import com.orangeelephant.sobriety.database.CountersDatabase;
+import com.orangeelephant.sobriety.database.ReasonsDatabase;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 import com.orangeelephant.sobriety.util.SobrietyPreferences;
 
@@ -26,8 +27,8 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL(DefineTables.Counters.CREATE_TABLE_COUNTERS);
-        sqLiteDatabase.execSQL(DefineTables.Counters.CREATE_TABLE_REASONS);
+        sqLiteDatabase.execSQL(CountersDatabase.CREATE_TABLE_COUNTERS);
+        sqLiteDatabase.execSQL(ReasonsDatabase.CREATE_TABLE_REASONS);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL("ALTER TABLE counters ADD sobriety_reason TEXT DEFAULT NULL");
         }
         if (oldVersion < ADD_REASONS_TABLE) {
-            sqLiteDatabase.execSQL(DefineTables.Counters.CREATE_TABLE_REASONS);
+            sqLiteDatabase.execSQL(ReasonsDatabase.CREATE_TABLE_REASONS);
             String sql = "SELECT _id, sobriety_reason FROM Counters\n" +
                     "WHERE sobriety_reason IS NOT NULL";
             Cursor cursor = sqLiteDatabase.rawQuery(sql, null);
@@ -48,9 +49,9 @@ public class DBOpenHelper extends SQLiteOpenHelper {
                 String reason = cursor.getString(1);
 
                 ContentValues values = new ContentValues();
-                values.put(DefineTables.Counters.COLUMN_COUNTER_ID, id);
-                values.put(DefineTables.Counters.COLUMN_SOBRIETY_REASON, reason);
-                long newRowId = sqLiteDatabase.insert(DefineTables.Counters.TABLE_NAME_REASONS, null, values);
+                values.put(ReasonsDatabase.COLUMN_COUNTER_ID, id);
+                values.put(ReasonsDatabase.COLUMN_SOBRIETY_REASON, reason);
+                sqLiteDatabase.insert(ReasonsDatabase.TABLE_NAME_REASONS, null, values);
             }
             //wipe set all old values to null since sqlite wont allow dropping column
             sqLiteDatabase.execSQL("UPDATE counters SET sobriety_reason = NULL");

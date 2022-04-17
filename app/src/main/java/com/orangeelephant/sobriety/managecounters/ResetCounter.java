@@ -5,7 +5,7 @@ import android.database.Cursor;
 
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.counter.Counter;
-import com.orangeelephant.sobriety.database.DefineTables;
+import com.orangeelephant.sobriety.database.CountersDatabase;
 import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
 
 import net.sqlcipher.database.SQLiteDatabase;
@@ -37,10 +37,10 @@ public class ResetCounter {
     }
 
     private void checkForRecordTime() {
-        String sql = "SELECT " + DefineTables.Counters.COLUMN_START_TIME + ", " +
-                DefineTables.Counters.COLUMN_RECORD_CLEAN_TIME + ", " +
-                DefineTables.Counters.COLUMN_NAME +
-                " FROM " + DefineTables.Counters.TABLE_NAME_COUNTERS +
+        String sql = "SELECT " + CountersDatabase.COLUMN_START_TIME + ", " +
+                CountersDatabase.COLUMN_RECORD_CLEAN_TIME + ", " +
+                CountersDatabase.COLUMN_NAME +
+                " FROM " + CountersDatabase.TABLE_NAME_COUNTERS +
                 " WHERE _id = " + this.counterId;
 
         SQLiteDatabase db = new DBOpenHelper(this.context).getReadableDatabase();
@@ -69,9 +69,9 @@ public class ResetCounter {
     }
 
     private void updateRecord() {
-        String sql = "UPDATE " +  DefineTables.Counters.TABLE_NAME_COUNTERS +
-                    " SET " + DefineTables.Counters.COLUMN_RECORD_CLEAN_TIME + " = " + this.recordTime +
-                    ", " + DefineTables.Counters.COLUMN_START_TIME + " = " + this.timeNow +
+        String sql = "UPDATE " +  CountersDatabase.TABLE_NAME_COUNTERS +
+                    " SET " + CountersDatabase.COLUMN_RECORD_CLEAN_TIME + " = " + this.recordTime +
+                    ", " + CountersDatabase.COLUMN_START_TIME + " = " + this.timeNow +
                     " WHERE _id = " + this.counterId;
 
         SQLiteDatabase db = new DBOpenHelper(this.context).getReadableDatabase();

@@ -5,7 +5,8 @@ import android.content.Context;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.orangeelephant.sobriety.database.DefineTables;
+import com.orangeelephant.sobriety.database.CountersDatabase;
+import com.orangeelephant.sobriety.database.ReasonsDatabase;
 import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
 
 import net.sqlcipher.database.SQLiteDatabase;
@@ -27,15 +28,15 @@ public class CreateNewCounter extends AppCompatActivity {
         SQLiteDatabase db = new DBOpenHelper(context).getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(DefineTables.Counters.COLUMN_NAME, this._name);
-        values.put(DefineTables.Counters.COLUMN_START_TIME, this._startTime);
-        long counterRowId = db.insert(DefineTables.Counters.TABLE_NAME_COUNTERS, null, values);
+        values.put(CountersDatabase.COLUMN_NAME, this._name);
+        values.put(CountersDatabase.COLUMN_START_TIME, this._startTime);
+        long counterRowId = db.insert(CountersDatabase.TABLE_NAME_COUNTERS, null, values);
 
         if (! this._reason.isEmpty()) {
             ContentValues nextValues = new ContentValues();
-            nextValues.put(DefineTables.Counters.COLUMN_COUNTER_ID, counterRowId);
-            nextValues.put(DefineTables.Counters.COLUMN_SOBRIETY_REASON, this._reason);
-            long reasonRowId = db.insert(DefineTables.Counters.TABLE_NAME_REASONS, null, nextValues);
+            nextValues.put(ReasonsDatabase.COLUMN_COUNTER_ID, counterRowId);
+            nextValues.put(ReasonsDatabase.COLUMN_SOBRIETY_REASON, this._reason);
+            db.insert(ReasonsDatabase.TABLE_NAME_REASONS, null, nextValues);
         }
         db.close();
     }

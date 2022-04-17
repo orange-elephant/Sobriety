@@ -3,7 +3,8 @@ package com.orangeelephant.sobriety.util;
 import android.content.ContentValues;
 
 import com.orangeelephant.sobriety.counter.Counter;
-import com.orangeelephant.sobriety.database.DefineTables;
+import com.orangeelephant.sobriety.database.CountersDatabase;
+import com.orangeelephant.sobriety.database.ReasonsDatabase;
 import com.orangeelephant.sobriety.logging.LogEvent;
 
 import net.sqlcipher.Cursor;
@@ -44,11 +45,11 @@ public final class SqlUtil {
     public static void saveCounterObjectToDb(SQLiteDatabase db, Counter counterToSave) {
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(DefineTables.Counters.COLUMN_NAME, counterToSave.getName());
-        contentValues.put(DefineTables.Counters.COLUMN_START_TIME, counterToSave.getStart_time_in_millis());
-        contentValues.put(DefineTables.Counters.COLUMN_RECORD_CLEAN_TIME, counterToSave.getRecord_time_sober_in_millis());
+        contentValues.put(CountersDatabase.COLUMN_NAME, counterToSave.getName());
+        contentValues.put(CountersDatabase.COLUMN_START_TIME, counterToSave.getStart_time_in_millis());
+        contentValues.put(CountersDatabase.COLUMN_RECORD_CLEAN_TIME, counterToSave.getRecord_time_sober_in_millis());
 
-        long counterRowId = db.insert(DefineTables.Counters.TABLE_NAME_COUNTERS, null, contentValues);
+        long counterRowId = db.insert(CountersDatabase.TABLE_NAME_COUNTERS, null, contentValues);
 
         Dictionary reasonsDict = counterToSave.getReasons_dict();
         System.out.println(reasonsDict.size());
@@ -57,10 +58,10 @@ public final class SqlUtil {
                 String reason = reasonsDict.elements().nextElement().toString();
                 System.out.println(reason);
                 ContentValues reasonContentValues = new ContentValues();
-                reasonContentValues.put(DefineTables.Counters.COLUMN_COUNTER_ID, counterRowId);
-                reasonContentValues.put(DefineTables.Counters.COLUMN_SOBRIETY_REASON, reason);
+                reasonContentValues.put(ReasonsDatabase.COLUMN_COUNTER_ID, counterRowId);
+                reasonContentValues.put(ReasonsDatabase.COLUMN_SOBRIETY_REASON, reason);
 
-                db.insert(DefineTables.Counters.TABLE_NAME_REASONS, null, reasonContentValues);
+                db.insert(ReasonsDatabase.TABLE_NAME_REASONS, null, reasonContentValues);
             } catch (NoSuchElementException e) {
                 LogEvent.i("No more reasons to save for this counter");
                 break;
