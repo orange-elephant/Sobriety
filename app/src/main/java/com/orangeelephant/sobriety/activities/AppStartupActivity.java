@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,8 +15,10 @@ import android.widget.Toast;
 
 import com.orangeelephant.sobriety.database.DatabaseManager;
 import com.orangeelephant.sobriety.database.SqlcipherKey;
+import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 import com.orangeelephant.sobriety.R;
+import com.orangeelephant.sobriety.logging.LogEvent;
 import com.orangeelephant.sobriety.util.SobrietyPreferences;
 
 import java.security.KeyStoreException;
@@ -47,7 +48,9 @@ public class AppStartupActivity extends AppCompatActivity {
     }
 
     private void onFirstOpen() {
+        LogEvent.i("Running first open tasks");
         DatabaseManager.attemptToCreateEncryptedDatabase(this);
+
         SobrietyPreferences.setIsFirstOpen(false);
     }
 

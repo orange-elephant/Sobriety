@@ -74,8 +74,4 @@ public class DBOpenHelper extends SQLiteOpenHelper {
             return super.getWritableDatabase("");
         }
     }
-
-    public int getSqlCipherMigrationVersion() {
-        return SQL_CIPHER_MIGRATION;
-    }
 }

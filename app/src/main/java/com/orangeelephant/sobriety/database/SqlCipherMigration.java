@@ -3,6 +3,7 @@ package com.orangeelephant.sobriety.database;
 import android.content.Context;
 
 import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
+import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 import com.orangeelephant.sobriety.logging.LogEvent;
 import com.orangeelephant.sobriety.util.SobrietyPreferences;
 
@@ -16,11 +17,11 @@ import java.io.IOException;
 
 public class SqlCipherMigration {
 
-    public SqlCipherMigration(Context context, DBOpenHelper dbHelper) {
+    public static void migrate(Context context, DBOpenHelper dbHelper) {
 
         if (!SobrietyPreferences.getIsDatabaseEncrypted()) {
             try {
-                SqlcipherKey keyManager = new SqlcipherKey();
+                SqlcipherKey keyManager = ApplicationDependencies.getSqlCipherKey();
                 byte[] passphrase = keyManager.getSqlCipherKey();
 
                 //obtain the necessary info about the current database
@@ -29,18 +30,16 @@ public class SqlCipherMigration {
                 int version = database.getVersion();
                 database.close();
 
-                if (version >= dbHelper.getSqlCipherMigrationVersion()) {
+                if (version >= DBOpenHelper.SQL_CIPHER_MIGRATION) {
                     migrateDbToSqlcipher(context, originalFile, passphrase, version);
                 } else {
                     LogEvent.i("Not migrating as version number " + version + " is lower than " +
-                            "sqlcipher migration at version number " + dbHelper.getSqlCipherMigrationVersion());
+                            "sqlcipher migration at version number " + DBOpenHelper.SQL_CIPHER_MIGRATION);
                 }
             } catch (SQLiteException exception) {
                 LogEvent.i("Database is encrypted already");
             } catch (IOException exception) {
                 LogEvent.e("IOException attempting to migrate DB to sql cipher", exception);
-            } catch (Exception exception) {
-                LogEvent.e("Unexpected exception: ", exception);
             }
         } else {
             LogEvent.i("Shared preferences show the database is already encrypted.");
@@ -74,7 +73,7 @@ public class SqlCipherMigration {
      * @param passphrase the passphrase from the user
      * @throws IOException
      */
-    public void migrateDbToSqlcipher(Context ctxt, File originalFile, byte[] passphrase, int version)
+    public static void migrateDbToSqlcipher(Context ctxt, File originalFile, byte[] passphrase, int version)
             throws IOException {
         SQLiteDatabase.loadLibs(ctxt);
         if (originalFile.exists()) {
