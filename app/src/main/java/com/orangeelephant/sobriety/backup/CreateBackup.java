@@ -34,7 +34,7 @@ public class CreateBackup extends BackupBase {
     }
 
     @Override
-    public void setPassphrase(String passphrase) {
+    public void setPassphrase(String passphrase) throws GeneralSecurityException {
         backupSecret.setPassphrase(passphrase);
     }
 

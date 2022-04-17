@@ -16,7 +16,7 @@ public class SqlcipherKey {
 
     public SqlcipherKey() throws KeyStoreException {
         String base64CipherKey = SobrietyPreferences.getSqlcipherEncryptionKey();
-        if (base64CipherKey == "") {
+        if (base64CipherKey.equals("")) {
             try {
                 LogEvent.i("No SqlcipherKey exists, creating one now.");
                 sqlCipherKey = createNewSecretToStore();
@@ -31,6 +31,7 @@ public class SqlcipherKey {
         byte[] encryptedCipherKey = Base64.decode(base64CipherKey, Base64.DEFAULT);
         try {
             sqlCipherKey = KeyStoreUtil.decryptBytes(encryptedCipherKey);
+            LogEvent.i("SqlCipher key fetched successfully");
         } catch (GeneralSecurityException e) {
             LogEvent.e("Couldn't decrypt cipherKey", e);
             throw new KeyStoreException();

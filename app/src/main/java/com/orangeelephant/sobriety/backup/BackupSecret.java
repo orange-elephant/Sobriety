@@ -1,38 +1,28 @@
 package com.orangeelephant.sobriety.backup;
 
-import android.content.Context;
 import android.util.Base64;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.orangeelephant.sobriety.logging.LogEvent;
+import com.orangeelephant.sobriety.util.KeyStoreUtil;
 import com.orangeelephant.sobriety.util.RandomUtil;
-import com.orangeelephant.sobriety.util.SaveSecretToSharedPref;
 import com.orangeelephant.sobriety.util.SobrietyPreferences;
 
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.KeyStoreException;
+import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
-
-public class BackupSecret extends SaveSecretToSharedPref {
-    private static final String encryptedKeyName = "backupEncryptionKey";
+public class BackupSecret {
     private static final int DIGEST_ROUNDS = 250_000;
 
     private final byte[] salt;
     private String passphrase;
     private byte[] backupCipherKey;
 
-    public BackupSecret(Context context, @Nullable byte[] salt) throws KeyStoreException {
-        super(context, encryptedKeyName);
+    public BackupSecret(@Nullable byte[] salt) {
         if (salt == null) {
             this.salt = getSaltFromSharedPreferences();
         } else {
@@ -40,16 +30,10 @@ public class BackupSecret extends SaveSecretToSharedPref {
         }
     }
 
-
-    @Override
     protected byte[] createNewSecretToStore() throws IllegalStateException {
         if (passphrase == null) {
             throw new IllegalStateException("No password was provided from which to derive a secret");
         }
-        return deriveSecretFromPassphrase(passphrase);
-    }
-
-    private byte[] deriveSecretFromPassphrase(String passphrase) {
         return getBackupKey(passphrase, salt);
     }
 
@@ -100,28 +84,32 @@ public class BackupSecret extends SaveSecretToSharedPref {
         return base64encodedBytes;
     }
 
-    public void setPassphrase(String passphrase) {
+    public void setPassphrase(String passphrase) throws GeneralSecurityException {
         this.passphrase = passphrase;
         byte[] backupCipherKey = createNewSecretToStore();
-        storeCipherKey(backupCipherKey);
+        byte[] encryptedCipherKey = KeyStoreUtil.encryptBytes(backupCipherKey);
+        SobrietyPreferences.setBackupEncryptionKey(Base64.encodeToString(encryptedCipherKey, Base64.DEFAULT));
         LogEvent.i("Backup cipher key created from password and stored");
     }
 
-    public byte[] getBackupCipherKey() throws NoSecretExistsException, KeyStoreException {
+    public byte[] getBackupCipherKey() throws NoSecretExistsException, GeneralSecurityException {
         try {
-            backupCipherKey = decryptCipherKey(getEncryptedKeyFromPreferences());
-        } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException |
-                BadPaddingException | NoSuchPaddingException |
-                InvalidKeyException | IllegalBlockSizeException e) {
+            String savedSecret = SobrietyPreferences.getBackupEncryptionKey();
+            if (savedSecret.equals("")) {
+                throw new NoSecretExistsException("No secret exists, create one by setting a passphrase");
+            }
+            byte[] encryptedKey = Base64.decode(SobrietyPreferences.getBackupEncryptionKey(), Base64.DEFAULT);
+            backupCipherKey = KeyStoreUtil.decryptBytes(encryptedKey);
+        } catch (GeneralSecurityException e) {
             LogEvent.e("Couldn't decrypt cipherKey", e);
-            throw new KeyStoreException();
+            throw new GeneralSecurityException();
         }
         return backupCipherKey;
     }
 
     //fails!!
-    public boolean verifyPassphrase(String passphrase) throws NoSecretExistsException, KeyStoreException {
-        return Arrays.equals(deriveSecretFromPassphrase(passphrase), getBackupCipherKey());
+    public boolean verifyPassphrase(String passphrase) throws NoSecretExistsException, GeneralSecurityException {
+        return Arrays.equals(getBackupKey(passphrase, salt), getBackupCipherKey());
     }
 
     public String getSalt() {

@@ -10,16 +10,10 @@ import com.orangeelephant.sobriety.util.RandomUtil;
 import net.sqlcipher.database.SQLiteDatabase;
 
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
+import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -35,12 +29,12 @@ public abstract class BackupBase {
         this.context = ApplicationDependencies.getApplicationContext();
     }
 
-    public abstract void setPassphrase(String passphrase);
+    public abstract void setPassphrase(String passphrase) throws GeneralSecurityException;
 
     protected String encryptString(String toEncrypt) throws NoSecretExistsException, KeyManagementException {
         try {
             if (backupSecret == null) {
-                backupSecret = new BackupSecret(context, null);
+                backupSecret = new BackupSecret(null);
             }
         } catch (Exception e) {
             LogEvent.e("Could create backup secret object", e);
@@ -56,8 +50,7 @@ public abstract class BackupBase {
             byte[] encrypted = cipher.doFinal(toEncrypt.getBytes(StandardCharsets.UTF_8));
 
             return Base64.encodeToString(encrypted, Base64.DEFAULT);
-        } catch (InvalidKeyException | IllegalBlockSizeException | BadPaddingException |
-                KeyStoreException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException e) {
+        } catch (GeneralSecurityException e) {
             LogEvent.e("Exception trying to retrieve backup cipher", e);
             throw new KeyManagementException();
         }
@@ -73,8 +66,7 @@ public abstract class BackupBase {
             byte[] decrypted = cipher.doFinal(toDecrypt);
 
             return new String(decrypted);
-        } catch (NoSecretExistsException | NoSuchPaddingException | NoSuchAlgorithmException | KeyStoreException |
-                InvalidKeyException | BadPaddingException | IllegalBlockSizeException | InvalidAlgorithmParameterException e) {
+        } catch (NoSecretExistsException | GeneralSecurityException e) {
             LogEvent.e("Failed to decrypt string", e);
             throw new KeyManagementException();
         }

@@ -4,7 +4,6 @@ import android.os.Environment;
 import android.util.Base64;
 
 import com.orangeelephant.sobriety.counter.Counter;
-import com.orangeelephant.sobriety.database.DefineTables;
 import com.orangeelephant.sobriety.database.helpers.CountersDatabaseHelper;
 import com.orangeelephant.sobriety.logging.LogEvent;
 import com.orangeelephant.sobriety.util.SqlUtil;
@@ -15,6 +14,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -30,12 +30,13 @@ public class ImportBackup extends BackupBase {
         byte[] encrypted = Base64.decode(jsonObject.getString("EncryptedData"), Base64.DEFAULT);
         byte[] iv = Base64.decode(jsonObject.getString("IV"), Base64.DEFAULT);
 
+        backupSecret = new BackupSecret(salt);
+
         try {
-            backupSecret = new BackupSecret(context, salt);
-        } catch (Exception e) {
+            setPassphrase("Bob");
+        } catch (GeneralSecurityException e) {
             e.printStackTrace();
         }
-        setPassphrase("Bob");
 
         try {
             JSONObject decrypted = new JSONObject(decryptBytes(encrypted, iv));
@@ -47,7 +48,7 @@ public class ImportBackup extends BackupBase {
     }
 
     @Override
-    public void setPassphrase(String passphrase) {
+    public void setPassphrase(String passphrase) throws GeneralSecurityException {
         backupSecret.setPassphrase(passphrase);
     }
 
