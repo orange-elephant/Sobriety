@@ -41,7 +41,7 @@ public class AppStartupActivity extends AppCompatActivity {
             try {
                 uponUnlock();
             } catch (KeyStoreException exception) {
-                exception.printStackTrace();
+                LogEvent.e("Unable to start app due to exception loading sqlCipherKey", exception);
             }
         }
 
@@ -109,8 +109,8 @@ public class AppStartupActivity extends AppCompatActivity {
 
                 try {
                     uponUnlock();
-                } catch (Exception exception) {
-                    exception.printStackTrace();
+                } catch (KeyStoreException exception) {
+                    LogEvent.e("Unable to start app due to exception loading sqlCipherKey", exception);
                 }
                 //start app
                 Intent intent = new Intent(AppStartupActivity.this, HomeScreenActivity.class);
