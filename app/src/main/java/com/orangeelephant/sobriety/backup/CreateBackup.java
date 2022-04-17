@@ -28,7 +28,7 @@ public class CreateBackup extends BackupBase {
         this.database = new CountersDatabaseHelper(context).getReadableDatabase();
 
         try {
-            backupSecret = new BackupSecret(context, null);
+            backupSecret = new BackupSecret(null);
         } catch (Exception e) {
             LogEvent.e("Couldn't create a new instance of backupSecret", e);
         }

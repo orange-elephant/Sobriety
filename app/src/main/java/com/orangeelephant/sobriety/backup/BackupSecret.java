@@ -30,7 +30,7 @@ public class BackupSecret {
         }
     }
 
-    protected byte[] createNewSecretToStore() throws IllegalStateException {
+    private byte[] createNewSecretToStore() throws IllegalStateException {
         if (passphrase == null) {
             throw new IllegalStateException("No password was provided from which to derive a secret");
         }
@@ -107,7 +107,6 @@ public class BackupSecret {
         return backupCipherKey;
     }
 
-    //fails!!
     public boolean verifyPassphrase(String passphrase) throws NoSecretExistsException, GeneralSecurityException {
         return Arrays.equals(getBackupKey(passphrase, salt), getBackupCipherKey());
     }
