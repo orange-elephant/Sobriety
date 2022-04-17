@@ -11,33 +11,27 @@ import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteException;
 
 public class DatabaseManager {
-    private final Context context;
 
-    private final SqlcipherKey sqlcipherKey;
+    private DatabaseManager() {}
 
-    public DatabaseManager() {
-        this.context = ApplicationDependencies.getApplicationContext();
-        this.sqlcipherKey = ApplicationDependencies.getSqlCipherKey();
-
-        //load libraries necessary for sqlcipher library to function
+    /**
+     * A method that loads the libraries required for sqlCipher to work
+     * to be run at app launch
+     * @param context the context needed by sqlCipher
+     */
+    public static void loadSqlCipherLibs(Context context) {
         SQLiteDatabase.loadLibs(context);
-
-        // if shared preferences indicates db isn't encrypted, attempt migration
-        if (!SobrietyPreferences.getIsDatabaseEncrypted()) {
-            attemptToCreateEncryptedDatabase();
-        }
     }
 
-    private void attemptToCreateEncryptedDatabase() {
+    public static void attemptToCreateEncryptedDatabase(Context context) {
+        SqlcipherKey sqlcipherKey = ApplicationDependencies.getSqlCipherKey();
         try {
-            SQLiteDatabase db = new CountersDatabaseHelper(context).getReadableDatabase(sqlcipherKey.getSqlCipherKey());
+            new CountersDatabaseHelper(context).getReadableDatabase(sqlcipherKey.getSqlCipherKey());
             SobrietyPreferences.setIsDatabaseEncrypted(true);
             LogEvent.i("A new encrypted database was created");
         } catch (SQLiteException exception) {
             LogEvent.i("Couldn't create a database with the provided key, an unencrypted database probably exists.");
             new SqlCipherMigration(context, new CountersDatabaseHelper(context));
-        } catch (Exception exception) {
-            LogEvent.e("Exception loading sqlcipher key", exception);
         }
     }
 }

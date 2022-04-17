@@ -4,7 +4,6 @@ package com.orangeelephant.sobriety.dependencies;
 import android.app.Application;
 import android.content.Context;
 
-import com.orangeelephant.sobriety.database.DatabaseManager;
 import com.orangeelephant.sobriety.database.SqlcipherKey;
 
 /**
@@ -15,7 +14,6 @@ public class ApplicationDependencies {
 
     private static volatile Application     application;
     private static volatile SqlcipherKey    sqlcipherKey;
-    private static volatile DatabaseManager databaseManager;
 
     private ApplicationDependencies() {}
 
@@ -23,7 +21,6 @@ public class ApplicationDependencies {
         if (ApplicationDependencies.application == null) {
             ApplicationDependencies.application = application;
         }
-
     }
 
     public boolean isInitialised() {
@@ -39,13 +36,6 @@ public class ApplicationDependencies {
             throw new IllegalStateException("SQLCipherKey has not been loaded");
         }
         return sqlcipherKey;
-    }
-
-    public static DatabaseManager getDatabaseManager() {
-        if (databaseManager == null) {
-            databaseManager = new DatabaseManager();
-        }
-        return databaseManager;
     }
 
     public static Context getApplicationContext() {

@@ -14,11 +14,13 @@ import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.widget.Toast;
 
+import com.orangeelephant.sobriety.database.DatabaseManager;
 import com.orangeelephant.sobriety.database.SqlcipherKey;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.util.SobrietyPreferences;
 
+import java.security.KeyStoreException;
 import java.util.concurrent.Executor;
 
 public class AppStartupActivity extends AppCompatActivity {
@@ -29,31 +31,40 @@ public class AppStartupActivity extends AppCompatActivity {
 
         //initialise ApplicationDependencies
         ApplicationDependencies.init(getApplication());
+        DatabaseManager.loadSqlCipherLibs(this);
 
         if (SobrietyPreferences.getFingerprintLockEnabled()
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             fingerprintUnlock();
         } else {
             try {
-                SqlcipherKey sqlcipherKey = new SqlcipherKey();
-                ApplicationDependencies.setSqlcipherKey(sqlcipherKey);
-                ApplicationDependencies.getDatabaseManager();
-
-                if (SobrietyPreferences.getIsFirstOpen()) {
-                    onFirstOpen();
-                }
-
-            } catch (Exception exception) {
+                uponUnlock();
+            } catch (KeyStoreException exception) {
                 exception.printStackTrace();
             }
-            Intent intent = new Intent(AppStartupActivity.this, HomeScreenActivity.class);
-            startActivity(intent);
         }
 
     }
 
     private void onFirstOpen() {
+        DatabaseManager.attemptToCreateEncryptedDatabase(this);
         SobrietyPreferences.setIsFirstOpen(false);
+    }
+
+    private void uponUnlock() throws KeyStoreException {
+        SqlcipherKey sqlcipherKey = new SqlcipherKey();
+        ApplicationDependencies.setSqlcipherKey(sqlcipherKey);
+
+        if (SobrietyPreferences.getIsFirstOpen()) {
+            onFirstOpen();
+        }
+
+        if (!SobrietyPreferences.getIsDatabaseEncrypted()) {
+            DatabaseManager.attemptToCreateEncryptedDatabase(this);
+        }
+
+        Intent intent = new Intent(AppStartupActivity.this, HomeScreenActivity.class);
+        startActivity(intent);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -94,9 +105,7 @@ public class AppStartupActivity extends AppCompatActivity {
                         .show();
 
                 try {
-                    SqlcipherKey sqlcipherKey = new SqlcipherKey();
-                    ApplicationDependencies.setSqlcipherKey(sqlcipherKey);
-                    ApplicationDependencies.getDatabaseManager();
+                    uponUnlock();
                 } catch (Exception exception) {
                     exception.printStackTrace();
                 }

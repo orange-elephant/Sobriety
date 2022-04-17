@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
 import java.util.ArrayList;
 
@@ -96,7 +97,7 @@ public class CreateBackup extends BackupBase {
 
     public void saveToExternalStorage() throws JSONException, NoSecretExistsException, KeyManagementException {
         JSONObject encryptedDataAsJson = getEncryptedDataAsJson();
-
+        LogEvent.i(String.valueOf(encryptedDataAsJson));
         String fileName = "sobriety.backup";
         String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString();
         File backupFile = new File(root, fileName);
