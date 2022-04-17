@@ -5,11 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.orangeelephant.sobriety.database.DefineTables;
+import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
+import com.orangeelephant.sobriety.util.SobrietyPreferences;
 
 import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteOpenHelper;
 
-public class CountersDatabaseHelper extends BaseDbHelper {
-
+public class DBOpenHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 6;
     public static final String DATABASE_NAME = "sobriety_tracker";
 
@@ -18,8 +20,8 @@ public class CountersDatabaseHelper extends BaseDbHelper {
     public static final int ADD_REASONS_TABLE = 5;
     public static final int SQL_CIPHER_MIGRATION = 6;
 
-    public CountersDatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, DATABASE_VERSION, SQL_CIPHER_MIGRATION);
+    public DBOpenHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
@@ -53,5 +55,27 @@ public class CountersDatabaseHelper extends BaseDbHelper {
             //wipe set all old values to null since sqlite wont allow dropping column
             sqLiteDatabase.execSQL("UPDATE counters SET sobriety_reason = NULL");
         }
+    }
+
+    public SQLiteDatabase getReadableDatabase() {
+        byte[] password = ApplicationDependencies.getSqlCipherKey().getSqlCipherKey();
+        if (DATABASE_VERSION >= SQL_CIPHER_MIGRATION && SobrietyPreferences.getIsDatabaseEncrypted()) {
+            return super.getReadableDatabase(password);
+        } else {
+            return super.getReadableDatabase("");
+        }
+    }
+
+    public SQLiteDatabase getWritableDatabase() {
+        byte[] password = ApplicationDependencies.getSqlCipherKey().getSqlCipherKey();
+        if (DATABASE_VERSION >= SQL_CIPHER_MIGRATION && SobrietyPreferences.getIsDatabaseEncrypted()) {
+            return super.getWritableDatabase(password);
+        } else {
+            return super.getWritableDatabase("");
+        }
+    }
+
+    public int getSqlCipherMigrationVersion() {
+        return SQL_CIPHER_MIGRATION;
     }
 }

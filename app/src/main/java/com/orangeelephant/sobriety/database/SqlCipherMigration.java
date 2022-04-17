@@ -2,7 +2,7 @@ package com.orangeelephant.sobriety.database;
 
 import android.content.Context;
 
-import com.orangeelephant.sobriety.database.helpers.BaseDbHelper;
+import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
 import com.orangeelephant.sobriety.logging.LogEvent;
 import com.orangeelephant.sobriety.util.SobrietyPreferences;
 
@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class SqlCipherMigration {
 
-    public SqlCipherMigration(Context context, BaseDbHelper dbHelper) {
+    public SqlCipherMigration(Context context, DBOpenHelper dbHelper) {
 
         if (!SobrietyPreferences.getIsDatabaseEncrypted()) {
             try {

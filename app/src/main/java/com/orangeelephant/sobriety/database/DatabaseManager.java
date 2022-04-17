@@ -2,7 +2,7 @@ package com.orangeelephant.sobriety.database;
 
 import android.content.Context;
 
-import com.orangeelephant.sobriety.database.helpers.CountersDatabaseHelper;
+import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 import com.orangeelephant.sobriety.logging.LogEvent;
 import com.orangeelephant.sobriety.util.SobrietyPreferences;
@@ -26,12 +26,12 @@ public class DatabaseManager {
     public static void attemptToCreateEncryptedDatabase(Context context) {
         SqlcipherKey sqlcipherKey = ApplicationDependencies.getSqlCipherKey();
         try {
-            new CountersDatabaseHelper(context).getReadableDatabase(sqlcipherKey.getSqlCipherKey());
+            new DBOpenHelper(context).getReadableDatabase(sqlcipherKey.getSqlCipherKey());
             SobrietyPreferences.setIsDatabaseEncrypted(true);
             LogEvent.i("A new encrypted database was created");
         } catch (SQLiteException exception) {
             LogEvent.i("Couldn't create a database with the provided key, an unencrypted database probably exists.");
-            new SqlCipherMigration(context, new CountersDatabaseHelper(context));
+            new SqlCipherMigration(context, new DBOpenHelper(context));
         }
     }
 }

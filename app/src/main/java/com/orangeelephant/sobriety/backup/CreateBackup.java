@@ -2,7 +2,7 @@ package com.orangeelephant.sobriety.backup;
 
 import android.os.Environment;
 
-import com.orangeelephant.sobriety.database.helpers.CountersDatabaseHelper;
+import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
 import com.orangeelephant.sobriety.logging.LogEvent;
 import com.orangeelephant.sobriety.util.SqlUtil;
 
@@ -25,7 +25,7 @@ public class CreateBackup extends BackupBase {
 
     public CreateBackup() {
         super();
-        this.database = new CountersDatabaseHelper(context).getReadableDatabase();
+        this.database = new DBOpenHelper(context).getReadableDatabase();
 
         try {
             backupSecret = new BackupSecret(null);
@@ -54,7 +54,7 @@ public class CreateBackup extends BackupBase {
 
     private JSONObject getDatabaseAsJson() throws JSONException {
         JSONObject databaseAsJson = new JSONObject();
-        databaseAsJson.put("DatabaseVersion", CountersDatabaseHelper.DATABASE_VERSION);
+        databaseAsJson.put("DatabaseVersion", DBOpenHelper.DATABASE_VERSION);
 
         ArrayList<String> tableNames =
                 SqlUtil.getTableNames(database);

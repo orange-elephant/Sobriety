@@ -6,7 +6,7 @@ import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.orangeelephant.sobriety.database.DefineTables;
-import com.orangeelephant.sobriety.database.helpers.CountersDatabaseHelper;
+import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
@@ -24,7 +24,7 @@ public class CreateNewCounter extends AppCompatActivity {
     }
 
     private void writeToDb(Context context) {
-        SQLiteDatabase db = new CountersDatabaseHelper(context).getWritableDatabase();
+        SQLiteDatabase db = new DBOpenHelper(context).getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(DefineTables.Counters.COLUMN_NAME, this._name);

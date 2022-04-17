@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.orangeelephant.sobriety.R;
-import com.orangeelephant.sobriety.database.helpers.CountersDatabaseHelper;
+import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
 import com.orangeelephant.sobriety.logging.LogEvent;
 
 import net.sqlcipher.CursorIndexOutOfBoundsException;
@@ -31,7 +31,7 @@ public class LoadCounters {
         String sql = "SELECT * FROM Counters\n" +
                      "ORDER by start_time_unix_millis ASC";
         SQLiteDatabase db;
-        db = new CountersDatabaseHelper(this.context).getReadableDatabase();
+        db = new DBOpenHelper(this.context).getReadableDatabase();
 
         Cursor cursor = db.rawQuery(sql, null);
 
