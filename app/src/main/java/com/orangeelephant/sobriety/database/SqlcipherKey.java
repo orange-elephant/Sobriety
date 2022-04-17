@@ -21,7 +21,8 @@ public class SqlcipherKey {
                 LogEvent.i("No SqlcipherKey exists, creating one now.");
                 sqlCipherKey = createNewSecretToStore();
                 byte[] encryptedCipherKey = KeyStoreUtil.encryptBytes(sqlCipherKey);
-                SobrietyPreferences.setSqlcipherEncryptionKey(Base64.encodeToString(encryptedCipherKey, Base64.DEFAULT));
+                base64CipherKey = Base64.encodeToString(encryptedCipherKey, Base64.DEFAULT);
+                SobrietyPreferences.setSqlcipherEncryptionKey(base64CipherKey);
             } catch (GeneralSecurityException e) {
                 LogEvent.e("Couldn't create a new sqlCipherEncryptionKey", e);
                 throw new KeyStoreException();

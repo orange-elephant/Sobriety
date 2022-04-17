@@ -45,8 +45,10 @@ public class KeyStoreUtil {
             return cipher.doFinal(bytesToEncrypt);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException |
                 InvalidKeyException e) {
+            LogEvent.i(String.valueOf(e.getClass()));
             throw new GeneralSecurityException("Invalid parameters when initialising the Cipher instance");
-        } catch (BadPaddingException| IllegalBlockSizeException e) {
+        } catch (BadPaddingException | IllegalBlockSizeException e) {
+            LogEvent.i(String.valueOf(e.getClass()));
             throw new GeneralSecurityException("Invalid ciphertext provided");
         }
     }
@@ -60,8 +62,10 @@ public class KeyStoreUtil {
             return cipher.doFinal(bytesToDecrypt);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException |
                 InvalidKeyException e) {
+            LogEvent.i(String.valueOf(e.getClass()));
             throw new GeneralSecurityException("Invalid parameters when initialising the Cipher instance");
         } catch (BadPaddingException | IllegalBlockSizeException e) {
+            LogEvent.i(String.valueOf(e.getClass()));
             throw new GeneralSecurityException("Invalid ciphertext provided");
         }
     }
@@ -103,8 +107,8 @@ public class KeyStoreUtil {
         String base64encodedIV = SobrietyPreferences.getEncryptionFixedIv();
 
         if (base64encodedIV.equals("")) {
-            if (!(SobrietyPreferences.getBackupEncryptionKey() == "") &&
-                    !(SobrietyPreferences.getSqlcipherEncryptionKey() == "")) {
+            if (!(SobrietyPreferences.getBackupEncryptionKey().equals("")) &&
+                    !(SobrietyPreferences.getSqlcipherEncryptionKey().equals(""))) {
 
                 LogEvent.i("key exists but was not encrypted with a random IV");
                 return new byte[12];
