@@ -11,7 +11,7 @@ import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
  * A class which provides methods to simplify the setting and accessing of preferences
  * and settings related to the app
  */
-public class SobrietyPreferences {
+public final class SobrietyPreferences {
     private static final String sharedPreferenceFile = "com.orangeelephant.sobriety_preferences";
 
     private static final String ENCRYPTION_FIXED_IV = "fixedIv";

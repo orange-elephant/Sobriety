@@ -31,7 +31,7 @@ import javax.crypto.spec.GCMParameterSpec;
  * taken from this source as a way to store the key for the sqlite databases using the android
  * keystore.
  */
-public class KeyStoreUtil {
+public final class KeyStoreUtil {
     private static final String AES_MODE = "AES/GCM/NoPadding";
     private static final String ANDROID_KEY_STORE = "AndroidKeyStore";
     private static final String KEY_ALIAS = "sobriety_database_key";

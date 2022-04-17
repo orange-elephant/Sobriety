@@ -14,7 +14,11 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.NoSuchElementException;
 
-public class SqlUtil {
+/**
+ * A class which provides methods useful for interacting with the SQLiteDatabase of the
+ * app
+ */
+public final class SqlUtil {
 
     public static ArrayList<String> getTableNames(SQLiteDatabase db) {
         String sql = "SELECT name FROM sqlite_master WHERE type='table';";
