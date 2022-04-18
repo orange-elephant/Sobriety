@@ -9,16 +9,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.Dictionary;
 
 import com.orangeelephant.sobriety.R;
+import com.orangeelephant.sobriety.counter.Reason;
 
 public class ReasonsAdapter extends
         RecyclerView.Adapter<ReasonsAdapter.ViewHolder> {
 
-    private Dictionary reasonsDict;
+    private ArrayList<Reason> reasonsDict;
 
-    public ReasonsAdapter(Dictionary reasonsDict) {
+    public ReasonsAdapter(ArrayList<Reason> reasonsDict) {
         this.reasonsDict = reasonsDict;
     }
 
@@ -35,7 +37,7 @@ public class ReasonsAdapter extends
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String reason = reasonsDict.elements().nextElement().toString();
+        String reason = reasonsDict.get(position).getReason();
 
         TextView reasonTextView = holder.reasonView;
         reasonTextView.setText(reason);

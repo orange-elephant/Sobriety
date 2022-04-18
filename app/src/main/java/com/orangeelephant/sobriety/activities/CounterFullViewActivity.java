@@ -18,10 +18,11 @@ import android.widget.Toast;
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.activities.adapters.ReasonsAdapter;
 import com.orangeelephant.sobriety.counter.Counter;
+import com.orangeelephant.sobriety.counter.Reason;
 import com.orangeelephant.sobriety.managecounters.ResetCounter;
 import com.orangeelephant.sobriety.managecounters.DeleteCounter;
 
-import java.util.Dictionary;
+import java.util.ArrayList;
 
 public class CounterFullViewActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
@@ -100,7 +101,7 @@ public class CounterFullViewActivity extends AppCompatActivity {
 
     private void resetCounter() {
         int openCounterId = this.openCounter.get_id();
-        Dictionary reason = this.openCounter.getReasons_dict();
+        ArrayList<Reason> reason = this.openCounter.getReasons();
         ResetCounter resetCounter = new ResetCounter(this, openCounterId, reason);
         this.openCounter = resetCounter.returnResetCounter();
 
@@ -147,7 +148,7 @@ public class CounterFullViewActivity extends AppCompatActivity {
     public void onCreateRecycler() {
         RecyclerView reasonsView = findViewById(R.id.CounterViewActivity_reasons_recycler_view);
 
-        this.adapter = new ReasonsAdapter(openCounter.getReasons_dict());
+        this.adapter = new ReasonsAdapter(openCounter.getReasons());
         reasonsView.setAdapter(adapter);
         reasonsView.setLayoutManager(new LinearLayoutManager(this));
     }

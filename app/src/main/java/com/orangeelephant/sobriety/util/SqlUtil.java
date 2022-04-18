@@ -3,6 +3,7 @@ package com.orangeelephant.sobriety.util;
 import android.content.ContentValues;
 
 import com.orangeelephant.sobriety.counter.Counter;
+import com.orangeelephant.sobriety.counter.Reason;
 import com.orangeelephant.sobriety.database.CountersDatabase;
 import com.orangeelephant.sobriety.database.ReasonsDatabase;
 import com.orangeelephant.sobriety.logging.LogEvent;
@@ -12,7 +13,6 @@ import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.NoSuchElementException;
 
 /**
@@ -51,11 +51,11 @@ public final class SqlUtil {
 
         long counterRowId = db.insert(CountersDatabase.TABLE_NAME_COUNTERS, null, contentValues);
 
-        Dictionary reasonsDict = counterToSave.getReasons_dict();
+        ArrayList<Reason> reasonsDict = counterToSave.getReasons();
         System.out.println(reasonsDict.size());
         for (int i = 0; i < reasonsDict.size(); i++) {
             try {
-                String reason = reasonsDict.elements().nextElement().toString();
+                String reason = reasonsDict.get(i).getReason();
                 System.out.println(reason);
                 ContentValues reasonContentValues = new ContentValues();
                 reasonContentValues.put(ReasonsDatabase.COLUMN_COUNTER_ID, counterRowId);

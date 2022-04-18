@@ -1,6 +1,7 @@
 package com.orangeelephant.sobriety.counter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -12,16 +13,16 @@ public class Counter implements Serializable {
     private final long start_time_in_millis;
     private final long record_time_sober_in_millis;
     private long time_sober_in_millis;
-    private final Dictionary reasons_dict;
+    private final ArrayList<Reason> reasons;
     private final String time_sober_string;
 
     public Counter(int _id, String name, Long start_time_in_millis, Long record_time_sober_in_millis,
-                   Dictionary reasons_dict, String time_sober_string) {
+                   ArrayList<Reason> reasons, String time_sober_string) {
         this._id = _id;
         this.name = name;
         this.start_time_in_millis = start_time_in_millis;
         this.record_time_sober_in_millis = record_time_sober_in_millis;
-        this.reasons_dict = reasons_dict;
+        this.reasons = reasons;
         this.time_sober_string = time_sober_string;
     }
 
@@ -70,16 +71,16 @@ public class Counter implements Serializable {
         return timeSoberInMillis;
     }
 
-    public String getSobrietyReason() {
+    public Reason getSobrietyReason() {
         try {
-            return (String) this.reasons_dict.elements().nextElement();
+            return this.reasons.get(0);
         } catch (NoSuchElementException elementException) {
             return null;
         }
     }
 
-    public Dictionary getReasons_dict() {
-        return this.reasons_dict;
+    public ArrayList<Reason> getReasons() {
+        return this.reasons;
     }
 
     public long getStart_time_in_millis() {

@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.orangeelephant.sobriety.database.DatabaseManager;
 import com.orangeelephant.sobriety.database.SqlcipherKey;
-import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.logging.LogEvent;

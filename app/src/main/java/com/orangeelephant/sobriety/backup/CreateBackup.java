@@ -47,8 +47,6 @@ public class CreateBackup extends BackupBase {
         encryptedDataAsJson.put("IV", getIv());
         encryptedDataAsJson.put("EncryptedData", encryptedData);
 
-        LogEvent.i(encryptedDataAsJson.toString());
-
         return encryptedDataAsJson;
     }
 

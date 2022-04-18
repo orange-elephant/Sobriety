@@ -5,11 +5,13 @@ import android.database.Cursor;
 
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.counter.Counter;
+import com.orangeelephant.sobriety.counter.Reason;
 import com.orangeelephant.sobriety.database.CountersDatabase;
 import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Dictionary;
 
@@ -19,9 +21,9 @@ public class ResetCounter {
     private String name;
     private long recordTime;
     private long timeNow;
-    private Dictionary sobrietyReasons;
+    private ArrayList<Reason> sobrietyReasons;
 
-    public ResetCounter(Context context, int counterId, Dictionary sobrietyReasons) {
+    public ResetCounter(Context context, int counterId, ArrayList<Reason> sobrietyReasons) {
         this.context = context;
         this.counterId = counterId;
         this.sobrietyReasons = sobrietyReasons;

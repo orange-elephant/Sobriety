@@ -6,16 +6,14 @@ import androidx.preference.PreferenceManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.counter.Counter;
+import com.orangeelephant.sobriety.counter.Reason;
 import com.orangeelephant.sobriety.managecounters.EditCounter;
 
-import net.sqlcipher.database.SQLiteDatabase;
-
-import java.util.Dictionary;
+import java.util.ArrayList;
 
 public class EditCounterActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
@@ -23,7 +21,7 @@ public class EditCounterActivity extends AppCompatActivity {
 
     private EditCounter editCounter;
     private Counter openCounter;
-    private Dictionary reasons;
+    private ArrayList<Reason> reasons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +31,7 @@ public class EditCounterActivity extends AppCompatActivity {
 
         this.openCounter = (Counter) getIntent().getSerializableExtra("openCounter");
         this.editCounter = new EditCounter(this, openCounter.get_id());
-        this.reasons = openCounter.getReasons_dict();
+        this.reasons = openCounter.getReasons();
         preferenceChangeListener =
                 new SharedPreferences.OnSharedPreferenceChangeListener() {
                     @Override
@@ -51,7 +49,7 @@ public class EditCounterActivity extends AppCompatActivity {
         if (this.reasons.isEmpty()) {
             editCounter.addReason(reason);
         } else {
-            int reason_id = (int) this.reasons.keys().nextElement();
+            int reason_id = this.reasons.get(0).getReasonId();
             editCounter.changeReason(reason, reason_id);
         }
         editCounter.printEditSuccessfulMessage(getString(R.string.Toast_counter_edited_successfully));

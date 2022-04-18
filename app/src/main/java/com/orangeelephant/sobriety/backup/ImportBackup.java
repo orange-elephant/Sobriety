@@ -4,6 +4,7 @@ import android.os.Environment;
 import android.util.Base64;
 
 import com.orangeelephant.sobriety.counter.Counter;
+import com.orangeelephant.sobriety.counter.Reason;
 import com.orangeelephant.sobriety.database.CountersDatabase;
 import com.orangeelephant.sobriety.database.ReasonsDatabase;
 import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
@@ -73,7 +74,7 @@ public class ImportBackup extends BackupBase {
                     long startTime = counter.getLong("start_time_unix_millis");
                     long recordTime = counter.getLong("record_time_clean");
 
-                    Counter toSave = new Counter(id, name, startTime, recordTime, new Hashtable(), "");
+                    Counter toSave = new Counter(id, name, startTime, recordTime, new ArrayList<>(), "");
 
                     countersRetrieved.add(toSave);
                     numCountersImported++;
@@ -86,7 +87,8 @@ public class ImportBackup extends BackupBase {
                     JSONObject reason = reasonsArray.getJSONObject(i);
                     for (Counter counter: countersRetrieved) {
                         if (counter.get_id() == reason.getInt("counter_id")) {
-                            counter.getReasons_dict().put(reason.getInt("_id"), reason.getString("sobriety_reason"));
+                            Reason sobrietyReason = new Reason(reason.getInt("_id"), reason.getString("sobriety_reason"));
+                            counter.getReasons().add(sobrietyReason);
                             LogEvent.i("Reason added");
                             break;
                         }

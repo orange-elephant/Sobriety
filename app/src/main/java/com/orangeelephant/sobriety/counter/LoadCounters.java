@@ -54,14 +54,14 @@ public class LoadCounters {
             try {
                 String reasonSql = "SELECT _id, sobriety_reason FROM reasons WHERE counter_id = " + id;
                 Cursor reasonsCursor = db.rawQuery(reasonSql, null);
-                Dictionary reasons_dict = new Hashtable();
+                ArrayList<Reason> reasons = new ArrayList<>();
 
                 while(reasonsCursor.moveToNext()) {
                     int reason_id = reasonsCursor.getInt(0);
                     String sobriety_reason = reasonsCursor.getString(1);
-                    reasons_dict.put(reason_id, sobriety_reason);
+                    reasons.add(new Reason(reason_id, sobriety_reason));
                 }
-                innerList.add(reasons_dict);
+                innerList.add(reasons);
 
             } catch (CursorIndexOutOfBoundsException exception) {
                 innerList.add(null);
@@ -91,10 +91,10 @@ public class LoadCounters {
             String name = currentCounterDetails.get(1).toString();
             Long time = (Long) currentCounterDetails.get(2);
             Long recordTime = (Long) currentCounterDetails.get(3);
-            Dictionary sobriety_reasons = (Dictionary) currentCounterDetails.get(4);
+            ArrayList<Reason> reasons = (ArrayList<Reason>) currentCounterDetails.get(4);
             String time_sober_string = context.getString(R.string.CounterViewActivity_counter_message_long);
 
-            Counter currentCounter = new Counter(id, name, time, recordTime, sobriety_reasons, time_sober_string);
+            Counter currentCounter = new Counter(id, name, time, recordTime, reasons, time_sober_string);
 
             counterObjects.add(currentCounter);
         }
