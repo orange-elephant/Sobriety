@@ -92,9 +92,8 @@ public class LoadCounters {
             Long time = (Long) currentCounterDetails.get(2);
             Long recordTime = (Long) currentCounterDetails.get(3);
             ArrayList<Reason> reasons = (ArrayList<Reason>) currentCounterDetails.get(4);
-            String time_sober_string = context.getString(R.string.CounterViewActivity_counter_message_long);
 
-            Counter currentCounter = new Counter(id, name, time, recordTime, reasons, time_sober_string);
+            Counter currentCounter = new Counter(id, name, time, recordTime, reasons);
 
             counterObjects.add(currentCounter);
         }

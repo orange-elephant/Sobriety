@@ -11,6 +11,8 @@ import android.widget.EditText;
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.counter.Counter;
 import com.orangeelephant.sobriety.counter.Reason;
+import com.orangeelephant.sobriety.database.CountersDatabase;
+import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
 import com.orangeelephant.sobriety.managecounters.EditCounter;
 
 import java.util.ArrayList;
@@ -29,7 +31,8 @@ public class EditCounterActivity extends AppCompatActivity {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         setContentView(R.layout.activity_edit_counter);
 
-        this.openCounter = (Counter) getIntent().getSerializableExtra("openCounter");
+        int openCounterId = getIntent().getIntExtra("openCounterId", 0);
+        this.openCounter = new CountersDatabase(new DBOpenHelper(this)).getCounterById(openCounterId);
         this.editCounter = new EditCounter(this, openCounter.get_id());
         this.reasons = openCounter.getReasons();
         preferenceChangeListener =

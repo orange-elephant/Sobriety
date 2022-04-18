@@ -19,6 +19,8 @@ import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.activities.adapters.ReasonsAdapter;
 import com.orangeelephant.sobriety.counter.Counter;
 import com.orangeelephant.sobriety.counter.Reason;
+import com.orangeelephant.sobriety.database.CountersDatabase;
+import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
 import com.orangeelephant.sobriety.managecounters.ResetCounter;
 import com.orangeelephant.sobriety.managecounters.DeleteCounter;
 
@@ -35,7 +37,8 @@ public class CounterFullViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        this.openCounter = (Counter) getIntent().getSerializableExtra("openCounter");
+        int openCounterId = getIntent().getIntExtra("openCounterId", 0);
+        openCounter = new CountersDatabase(new DBOpenHelper(this)).getCounterById(openCounterId);
 
         setContentView(R.layout.activity_counter_full_view);
 
@@ -140,7 +143,7 @@ public class CounterFullViewActivity extends AppCompatActivity {
 
     public void onClickEditCounter (View v) {
         Intent intent = new Intent(CounterFullViewActivity.this, EditCounterActivity.class);
-        intent.putExtra("openCounter", openCounter);
+        intent.putExtra("openCounterId", openCounter.get_id());
 
         startActivity(intent);
     }

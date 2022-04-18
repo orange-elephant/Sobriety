@@ -74,7 +74,7 @@ public class ImportBackup extends BackupBase {
                     long startTime = counter.getLong("start_time_unix_millis");
                     long recordTime = counter.getLong("record_time_clean");
 
-                    Counter toSave = new Counter(id, name, startTime, recordTime, new ArrayList<>(), "");
+                    Counter toSave = new Counter(id, name, startTime, recordTime, new ArrayList<>());
 
                     countersRetrieved.add(toSave);
                     numCountersImported++;

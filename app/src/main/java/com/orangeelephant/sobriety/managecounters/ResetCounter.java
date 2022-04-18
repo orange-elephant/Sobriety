@@ -35,7 +35,7 @@ public class ResetCounter {
 
     public Counter returnResetCounter() {
         String time_sober_string = context.getString(R.string.CounterViewActivity_counter_message_long);
-        return new Counter(this.counterId, this.name, this.timeNow, this.recordTime, this.sobrietyReasons, time_sober_string);
+        return new Counter(this.counterId, this.name, this.timeNow, this.recordTime, this.sobrietyReasons);
     }
 
     private void checkForRecordTime() {
