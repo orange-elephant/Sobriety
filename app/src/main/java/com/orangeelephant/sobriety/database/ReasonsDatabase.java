@@ -57,25 +57,31 @@ public class ReasonsDatabase implements BaseColumns {
         String sqlReasonRecords = "DELETE FROM " + ReasonsDatabase.TABLE_NAME_REASONS +
                 " WHERE counter_id = " + counterId;
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.beginTransaction();
         db.execSQL(sqlReasonRecords);
+        db.endTransaction();
         db.close();
     }
 
     public void addReasonForCounter(int counterId, String reason) {
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.beginTransaction();
         ContentValues contentValues = new ContentValues();
         contentValues.put(ReasonsDatabase.COLUMN_COUNTER_ID, counterId);
         contentValues.put(ReasonsDatabase.COLUMN_SOBRIETY_REASON, reason);
         db.insert(ReasonsDatabase.TABLE_NAME_REASONS, null, contentValues);
+        db.endTransaction();
         db.close();
     }
 
     public void changeReason(int reasonId, String reason) {
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.beginTransaction();
         String sql = "update " + ReasonsDatabase.TABLE_NAME_REASONS +
                 " set " + ReasonsDatabase.COLUMN_SOBRIETY_REASON + " = '" +
                 reason + "' where _id = " + reasonId;
         db.execSQL(sql);
+        db.endTransaction();
         db.close();
     }
 }
