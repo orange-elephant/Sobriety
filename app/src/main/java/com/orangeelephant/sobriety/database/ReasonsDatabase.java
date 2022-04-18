@@ -51,4 +51,12 @@ public class ReasonsDatabase implements BaseColumns {
 
         return reasons;
     }
+
+    public void deleteReasonsForCounterId(int counterId) {
+        String sqlReasonRecords = "DELETE FROM " + ReasonsDatabase.TABLE_NAME_REASONS +
+                " WHERE counter_id = " + counterId;
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL(sqlReasonRecords);
+        db.close();
+    }
 }

@@ -22,7 +22,6 @@ import com.orangeelephant.sobriety.counter.Reason;
 import com.orangeelephant.sobriety.database.CountersDatabase;
 import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
 import com.orangeelephant.sobriety.managecounters.ResetCounter;
-import com.orangeelephant.sobriety.managecounters.DeleteCounter;
 
 import java.util.ArrayList;
 
@@ -123,10 +122,11 @@ public class CounterFullViewActivity extends AppCompatActivity {
     private void deleteCounter() {
         int openCounterId = this.openCounter.get_id();
         String counterName = this.openCounter.getName();
-        DeleteCounter deleteCounter = new DeleteCounter(this, openCounterId, counterName);
+        new CountersDatabase(new DBOpenHelper(this)).deleteCounterById(openCounterId);
 
-        String deletionToast = this.getApplicationContext().getResources().getString(R.string.Toast_counter_deleted);
-        deleteCounter.printDeletionMessage(deletionToast);
+        CharSequence message = String.format(this.getString(R.string.Toast_counter_deleted), counterName);
+        Toast deletionMessage = Toast.makeText(this, message, Toast.LENGTH_LONG);
+        deletionMessage.show();
 
         onBackPressed();
     }
