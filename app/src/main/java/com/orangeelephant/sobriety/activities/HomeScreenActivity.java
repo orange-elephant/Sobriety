@@ -66,7 +66,7 @@ public class HomeScreenActivity extends AppCompatActivity implements CounterAdap
         Counter openCounter = this.adapter.getmCounter()[position];
 
         Intent intent = new Intent(HomeScreenActivity.this, CounterFullViewActivity.class);
-        intent.putExtra("openCounterId", openCounter.get_id());
+        intent.putExtra("openCounterId", openCounter.getId());
 
         startActivity(intent);
     }

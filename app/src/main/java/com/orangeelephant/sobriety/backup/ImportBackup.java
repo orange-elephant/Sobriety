@@ -86,7 +86,7 @@ public class ImportBackup extends BackupBase {
                 for (int i = 0; i <= reasonsArray.length() - 1; i++) {
                     JSONObject reason = reasonsArray.getJSONObject(i);
                     for (Counter counter: countersRetrieved) {
-                        if (counter.get_id() == reason.getInt("counter_id")) {
+                        if (counter.getId() == reason.getInt("counter_id")) {
                             Reason sobrietyReason = new Reason(reason.getInt("_id"), reason.getString("sobriety_reason"));
                             counter.getReasons().add(sobrietyReason);
                             break;

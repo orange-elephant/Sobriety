@@ -90,11 +90,11 @@ public class CounterFullViewActivity extends AppCompatActivity {
     }
 
     private void resetCounter() {
-        int openCounterId = openCounter.get_id();
+        int openCounterId = openCounter.getId();
         long recordTimeSober = openCounter.getRecordTimeSoberInMillis();
         new CountersDatabase(new DBOpenHelper(this)).resetCounterTimer(openCounterId, recordTimeSober);
-        openCounter.setRecord_time_sober_in_millis(recordTimeSober);
-        openCounter.setStart_time_in_millis(new Date().getTime());
+        openCounter.setRecordTimeSoberInMillis(recordTimeSober);
+        openCounter.setStartTimeInMillis(new Date().getTime());
 
         refreshCurrentCounterView();
     }
@@ -119,7 +119,7 @@ public class CounterFullViewActivity extends AppCompatActivity {
     }
 
     private void deleteCounter() {
-        int openCounterId = this.openCounter.get_id();
+        int openCounterId = this.openCounter.getId();
         String counterName = this.openCounter.getName();
         new CountersDatabase(new DBOpenHelper(this)).deleteCounterById(openCounterId);
 
@@ -132,7 +132,7 @@ public class CounterFullViewActivity extends AppCompatActivity {
 
     public void onClickEditCounter (View v) {
         Intent intent = new Intent(CounterFullViewActivity.this, EditCounterActivity.class);
-        intent.putExtra("openCounterId", openCounter.get_id());
+        intent.putExtra("openCounterId", openCounter.getId());
 
         startActivity(intent);
     }

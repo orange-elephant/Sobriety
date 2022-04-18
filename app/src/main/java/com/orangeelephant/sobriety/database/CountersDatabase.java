@@ -114,8 +114,8 @@ public class CountersDatabase implements BaseColumns {
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(CountersDatabase.COLUMN_NAME, counterToSave.getName());
-        contentValues.put(CountersDatabase.COLUMN_START_TIME, counterToSave.getStart_time_in_millis());
-        contentValues.put(CountersDatabase.COLUMN_RECORD_CLEAN_TIME, counterToSave.getRecord_time_sober_in_millis());
+        contentValues.put(CountersDatabase.COLUMN_START_TIME, counterToSave.getStartTimeInMillis());
+        contentValues.put(CountersDatabase.COLUMN_RECORD_CLEAN_TIME, counterToSave.getRecordTimeSoberInMillis());
 
         int counterRowId = (int) db.insert(CountersDatabase.TABLE_NAME_COUNTERS, null, contentValues);
         db.close();

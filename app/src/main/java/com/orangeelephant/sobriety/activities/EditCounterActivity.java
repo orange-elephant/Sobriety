@@ -50,7 +50,7 @@ public class EditCounterActivity extends AppCompatActivity {
 
         ReasonsDatabase db = new ReasonsDatabase(new DBOpenHelper(this));
         if (this.reasons.isEmpty()) {
-            db.addReasonForCounter(openCounter.get_id(), reason);
+            db.addReasonForCounter(openCounter.getId(), reason);
         } else {
             int reason_id = this.reasons.get(0).getReasonId();
             db.changeReason(reason_id, reason);
