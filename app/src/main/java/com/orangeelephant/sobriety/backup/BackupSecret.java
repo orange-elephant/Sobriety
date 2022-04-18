@@ -4,6 +4,7 @@ import android.util.Base64;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
 import com.orangeelephant.sobriety.logging.LogEvent;
 import com.orangeelephant.sobriety.util.KeyStoreUtil;
@@ -44,7 +45,8 @@ public class BackupSecret {
     providing your own salt and i was unsure if this would work across multiple devices as needed
     for backups.
      */
-    private static @NonNull byte[] getBackupKey(@NonNull String passphrase, @Nullable byte[] salt) {
+    @VisibleForTesting
+    protected static @NonNull byte[] getBackupKey(@NonNull String passphrase, @Nullable byte[] salt) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-512");
             byte[] input = passphrase.replace(" ", "").getBytes();
