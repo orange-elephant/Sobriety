@@ -7,13 +7,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.counter.Counter;
 import com.orangeelephant.sobriety.counter.Reason;
 import com.orangeelephant.sobriety.database.CountersDatabase;
+import com.orangeelephant.sobriety.database.ReasonsDatabase;
 import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
-import com.orangeelephant.sobriety.managecounters.EditCounter;
 
 import java.util.ArrayList;
 
@@ -21,7 +22,6 @@ public class EditCounterActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
-    private EditCounter editCounter;
     private Counter openCounter;
     private ArrayList<Reason> reasons;
 
@@ -33,7 +33,6 @@ public class EditCounterActivity extends AppCompatActivity {
 
         int openCounterId = getIntent().getIntExtra("openCounterId", 0);
         this.openCounter = new CountersDatabase(new DBOpenHelper(this)).getCounterById(openCounterId);
-        this.editCounter = new EditCounter(this, openCounter.get_id());
         this.reasons = openCounter.getReasons();
         preferenceChangeListener =
                 new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -49,13 +48,16 @@ public class EditCounterActivity extends AppCompatActivity {
         EditText reason_field = findViewById(R.id.addReasonField);
         String reason = reason_field.getText().toString();
 
+        ReasonsDatabase db = new ReasonsDatabase(new DBOpenHelper(this));
         if (this.reasons.isEmpty()) {
-            editCounter.addReason(reason);
+            db.addReasonForCounter(openCounter.get_id(), reason);
         } else {
             int reason_id = this.reasons.get(0).getReasonId();
-            editCounter.changeReason(reason, reason_id);
+            db.changeReason(reason_id, reason);
         }
-        editCounter.printEditSuccessfulMessage(getString(R.string.Toast_counter_edited_successfully));
+        Toast deletionMessage = Toast.makeText(this,
+                getString(R.string.Toast_counter_edited_successfully), Toast.LENGTH_LONG);
+        deletionMessage.show();
         onBackPressed();
     }
 
