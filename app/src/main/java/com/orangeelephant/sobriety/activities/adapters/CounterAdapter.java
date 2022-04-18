@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.counter.Counter;
-import com.orangeelephant.sobriety.counter.LoadCounters;
+import com.orangeelephant.sobriety.database.CountersDatabase;
+import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
 
 // Create the basic adapter extending from RecyclerView.Adapter
 // Note that we specify the custom ViewHolder which gives us access to our views
@@ -102,8 +103,8 @@ public class CounterAdapter extends
     }
 
     public void onDataChanged() {
-        LoadCounters counters = new LoadCounters(context);
-        this.mCounter = counters.getLoadedCounters().toArray(new Counter[0]);
+        CountersDatabase countersDatabase = new CountersDatabase(new DBOpenHelper(context));
+        this.mCounter = countersDatabase.getAllCountersWithoutReasons().toArray(new Counter[0]);
         this.notifyDataSetChanged();
     }
 

@@ -54,5 +54,28 @@ public class CountersDatabase implements BaseColumns {
 
         return new Counter(counterId, name, time_in_millis, record_time_in_millis, reasonsForCounterId);
     }
+
+    public ArrayList<Counter> getAllCountersWithoutReasons() {
+        SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
+
+        String sql = "SELECT * FROM Counters\n" +
+                "ORDER by start_time_unix_millis ASC";
+        Cursor cursor = db.rawQuery(sql, null);
+
+        ArrayList<Counter> counters = new ArrayList<>(cursor.getCount());
+
+        while(cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            String name = cursor.getString(1);
+            long time_in_millis = cursor.getLong(2);
+            long record_time_in_millis = cursor.getLong(3);
+
+            counters.add(new Counter(id, name, time_in_millis, record_time_in_millis, new ArrayList<>()));
+        }
+        cursor.close();
+        db.close();
+
+        return counters;
+    }
 }
 

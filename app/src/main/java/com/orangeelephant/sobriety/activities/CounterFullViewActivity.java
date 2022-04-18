@@ -68,16 +68,6 @@ public class CounterFullViewActivity extends AppCompatActivity {
         String recordTimeText = String.format(getString(R.string.CounterViewActivity_record_sobriety_message),
                 openCounter.getTimeSoberMessage(openCounter.getRecordTimeSoberInMillis()));
         recordTimeSober.setText(recordTimeText);
-
-        /*TextView sobrietyReason = (TextView) findViewById(R.id.CounterViewActivity_sobriety_reason);
-        String sobrietyReasonText;
-        if (openCounter.getSobrietyReason() != null) {
-            sobrietyReasonText = String.format(getString(R.string.CounterViewActivity_sobriety_reason),
-                    openCounter.getSobrietyReason());
-        } else {
-            sobrietyReasonText = getString(R.string.CounterViewActivity_no_sobriety_reason_provided);
-        }
-        sobrietyReason.setText(sobrietyReasonText);*/
     }
 
     public void onClickResetCounter (View v) {

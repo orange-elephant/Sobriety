@@ -71,7 +71,7 @@ public class HomeScreenActivity extends AppCompatActivity implements CounterAdap
         startActivity(intent);
     }
 
-    public void onCreateRecycler() {
+    private void onCreateRecycler() {
         RecyclerView countersView = (RecyclerView) findViewById(R.id.counterView);
 
         this.adapter = new CounterAdapter(this);
@@ -81,8 +81,8 @@ public class HomeScreenActivity extends AppCompatActivity implements CounterAdap
         adapter.setOnClick(this);
     }
 
-    public void onUpdateRecycler() {
-        this.adapter.onDataChanged();
+    private void updateCounterDurationMessage() {
+        this.adapter.updateDurationString();
     }
 
     @Override
@@ -97,7 +97,7 @@ public class HomeScreenActivity extends AppCompatActivity implements CounterAdap
 
         handler.postDelayed(new Runnable() {
             public void run() {
-                onUpdateRecycler();
+                updateCounterDurationMessage();
                 handler.postDelayed(this, delay);
             }
         }, delay);
