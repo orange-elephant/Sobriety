@@ -12,19 +12,22 @@ import java.security.KeyStoreException;
 
 
 public class SqlcipherKey {
+
+    private static final String TAG = (SqlcipherKey.class.getSimpleName());
+
     private byte[] sqlCipherKey;
 
     public SqlcipherKey() throws KeyStoreException {
         String base64CipherKey = SobrietyPreferences.getSqlcipherEncryptionKey();
         if (base64CipherKey.equals("")) {
             try {
-                LogEvent.i("No SqlcipherKey exists, creating one now.");
+                LogEvent.i(TAG, "No SqlcipherKey exists, creating one now.");
                 sqlCipherKey = createNewSecretToStore();
                 byte[] encryptedCipherKey = KeyStoreUtil.encryptBytes(sqlCipherKey);
                 base64CipherKey = Base64.encodeToString(encryptedCipherKey, Base64.DEFAULT);
                 SobrietyPreferences.setSqlcipherEncryptionKey(base64CipherKey);
             } catch (GeneralSecurityException e) {
-                LogEvent.e("Couldn't create a new sqlCipherEncryptionKey", e);
+                LogEvent.e(TAG, "Couldn't create a new sqlCipherEncryptionKey", e);
                 throw new KeyStoreException();
             }
         }
@@ -32,9 +35,9 @@ public class SqlcipherKey {
         byte[] encryptedCipherKey = Base64.decode(base64CipherKey, Base64.DEFAULT);
         try {
             sqlCipherKey = KeyStoreUtil.decryptBytes(encryptedCipherKey);
-            LogEvent.i("SqlCipher key fetched successfully");
+            LogEvent.i(TAG, "SqlCipher key fetched successfully");
         } catch (GeneralSecurityException e) {
-            LogEvent.e("Couldn't decrypt cipherKey", e);
+            LogEvent.e(TAG, "Couldn't decrypt cipherKey", e);
             throw new KeyStoreException();
         }
     }
@@ -44,7 +47,7 @@ public class SqlcipherKey {
     }
 
     private byte[] createNewSecretToStore() {
-        LogEvent.i("Generating random bytes as secret");
+        LogEvent.i(TAG, "Generating random bytes as secret");
         return RandomUtil.generateRandomBytes(32);
     }
 }

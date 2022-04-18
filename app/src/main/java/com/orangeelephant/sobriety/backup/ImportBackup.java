@@ -9,7 +9,6 @@ import com.orangeelephant.sobriety.database.CountersDatabase;
 import com.orangeelephant.sobriety.database.ReasonsDatabase;
 import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
 import com.orangeelephant.sobriety.logging.LogEvent;
-import com.orangeelephant.sobriety.util.SqlUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +23,9 @@ import java.util.Hashtable;
 import java.util.Scanner;
 
 public class ImportBackup extends BackupBase {
+
+    private static final String TAG = (ImportBackup.class.getSimpleName());
+
     public ImportBackup() throws JSONException, FileNotFoundException {
         super();
 
@@ -43,7 +45,7 @@ public class ImportBackup extends BackupBase {
 
         try {
             JSONObject decrypted = new JSONObject(decryptBytes(encrypted, iv));
-            LogEvent.i(decrypted.toString());
+            LogEvent.i(TAG, decrypted.toString());
             saveToDb(decrypted);
         } catch (KeyManagementException e) {
             e.printStackTrace();
@@ -79,7 +81,7 @@ public class ImportBackup extends BackupBase {
                     countersRetrieved.add(toSave);
                     numCountersImported++;
                 }
-                LogEvent.i("Imported " + numCountersImported + " counters");
+                LogEvent.i(TAG, "Imported " + numCountersImported + " counters");
 
                 JSONArray reasonsArray = decrypted.getJSONArray("reasons");
 

@@ -32,6 +32,9 @@ import javax.crypto.spec.GCMParameterSpec;
  * keystore.
  */
 public final class KeyStoreUtil {
+
+    private static final String TAG = (KeyStoreUtil.class.getSimpleName());
+
     private static final String AES_MODE = "AES/GCM/NoPadding";
     private static final String ANDROID_KEY_STORE = "AndroidKeyStore";
     private static final String KEY_ALIAS = "sobriety_database_key";
@@ -45,10 +48,10 @@ public final class KeyStoreUtil {
             return cipher.doFinal(bytesToEncrypt);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException |
                 InvalidKeyException e) {
-            LogEvent.i(String.valueOf(e.getClass()));
+            LogEvent.i(TAG, String.valueOf(e.getClass()));
             throw new GeneralSecurityException("Invalid parameters when initialising the Cipher instance");
         } catch (BadPaddingException | IllegalBlockSizeException e) {
-            LogEvent.i(String.valueOf(e.getClass()));
+            LogEvent.i(TAG, String.valueOf(e.getClass()));
             throw new GeneralSecurityException("Invalid ciphertext provided");
         }
     }
@@ -62,10 +65,10 @@ public final class KeyStoreUtil {
             return cipher.doFinal(bytesToDecrypt);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException |
                 InvalidKeyException e) {
-            LogEvent.i(String.valueOf(e.getClass()));
+            LogEvent.i(TAG, String.valueOf(e.getClass()));
             throw new GeneralSecurityException("Invalid parameters when initialising the Cipher instance");
         } catch (BadPaddingException | IllegalBlockSizeException e) {
-            LogEvent.i(String.valueOf(e.getClass()));
+            LogEvent.i(TAG, String.valueOf(e.getClass()));
             throw new GeneralSecurityException("Invalid ciphertext provided");
         }
     }
@@ -80,7 +83,7 @@ public final class KeyStoreUtil {
 
             return keyStore.getKey(KEY_ALIAS, null);
         } catch (GeneralSecurityException | IOException e) {
-            LogEvent.e("Unable to get the key from the keystore", e);
+            LogEvent.e(TAG, "Unable to get the key from the keystore", e);
             throw new KeyManagementException("Unable to get the key from the keystore");
         }
     }
@@ -97,9 +100,9 @@ public final class KeyStoreUtil {
                     .build());
 
             keyGenerator.generateKey();
-            LogEvent.i("New keypair for encrypting sharedPref secrets created");
+            LogEvent.i(TAG, "New keypair for encrypting sharedPref secrets created");
         } catch (GeneralSecurityException e) {
-            LogEvent.e("Unable to generate a key", e);
+            LogEvent.e(TAG, "Unable to generate a key", e);
         }
     }
 
@@ -110,10 +113,10 @@ public final class KeyStoreUtil {
             if (!(SobrietyPreferences.getBackupEncryptionKey().equals("")) &&
                     !(SobrietyPreferences.getSqlcipherEncryptionKey().equals(""))) {
 
-                LogEvent.i("key exists but was not encrypted with a random IV");
+                LogEvent.i(TAG, "key exists but was not encrypted with a random IV");
                 return new byte[12];
             } else {
-                LogEvent.i("No stored key, a random IV can be created");
+                LogEvent.i(TAG, "No stored key, a random IV can be created");
                 base64encodedIV = createNewRandomIv();
             }
         }

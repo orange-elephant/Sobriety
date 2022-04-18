@@ -3,6 +3,7 @@ package com.orangeelephant.sobriety.activities;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 
@@ -17,6 +18,9 @@ import com.orangeelephant.sobriety.logging.LogEvent;
 import java.util.Locale;
 
 public class SettingsActivity extends AppCompatActivity {
+
+    private static final String TAG = (SettingsActivity.class.getSimpleName());
+
     private SharedPreferences sharedPreferences;
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
@@ -24,15 +28,12 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
+
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.settings, new PreferenceFragment())
                     .commit();
-        }
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
 
@@ -104,7 +105,7 @@ public class SettingsActivity extends AppCompatActivity {
         configuration.setLocale(locale);
         resources.updateConfiguration(configuration, displayMetrics);
 
-        LogEvent.i("Language changed to " + locale.getLanguage());
+        LogEvent.i(TAG, "Language changed to " + locale.getLanguage());
         recreate();
     }
 

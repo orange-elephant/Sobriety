@@ -25,6 +25,8 @@ import java.util.concurrent.Executor;
 
 public class AppStartupActivity extends AppCompatActivity {
 
+    private static final String TAG = (AppStartupActivity.class.getSimpleName());
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,14 +42,14 @@ public class AppStartupActivity extends AppCompatActivity {
             try {
                 uponUnlock();
             } catch (KeyStoreException exception) {
-                LogEvent.e("Unable to start app due to exception loading sqlCipherKey", exception);
+                LogEvent.e(TAG,"Unable to start app due to exception loading sqlCipherKey", exception);
             }
         }
 
     }
 
     private void onFirstOpen() {
-        LogEvent.i("Running first open tasks");
+        LogEvent.i(TAG,"Running first open tasks");
         DatabaseManager.attemptToCreateEncryptedDatabase(this);
 
         SobrietyPreferences.setIsFirstOpen(false);

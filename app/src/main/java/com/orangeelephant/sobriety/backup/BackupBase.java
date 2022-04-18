@@ -18,6 +18,9 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public abstract class BackupBase {
+
+    private static final String TAG = (BackupBase.class.getSimpleName());
+
     protected Context context;
     protected SQLiteDatabase database;
     protected BackupSecret backupSecret = null;
@@ -37,7 +40,7 @@ public abstract class BackupBase {
                 backupSecret = new BackupSecret(null);
             }
         } catch (Exception e) {
-            LogEvent.e("Could create backup secret object", e);
+            LogEvent.e(TAG,"Could create backup secret object", e);
         }
 
         byte[] cipherKey;
@@ -51,7 +54,7 @@ public abstract class BackupBase {
 
             return Base64.encodeToString(encrypted, Base64.DEFAULT);
         } catch (GeneralSecurityException e) {
-            LogEvent.e("Exception trying to retrieve backup cipher", e);
+            LogEvent.e(TAG,"Exception trying to retrieve backup cipher", e);
             throw new KeyManagementException();
         }
     }
@@ -67,7 +70,7 @@ public abstract class BackupBase {
 
             return new String(decrypted);
         } catch (NoSecretExistsException | GeneralSecurityException e) {
-            LogEvent.e("Failed to decrypt string", e);
+            LogEvent.e(TAG,"Failed to decrypt string", e);
             throw new KeyManagementException();
         }
     }

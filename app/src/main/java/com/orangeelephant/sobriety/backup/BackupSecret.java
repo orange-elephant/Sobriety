@@ -17,6 +17,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 public class BackupSecret {
+
+    private static final String TAG = (BackupSecret.class.getSimpleName());
+
     private static final int DIGEST_ROUNDS = 250_000;
 
     private final byte[] salt;
@@ -70,7 +73,7 @@ public class BackupSecret {
     private byte[] getSaltFromSharedPreferences() {
         String base64encodedSalt = SobrietyPreferences.getBackupEncryptionPassphraseSalt();
         if (base64encodedSalt.equals("")) {
-            LogEvent.i("No salt is stored, creating one now");
+            LogEvent.i(TAG,"No salt is stored, creating one now");
             base64encodedSalt = storeNewPassphraseSalt();
         }
 
@@ -91,7 +94,7 @@ public class BackupSecret {
         byte[] backupCipherKey = createNewSecretToStore();
         byte[] encryptedCipherKey = KeyStoreUtil.encryptBytes(backupCipherKey);
         SobrietyPreferences.setBackupEncryptionKey(Base64.encodeToString(encryptedCipherKey, Base64.DEFAULT));
-        LogEvent.i("Backup cipher key created from password and stored");
+        LogEvent.i(TAG,"Backup cipher key created from password and stored");
     }
 
     public byte[] getBackupCipherKey() throws NoSecretExistsException, GeneralSecurityException {
@@ -103,7 +106,7 @@ public class BackupSecret {
             byte[] encryptedKey = Base64.decode(SobrietyPreferences.getBackupEncryptionKey(), Base64.DEFAULT);
             backupCipherKey = KeyStoreUtil.decryptBytes(encryptedKey);
         } catch (GeneralSecurityException e) {
-            LogEvent.e("Couldn't decrypt cipherKey", e);
+            LogEvent.e(TAG,"Couldn't decrypt cipherKey", e);
             throw new GeneralSecurityException();
         }
         return backupCipherKey;

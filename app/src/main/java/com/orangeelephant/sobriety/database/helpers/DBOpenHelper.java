@@ -7,12 +7,16 @@ import android.database.Cursor;
 import com.orangeelephant.sobriety.database.CountersDatabase;
 import com.orangeelephant.sobriety.database.ReasonsDatabase;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
+import com.orangeelephant.sobriety.logging.LogEvent;
 import com.orangeelephant.sobriety.util.SobrietyPreferences;
 
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteOpenHelper;
 
 public class DBOpenHelper extends SQLiteOpenHelper {
+
+    private static final String TAG = (DBOpenHelper.class.getSimpleName());
+
     public static final int DATABASE_VERSION = 6;
     public static final String DATABASE_NAME = "sobriety_tracker";
 
@@ -56,6 +60,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
             //wipe set all old values to null since sqlite wont allow dropping column
             sqLiteDatabase.execSQL("UPDATE counters SET sobriety_reason = NULL");
         }
+        LogEvent.i(TAG, "Upgraded database to version " + newVersion + " from version " + oldVersion);
     }
 
     public SQLiteDatabase getReadableDatabase() {

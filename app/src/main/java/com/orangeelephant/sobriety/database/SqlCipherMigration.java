@@ -17,6 +17,8 @@ import java.io.IOException;
 
 public class SqlCipherMigration {
 
+    private static final String TAG = (SqlCipherMigration.class.getSimpleName());
+
     public static void migrate(Context context, DBOpenHelper dbHelper) {
 
         if (!SobrietyPreferences.getIsDatabaseEncrypted()) {
@@ -33,16 +35,16 @@ public class SqlCipherMigration {
                 if (version >= DBOpenHelper.SQL_CIPHER_MIGRATION) {
                     migrateDbToSqlcipher(context, originalFile, passphrase, version);
                 } else {
-                    LogEvent.i("Not migrating as version number " + version + " is lower than " +
+                    LogEvent.i(TAG, "Not migrating as version number " + version + " is lower than " +
                             "sqlcipher migration at version number " + DBOpenHelper.SQL_CIPHER_MIGRATION);
                 }
             } catch (SQLiteException exception) {
-                LogEvent.i("Database is encrypted already");
+                LogEvent.i(TAG, "Database is encrypted already");
             } catch (IOException exception) {
-                LogEvent.e("IOException attempting to migrate DB to sql cipher", exception);
+                LogEvent.e(TAG, "IOException attempting to migrate DB to sql cipher", exception);
             }
         } else {
-            LogEvent.i("Shared preferences show the database is already encrypted.");
+            LogEvent.i(TAG, "Shared preferences show the database is already encrypted.");
         }
     }
 
@@ -93,7 +95,7 @@ public class SqlCipherMigration {
             newFile.renameTo(originalFile);
 
             SobrietyPreferences.setIsDatabaseEncrypted(true);
-            LogEvent.i("The database was encrypted successfully.");
+            LogEvent.i(TAG, "The database was encrypted successfully.");
         }
         else {
             throw new FileNotFoundException(originalFile.getAbsolutePath()+ " not found");

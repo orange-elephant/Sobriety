@@ -13,6 +13,9 @@ import net.sqlcipher.database.SQLiteDatabase;
 import java.util.ArrayList;
 
 public class ReasonsDatabase implements BaseColumns {
+
+    private static final String TAG = (ReasonsDatabase.class.getSimpleName());
+
     public static final String TABLE_NAME_REASONS = "reasons";
     public static final String COLUMN_COUNTER_ID = "counter_id";
     public static final String COLUMN_SOBRIETY_REASON = "sobriety_reason";
@@ -45,7 +48,7 @@ public class ReasonsDatabase implements BaseColumns {
                 reasons.add(new Reason(reason_id, sobriety_reason));
             }
         } else {
-            LogEvent.i("Counter id " + counterId + " has no associated sobriety reasons.");
+            LogEvent.i(TAG, "Counter id " + counterId + " has no associated sobriety reasons.");
         }
         reasonsCursor.close();
         db.close();

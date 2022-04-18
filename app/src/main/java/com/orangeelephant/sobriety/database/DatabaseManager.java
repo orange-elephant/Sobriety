@@ -12,6 +12,8 @@ import net.sqlcipher.database.SQLiteException;
 
 public class DatabaseManager {
 
+    private static final String TAG = (DatabaseManager.class.getSimpleName());
+
     private DatabaseManager() {}
 
     /**
@@ -29,13 +31,13 @@ public class DatabaseManager {
             if (DBOpenHelper.DATABASE_VERSION >= DBOpenHelper.SQL_CIPHER_MIGRATION) {
                 new DBOpenHelper(context).getReadableDatabase(sqlcipherKey.getSqlCipherKey());
                 SobrietyPreferences.setIsDatabaseEncrypted(true);
-                LogEvent.i("A new encrypted database was created");
+                LogEvent.i(TAG, "A new encrypted database was created");
                 return;
             }
             new DBOpenHelper(context).getWritableDatabase();
-            LogEvent.i("Not creating encrypted database as version is pre-migration");
+            LogEvent.w(TAG, "Not creating encrypted database as version is pre-migration");
         } catch (SQLiteException exception) {
-            LogEvent.i("Couldn't create a database with the provided key, an unencrypted database probably exists.");
+            LogEvent.i(TAG, "Couldn't create a database with the provided key, an unencrypted database probably exists.");
             SqlCipherMigration.migrate(context, new DBOpenHelper(context));
         }
     }

@@ -21,6 +21,9 @@ import java.security.KeyManagementException;
 import java.util.ArrayList;
 
 public class CreateBackup extends BackupBase {
+
+    private static final String TAG = (CreateBackup.class.getSimpleName());
+
     protected BackupSecret backupSecret = null;
 
     public CreateBackup() {
@@ -30,11 +33,10 @@ public class CreateBackup extends BackupBase {
         try {
             backupSecret = new BackupSecret(null);
         } catch (Exception e) {
-            LogEvent.e("Couldn't create a new instance of backupSecret", e);
+            LogEvent.e(TAG, "Couldn't create a new instance of backupSecret", e);
         }
     }
 
-    @Override
     public void setPassphrase(String passphrase) throws GeneralSecurityException {
         backupSecret.setPassphrase(passphrase);
     }
@@ -95,7 +97,6 @@ public class CreateBackup extends BackupBase {
 
     public void saveToExternalStorage() throws JSONException, NoSecretExistsException, KeyManagementException {
         JSONObject encryptedDataAsJson = getEncryptedDataAsJson();
-        LogEvent.i(String.valueOf(encryptedDataAsJson));
         String fileName = "sobriety.backup";
         String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString();
         File backupFile = new File(root, fileName);
@@ -109,9 +110,9 @@ public class CreateBackup extends BackupBase {
             fileOutputStream.flush();
             fileOutputStream.close();
 
-            LogEvent.i("Backup saved to " + root + "/" + fileName);
+            LogEvent.i(TAG, "Backup saved to " + root + "/" + fileName);
         } catch (IOException e) {
-            LogEvent.e("Failed to create backup file", e);
+            LogEvent.e(TAG, "Failed to create backup file", e);
         }
     }
 }
