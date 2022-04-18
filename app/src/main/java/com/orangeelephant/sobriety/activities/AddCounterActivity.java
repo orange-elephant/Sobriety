@@ -8,14 +8,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.orangeelephant.sobriety.R;
-import com.orangeelephant.sobriety.counter.CreateNewCounter;
+import com.orangeelephant.sobriety.counter.Counter;
+import com.orangeelephant.sobriety.counter.Reason;
+import com.orangeelephant.sobriety.database.CountersDatabase;
+import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
 
 public class AddCounterActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
@@ -57,7 +60,12 @@ public class AddCounterActivity extends AppCompatActivity {
         Date startDate = date.parse(dateString);
         Long time = startDate.getTime();
 
-        new CreateNewCounter(this, nameText, reasonText, time);
+        //write the new counter to the db
+        ArrayList<Reason> reasons = new ArrayList<>();
+        reasons.add(new Reason(0, reasonText));
+        Counter counterToAdd = new Counter(0, nameText, time, 0L, reasons);
+        CountersDatabase countersDatabase = new CountersDatabase(new DBOpenHelper(this));
+        countersDatabase.saveCounterObjectToDb(counterToAdd);
 
         onBackPressed();
     }

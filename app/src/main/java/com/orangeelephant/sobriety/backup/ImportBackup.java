@@ -89,14 +89,14 @@ public class ImportBackup extends BackupBase {
                         if (counter.get_id() == reason.getInt("counter_id")) {
                             Reason sobrietyReason = new Reason(reason.getInt("_id"), reason.getString("sobriety_reason"));
                             counter.getReasons().add(sobrietyReason);
-                            LogEvent.i("Reason added");
                             break;
                         }
                     }
                 }
 
+                CountersDatabase countersDatabase = new CountersDatabase(new DBOpenHelper(context));
                 for (Counter counter: countersRetrieved) {
-                    SqlUtil.saveCounterObjectToDb(db.getWritableDatabase(), counter);
+                    countersDatabase.saveCounterObjectToDb(counter);
                 }
             } else {
                 throw new IllegalArgumentException("Cant import backup to an older database version!");

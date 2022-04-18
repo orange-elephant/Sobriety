@@ -1,5 +1,6 @@
 package com.orangeelephant.sobriety.database;
 
+import android.content.ContentValues;
 import android.provider.BaseColumns;
 
 import com.orangeelephant.sobriety.counter.Counter;
@@ -100,6 +101,30 @@ public class CountersDatabase implements BaseColumns {
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         db.execSQL(sql);
         db.close();
+    }
+
+    /**
+     * used to save a counter object and its reasons to the database
+     * currently used when importing backups, and creating new counters
+     *
+     * @param counterToSave the counter object to be saved
+     */
+    public void saveCounterObjectToDb(Counter counterToSave) {
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(CountersDatabase.COLUMN_NAME, counterToSave.getName());
+        contentValues.put(CountersDatabase.COLUMN_START_TIME, counterToSave.getStart_time_in_millis());
+        contentValues.put(CountersDatabase.COLUMN_RECORD_CLEAN_TIME, counterToSave.getRecord_time_sober_in_millis());
+
+        int counterRowId = (int) db.insert(CountersDatabase.TABLE_NAME_COUNTERS, null, contentValues);
+        db.close();
+
+        ArrayList<Reason> reasons = counterToSave.getReasons();
+        ReasonsDatabase reasonsDatabase = new ReasonsDatabase(dbOpenHelper);
+        for (Reason reason: reasons) {
+            reasonsDatabase.addReasonForCounter(counterRowId, reason.getReason());
+        }
     }
 }
 
