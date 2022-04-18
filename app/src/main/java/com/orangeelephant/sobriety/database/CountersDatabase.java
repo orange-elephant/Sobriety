@@ -11,6 +11,7 @@ import net.sqlcipher.CursorIndexOutOfBoundsException;
 import net.sqlcipher.database.SQLiteDatabase;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class CountersDatabase implements BaseColumns {
     public static final String TABLE_NAME_COUNTERS = "counters";
@@ -87,6 +88,18 @@ public class CountersDatabase implements BaseColumns {
         db.close();
 
         new ReasonsDatabase(dbOpenHelper).deleteReasonsForCounterId(counterID);
+    }
+
+    public void resetCounterTimer(int counterId, long recordTime) {
+        long timeNow = new Date().getTime();
+        String sql = "UPDATE " +  CountersDatabase.TABLE_NAME_COUNTERS +
+                " SET " + CountersDatabase.COLUMN_RECORD_CLEAN_TIME + " = " + recordTime +
+                ", " + CountersDatabase.COLUMN_START_TIME + " = " + timeNow +
+                " WHERE _id = " + counterId;
+
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL(sql);
+        db.close();
     }
 }
 

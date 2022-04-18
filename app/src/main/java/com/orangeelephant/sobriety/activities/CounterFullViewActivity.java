@@ -18,12 +18,10 @@ import android.widget.Toast;
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.activities.adapters.ReasonsAdapter;
 import com.orangeelephant.sobriety.counter.Counter;
-import com.orangeelephant.sobriety.counter.Reason;
 import com.orangeelephant.sobriety.database.CountersDatabase;
 import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
-import com.orangeelephant.sobriety.managecounters.ResetCounter;
 
-import java.util.ArrayList;
+import java.util.Date;
 
 public class CounterFullViewActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
@@ -92,10 +90,11 @@ public class CounterFullViewActivity extends AppCompatActivity {
     }
 
     private void resetCounter() {
-        int openCounterId = this.openCounter.get_id();
-        ArrayList<Reason> reason = this.openCounter.getReasons();
-        ResetCounter resetCounter = new ResetCounter(this, openCounterId, reason);
-        this.openCounter = resetCounter.returnResetCounter();
+        int openCounterId = openCounter.get_id();
+        long recordTimeSober = openCounter.getRecordTimeSoberInMillis();
+        new CountersDatabase(new DBOpenHelper(this)).resetCounterTimer(openCounterId, recordTimeSober);
+        openCounter.setRecord_time_sober_in_millis(recordTimeSober);
+        openCounter.setStart_time_in_millis(new Date().getTime());
 
         refreshCurrentCounterView();
     }

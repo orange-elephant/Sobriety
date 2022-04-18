@@ -10,8 +10,8 @@ import java.util.NoSuchElementException;
 public class Counter {
     private final int _id;
     private final String name;
-    private final long start_time_in_millis;
-    private final long record_time_sober_in_millis;
+    private long start_time_in_millis;
+    private long record_time_sober_in_millis;
     private final ArrayList<Reason> reasons;
 
     public Counter(int _id, String name, Long start_time_in_millis, Long record_time_sober_in_millis,
@@ -21,6 +21,22 @@ public class Counter {
         this.start_time_in_millis = start_time_in_millis;
         this.record_time_sober_in_millis = record_time_sober_in_millis;
         this.reasons = reasons;
+    }
+
+    public long getStart_time_in_millis() {
+        return start_time_in_millis;
+    }
+
+    public long getRecord_time_sober_in_millis() {
+        return record_time_sober_in_millis;
+    }
+
+    public void setStart_time_in_millis(long start_time_in_millis) {
+        this.start_time_in_millis = start_time_in_millis;
+    }
+
+    public void setRecord_time_sober_in_millis(long record_time_sober_in_millis) {
+        this.record_time_sober_in_millis = record_time_sober_in_millis;
     }
 
     public String getName() {
@@ -54,14 +70,6 @@ public class Counter {
 
     public ArrayList<Reason> getReasons() {
         return this.reasons ;
-    }
-
-    public long getStart_time_in_millis() {
-        return start_time_in_millis;
-    }
-
-    public long getRecord_time_sober_in_millis() {
-        return record_time_sober_in_millis;
     }
 
     public static String getTimeSoberMessage(Long timeSoberInMillis) {
