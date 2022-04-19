@@ -85,9 +85,7 @@ public class CountersDatabase implements BaseColumns {
                 " WHERE _id = " + counterID;
 
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
-        db.beginTransaction();
         db.execSQL(sqlCounterRecord);
-        db.endTransaction();
         db.close();
 
         new ReasonsDatabase(dbOpenHelper).deleteReasonsForCounterId(counterID);
@@ -101,9 +99,7 @@ public class CountersDatabase implements BaseColumns {
                 " WHERE _id = " + counterId;
 
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
-        db.beginTransaction();
         db.execSQL(sql);
-        db.endTransaction();
         db.close();
     }
 
@@ -115,15 +111,13 @@ public class CountersDatabase implements BaseColumns {
      */
     public void saveCounterObjectToDb(Counter counterToSave) {
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
-        db.beginTransaction();
-
         ContentValues contentValues = new ContentValues();
+
         contentValues.put(CountersDatabase.COLUMN_NAME, counterToSave.getName());
         contentValues.put(CountersDatabase.COLUMN_START_TIME, counterToSave.getStartTimeInMillis());
         contentValues.put(CountersDatabase.COLUMN_RECORD_CLEAN_TIME, counterToSave.getRecordTimeSoberInMillis());
 
         int counterRowId = (int) db.insert(CountersDatabase.TABLE_NAME_COUNTERS, null, contentValues);
-        db.endTransaction();
         db.close();
 
         ArrayList<Reason> reasons = counterToSave.getReasons();
