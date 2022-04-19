@@ -3,7 +3,6 @@ package com.orangeelephant.sobriety.logging;
 import android.util.Log;
 
 public class LogEvent {
-    private static final String TAG = "Sobriety";
 
     // error
     public static void e (String Tag, String message, Exception exception) {
