@@ -6,6 +6,7 @@ import android.provider.BaseColumns;
 import com.orangeelephant.sobriety.counter.Counter;
 import com.orangeelephant.sobriety.counter.Reason;
 import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
+import com.orangeelephant.sobriety.logging.LogEvent;
 
 import net.sqlcipher.Cursor;
 import net.sqlcipher.CursorIndexOutOfBoundsException;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class CountersDatabase implements BaseColumns {
+    private static final String TAG = (CountersDatabase.class.getSimpleName());
+
     public static final String TABLE_NAME_COUNTERS = "counters";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_START_TIME = "start_time_unix_millis";
@@ -89,6 +92,7 @@ public class CountersDatabase implements BaseColumns {
         db.close();
 
         new ReasonsDatabase(dbOpenHelper).deleteReasonsForCounterId(counterID);
+        LogEvent.i(TAG, "Counter id " + counterID + " was deleted");
     }
 
     public void resetCounterTimer(int counterId, long recordTime) {
@@ -101,6 +105,7 @@ public class CountersDatabase implements BaseColumns {
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         db.execSQL(sql);
         db.close();
+        LogEvent.i(TAG, "Counter id " + counterId + " was reset");
     }
 
     /**

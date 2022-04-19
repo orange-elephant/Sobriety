@@ -19,8 +19,11 @@ import com.orangeelephant.sobriety.counter.Counter;
 import com.orangeelephant.sobriety.counter.Reason;
 import com.orangeelephant.sobriety.database.CountersDatabase;
 import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
+import com.orangeelephant.sobriety.logging.LogEvent;
 
 public class AddCounterActivity extends AppCompatActivity {
+    private static final String TAG = (AddCounterActivity.class.getSimpleName());
+
     private SharedPreferences sharedPreferences;
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
@@ -66,6 +69,7 @@ public class AddCounterActivity extends AppCompatActivity {
         Counter counterToAdd = new Counter(0, nameText, time, 0L, reasons);
         CountersDatabase countersDatabase = new CountersDatabase(new DBOpenHelper(this));
         countersDatabase.saveCounterObjectToDb(counterToAdd);
+        LogEvent.i(TAG, "New counter was created");
 
         onBackPressed();
     }

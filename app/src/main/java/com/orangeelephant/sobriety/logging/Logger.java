@@ -20,17 +20,24 @@ public class Logger {
 
     private final String THREAD_NAME = "logger";
     private final Queue queue = new Queue();
+    private final DbWriteThread dbWriteThread = new DbWriteThread();
 
-    private Logger() {
-        //creates the thread which starts running in the background with low priority
-        new DbWriteThread();
-    }
+    private Logger() {}
 
     public static Logger getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new Logger();
         }
         return INSTANCE;
+    }
+
+    /**
+     * method to be called only once the sqlcipherkey has been initialised and not before
+     * otherwise the logger wont be able to write to the database.
+     */
+    public void startLoggerThread() {
+        dbWriteThread.start();
+        LogEvent.i(TAG, "Started logger thread");
     }
 
     public void logToDb(String tag, String message, @Nullable String stack_trace) {
@@ -104,7 +111,6 @@ public class Logger {
         private DbWriteThread() {
             super(THREAD_NAME);
             this.setPriority(Thread.MIN_PRIORITY);
-            this.start();
         }
 
         @Override
@@ -113,7 +119,7 @@ public class Logger {
             while (true) {
                 LogRecord record = queue.getNext();
                 logDatabase.write(record.getTag(), record.getMessage(), record.getStackTrace(), 10);
-                System.out.println("Written");
+                System.out.println("Written - " + record.getTag());
             }
         }
     }

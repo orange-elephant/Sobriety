@@ -31,6 +31,7 @@ public class ApplicationDependencies {
 
     public static void setSqlcipherKey(SqlcipherKey sqlcipherKey) {
         ApplicationDependencies.sqlcipherKey = sqlcipherKey;
+        logger.startLoggerThread();
     }
 
     public static SqlcipherKey getSqlCipherKey() {
