@@ -36,4 +36,10 @@ public final class SqlUtil {
     public static Cursor getAllRecordsFromTable(SQLiteDatabase db, String tableName) {
         return db.rawQuery("SELECT * FROM " + tableName, null);
     }
+
+    public static int getCountFromTable(SQLiteDatabase db, String tableName) {
+        Cursor cursor = getAllRecordsFromTable(db, tableName);
+
+        return cursor.getCount();
+    }
 }

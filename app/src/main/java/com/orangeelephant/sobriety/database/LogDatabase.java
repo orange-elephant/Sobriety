@@ -60,4 +60,16 @@ public class LogDatabase extends SQLiteOpenHelper implements BaseColumns {
 
         return super.getWritableDatabase(password);
     }
+
+    public void write(String tag, String message, String stackTrace, long keepUntil) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_TAG, tag);
+        contentValues.put(COLUMN_MESSAGE, message);
+        contentValues.put(COLUMN_STACK_TRACE, stackTrace);
+        contentValues.put(COLUMN_KEEP_UNTIL, keepUntil);
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.insert(TABLE_NAME, null, contentValues);
+        db.close();
+    }
 }

@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.orangeelephant.sobriety.database.SqlcipherKey;
+import com.orangeelephant.sobriety.logging.Logger;
 
 /**
  * A class to store and retrieve other singletons required
@@ -12,8 +13,9 @@ import com.orangeelephant.sobriety.database.SqlcipherKey;
  */
 public class ApplicationDependencies {
 
-    private static volatile Application     application;
-    private static volatile SqlcipherKey    sqlcipherKey;
+    private static volatile Application  application;
+    private static volatile SqlcipherKey sqlcipherKey;
+    private static volatile Logger       logger;
 
     private ApplicationDependencies() {}
 
@@ -36,6 +38,13 @@ public class ApplicationDependencies {
             throw new IllegalStateException("SQLCipherKey has not been loaded");
         }
         return sqlcipherKey;
+    }
+
+    public static Logger getLogger() {
+        if (logger == null) {
+            logger = Logger.getInstance();
+        }
+        return logger;
     }
 
     public static Context getApplicationContext() {
