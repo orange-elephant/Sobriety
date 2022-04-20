@@ -18,8 +18,7 @@ import android.widget.Toast;
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.activities.adapters.ReasonsAdapter;
 import com.orangeelephant.sobriety.counter.Counter;
-import com.orangeelephant.sobriety.database.CountersDatabase;
-import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
+import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 
 import java.util.Date;
 
@@ -35,7 +34,9 @@ public class CounterFullViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         int openCounterId = getIntent().getIntExtra("openCounterId", 0);
-        openCounter = new CountersDatabase(new DBOpenHelper(this)).getCounterById(openCounterId);
+        openCounter = ApplicationDependencies.getSobrietyDatabase()
+                                                .getCountersDatabase()
+                                                .getCounterById(openCounterId);
 
         setContentView(R.layout.activity_counter_full_view);
 
@@ -92,7 +93,8 @@ public class CounterFullViewActivity extends AppCompatActivity {
     private void resetCounter() {
         int openCounterId = openCounter.getId();
         long recordTimeSober = openCounter.getRecordTimeSoberInMillis();
-        new CountersDatabase(new DBOpenHelper(this)).resetCounterTimer(openCounterId, recordTimeSober);
+        ApplicationDependencies.getSobrietyDatabase().getCountersDatabase()
+                                .resetCounterTimer(openCounterId, recordTimeSober);
         openCounter.setRecordTimeSoberInMillis(recordTimeSober);
         openCounter.setStartTimeInMillis(new Date().getTime());
 
@@ -121,7 +123,8 @@ public class CounterFullViewActivity extends AppCompatActivity {
     private void deleteCounter() {
         int openCounterId = this.openCounter.getId();
         String counterName = this.openCounter.getName();
-        new CountersDatabase(new DBOpenHelper(this)).deleteCounterById(openCounterId);
+        ApplicationDependencies.getSobrietyDatabase().getCountersDatabase()
+                                .deleteCounterById(openCounterId);
 
         CharSequence message = String.format(this.getString(R.string.Toast_counter_deleted), counterName);
         Toast deletionMessage = Toast.makeText(this, message, Toast.LENGTH_LONG);

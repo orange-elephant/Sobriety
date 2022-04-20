@@ -3,6 +3,7 @@ package com.orangeelephant.sobriety.backup;
 import android.os.Environment;
 
 import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
+import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 import com.orangeelephant.sobriety.logging.LogEvent;
 import com.orangeelephant.sobriety.util.SqlUtil;
 
@@ -28,7 +29,7 @@ public class CreateBackup extends BackupBase {
 
     public CreateBackup() {
         super();
-        this.database = new DBOpenHelper(context).getReadableDatabase();
+        this.database = ApplicationDependencies.getSobrietyDatabase().getReadableDatabase();
 
         try {
             backupSecret = new BackupSecret(null);

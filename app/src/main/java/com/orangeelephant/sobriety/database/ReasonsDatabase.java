@@ -12,6 +12,11 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import java.util.ArrayList;
 
+/**
+ * class that provides methods for interfacing with the reasons table in the main app database
+ *
+ * access using singleton instance provided by {@link SobrietyDatabase}
+ */
 public class ReasonsDatabase implements BaseColumns {
 
     private static final String TAG = (ReasonsDatabase.class.getSimpleName());
@@ -51,7 +56,6 @@ public class ReasonsDatabase implements BaseColumns {
             LogEvent.i(TAG, "Counter id " + counterId + " has no associated sobriety reasons.");
         }
         reasonsCursor.close();
-        db.close();
 
         return reasons;
     }
@@ -61,7 +65,6 @@ public class ReasonsDatabase implements BaseColumns {
                 " WHERE counter_id = " + counterId;
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         db.execSQL(sqlReasonRecords);
-        db.close();
     }
 
     public void addReasonForCounter(int counterId, String reason) {
@@ -70,7 +73,6 @@ public class ReasonsDatabase implements BaseColumns {
         contentValues.put(ReasonsDatabase.COLUMN_COUNTER_ID, counterId);
         contentValues.put(ReasonsDatabase.COLUMN_SOBRIETY_REASON, reason);
         db.insert(ReasonsDatabase.TABLE_NAME_REASONS, null, contentValues);
-        db.close();
     }
 
     public void changeReason(int reasonId, String reason) {
@@ -79,6 +81,5 @@ public class ReasonsDatabase implements BaseColumns {
                 " set " + ReasonsDatabase.COLUMN_SOBRIETY_REASON + " = '" +
                 reason + "' where _id = " + reasonId;
         db.execSQL(sql);
-        db.close();
     }
 }

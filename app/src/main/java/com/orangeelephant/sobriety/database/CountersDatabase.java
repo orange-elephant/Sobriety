@@ -6,6 +6,7 @@ import android.provider.BaseColumns;
 import com.orangeelephant.sobriety.counter.Counter;
 import com.orangeelephant.sobriety.counter.Reason;
 import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
+import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 import com.orangeelephant.sobriety.logging.LogEvent;
 
 import net.sqlcipher.Cursor;
@@ -15,6 +16,11 @@ import net.sqlcipher.database.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * class that provides methods for interfacing with the counters table in the main app database
+ *
+ * access using singleton instance provided by {@link SobrietyDatabase}
+ */
 public class CountersDatabase implements BaseColumns {
     private static final String TAG = (CountersDatabase.class.getSimpleName());
 
@@ -53,9 +59,10 @@ public class CountersDatabase implements BaseColumns {
         long record_time_in_millis = cursor.getLong(3);
 
         cursor.close();
-        db.close();
 
-        ArrayList<Reason> reasonsForCounterId = new ReasonsDatabase(dbOpenHelper).getReasonsForCounterId(counterId);
+        ArrayList<Reason> reasonsForCounterId = ApplicationDependencies.getSobrietyDatabase()
+                                                                        .getReasonsDatabase()
+                                                                        .getReasonsForCounterId(counterId);
 
         return new Counter(counterId, name, time_in_millis, record_time_in_millis, reasonsForCounterId);
     }
@@ -78,7 +85,6 @@ public class CountersDatabase implements BaseColumns {
             counters.add(new Counter(id, name, time_in_millis, record_time_in_millis, new ArrayList<>()));
         }
         cursor.close();
-        db.close();
 
         return counters;
     }
@@ -89,9 +95,9 @@ public class CountersDatabase implements BaseColumns {
 
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         db.execSQL(sqlCounterRecord);
-        db.close();
 
-        new ReasonsDatabase(dbOpenHelper).deleteReasonsForCounterId(counterID);
+        ApplicationDependencies.getSobrietyDatabase().getReasonsDatabase()
+                .deleteReasonsForCounterId(counterID);
         LogEvent.i(TAG, "Counter id " + counterID + " was deleted");
     }
 
@@ -104,7 +110,6 @@ public class CountersDatabase implements BaseColumns {
 
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         db.execSQL(sql);
-        db.close();
         LogEvent.i(TAG, "Counter id " + counterId + " was reset");
     }
 
@@ -123,10 +128,9 @@ public class CountersDatabase implements BaseColumns {
         contentValues.put(CountersDatabase.COLUMN_RECORD_CLEAN_TIME, counterToSave.getRecordTimeSoberInMillis());
 
         int counterRowId = (int) db.insert(CountersDatabase.TABLE_NAME_COUNTERS, null, contentValues);
-        db.close();
 
         ArrayList<Reason> reasons = counterToSave.getReasons();
-        ReasonsDatabase reasonsDatabase = new ReasonsDatabase(dbOpenHelper);
+        ReasonsDatabase reasonsDatabase = ApplicationDependencies.getSobrietyDatabase().getReasonsDatabase();
         for (Reason reason: reasons) {
             reasonsDatabase.addReasonForCounter(counterRowId, reason.getReason());
         }

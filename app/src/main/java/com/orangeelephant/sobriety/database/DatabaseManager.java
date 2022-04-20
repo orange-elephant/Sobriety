@@ -34,7 +34,7 @@ public class DatabaseManager {
                 LogEvent.i(TAG, "A new encrypted database was created");
                 return;
             }
-            new DBOpenHelper(context).getWritableDatabase();
+            ApplicationDependencies.getSobrietyDatabase().getWritableDatabase();
             LogEvent.w(TAG, "Not creating encrypted database as version is pre-migration");
         } catch (SQLiteException exception) {
             LogEvent.i(TAG, "Couldn't create a database with the provided key, an unencrypted database probably exists.");

@@ -1,20 +1,10 @@
 package com.orangeelephant.sobriety.util;
 
-import android.content.ContentValues;
-
-import com.orangeelephant.sobriety.counter.Counter;
-import com.orangeelephant.sobriety.counter.Reason;
-import com.orangeelephant.sobriety.database.CountersDatabase;
-import com.orangeelephant.sobriety.database.ReasonsDatabase;
-import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
-import com.orangeelephant.sobriety.logging.LogEvent;
-
 import net.sqlcipher.Cursor;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
 /**
  * A class which provides methods useful for interacting with the SQLiteDatabase of the

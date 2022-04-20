@@ -8,6 +8,7 @@ import com.orangeelephant.sobriety.counter.Reason;
 import com.orangeelephant.sobriety.database.CountersDatabase;
 import com.orangeelephant.sobriety.database.ReasonsDatabase;
 import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
+import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 import com.orangeelephant.sobriety.logging.LogEvent;
 
 import org.json.JSONArray;
@@ -19,7 +20,6 @@ import java.io.FileNotFoundException;
 import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Scanner;
 
 public class ImportBackup extends BackupBase {
@@ -58,7 +58,7 @@ public class ImportBackup extends BackupBase {
     }
 
     private void saveToDb(JSONObject decrypted) {
-        DBOpenHelper db = new DBOpenHelper(context);
+        DBOpenHelper db = ApplicationDependencies.getSobrietyDatabase();
         //for testing
         db.getWritableDatabase().execSQL("DELETE FROM " + CountersDatabase.TABLE_NAME_COUNTERS);
         db.getWritableDatabase().execSQL("DELETE FROM " + ReasonsDatabase.TABLE_NAME_REASONS);
@@ -96,7 +96,7 @@ public class ImportBackup extends BackupBase {
                     }
                 }
 
-                CountersDatabase countersDatabase = new CountersDatabase(new DBOpenHelper(context));
+                CountersDatabase countersDatabase = ApplicationDependencies.getSobrietyDatabase().getCountersDatabase();
                 for (Counter counter: countersRetrieved) {
                     countersDatabase.saveCounterObjectToDb(counter);
                 }

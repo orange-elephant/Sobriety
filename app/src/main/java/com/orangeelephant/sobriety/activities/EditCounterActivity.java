@@ -12,9 +12,8 @@ import android.widget.Toast;
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.counter.Counter;
 import com.orangeelephant.sobriety.counter.Reason;
-import com.orangeelephant.sobriety.database.CountersDatabase;
 import com.orangeelephant.sobriety.database.ReasonsDatabase;
-import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
+import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 
 import java.util.ArrayList;
 
@@ -32,7 +31,8 @@ public class EditCounterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_counter);
 
         int openCounterId = getIntent().getIntExtra("openCounterId", 0);
-        this.openCounter = new CountersDatabase(new DBOpenHelper(this)).getCounterById(openCounterId);
+        this.openCounter = ApplicationDependencies.getSobrietyDatabase().getCountersDatabase()
+                                .getCounterById(openCounterId);
         this.reasons = openCounter.getReasons();
         preferenceChangeListener =
                 new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -48,7 +48,7 @@ public class EditCounterActivity extends AppCompatActivity {
         EditText reason_field = findViewById(R.id.addReasonField);
         String reason = reason_field.getText().toString();
 
-        ReasonsDatabase db = new ReasonsDatabase(new DBOpenHelper(this));
+        ReasonsDatabase db = ApplicationDependencies.getSobrietyDatabase().getReasonsDatabase();
         if (this.reasons.isEmpty()) {
             db.addReasonForCounter(openCounter.getId(), reason);
         } else {
