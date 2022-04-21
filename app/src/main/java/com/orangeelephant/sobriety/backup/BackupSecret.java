@@ -14,12 +14,11 @@ import com.orangeelephant.sobriety.util.SobrietyPreferences;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-
-import javax.crypto.spec.IvParameterSpec;
 
 public class BackupSecret {
 
@@ -29,21 +28,13 @@ public class BackupSecret {
 
     private final byte[] salt;
     private String passphrase;
-    private byte[] backupCipherKey;
 
     public BackupSecret(@Nullable byte[] salt) {
         if (salt == null) {
-            this.salt = getSaltFromSharedPreferences();
+            this.salt = RandomUtil.generateRandomBytes(32);
         } else {
             this.salt = salt;
         }
-    }
-
-    private byte[] createNewSecretToStore() throws IllegalStateException {
-        if (passphrase == null) {
-            throw new IllegalStateException("No password was provided from which to derive a secret");
-        }
-        return getBackupKey(passphrase, salt);
     }
 
     /*implementation for this method was adapted from
@@ -75,29 +66,10 @@ public class BackupSecret {
         }
     }
 
-    private byte[] getSaltFromSharedPreferences() {
-        String base64encodedSalt = SobrietyPreferences.getBackupEncryptionPassphraseSalt();
-        if (base64encodedSalt.equals("")) {
-            LogEvent.i(TAG,"No salt is stored, creating one now");
-            base64encodedSalt = storeNewPassphraseSalt();
-        }
-
-        return base64encodedSalt.getBytes();
-    }
-
-    private String storeNewPassphraseSalt() {
-        byte[] salt = RandomUtil.generateRandomBytes(32);
-        String base64encodedBytes = Base64.encodeToString(salt, Base64.DEFAULT);
-
-        SobrietyPreferences.setBackupEncryptionPassphraseSalt(base64encodedBytes);
-
-        return base64encodedBytes;
-    }
-
     public void setPassphrase(String passphrase) throws GeneralSecurityException {
         this.passphrase = passphrase;
 
-        byte[] backupCipherKey = createNewSecretToStore();
+        byte[] backupCipherKey = passphrase.getBytes(StandardCharsets.UTF_8);
         byte[] iv = RandomUtil.generateRandomBytes(12);
         byte[] encryptedCipherKey = KeyStoreUtil.encryptBytes(backupCipherKey, iv);
 
@@ -120,24 +92,29 @@ public class BackupSecret {
                 throw new NoSecretExistsException("No secret exists, create one by setting a passphrase");
             }
 
+            byte[] decryptedKey;
             if (!SobrietyPreferences.getBackupEncryptionKey().equals("")) {
                 LogEvent.w(TAG, "Backup passphrase is still stored without a unique IV");
                 byte[] encryptedKey = Base64.decode(SobrietyPreferences.getBackupEncryptionKey(), Base64.DEFAULT);
+                decryptedKey = KeyStoreUtil.decryptBytes(encryptedKey, null);
 
                 LogEvent.i(TAG, "Re-encrypting with a unique IV");
-                String serialisedEncryptedSecret = KeyStoreUtil.serialiseSecretToStore(encryptedKey, RandomUtil.generateRandomBytes(12));
+                byte[] iv = RandomUtil.generateRandomBytes(12);
+                byte[] encryptedWithNewIv = KeyStoreUtil.encryptBytes(decryptedKey, iv);
+                String serialisedEncryptedSecret = KeyStoreUtil.serialiseSecretToStore(encryptedWithNewIv, iv);
+
                 SobrietyPreferences.setBackupKeyWithIv(serialisedEncryptedSecret);
                 SobrietyPreferences.setBackupEncryptionKey("");
-
-                return KeyStoreUtil.decryptBytes(encryptedKey, null);
             } else {
                 JSONObject serialisedStoredSecret = new JSONObject(SobrietyPreferences.getBackupKeyWithIv());
 
                 byte[] encryptedSecret = Base64.decode(serialisedStoredSecret.getString("encrypted"), Base64.DEFAULT);
                 byte[] iv = Base64.decode(serialisedStoredSecret.getString("iv"), Base64.DEFAULT);
 
-                return KeyStoreUtil.decryptBytes(encryptedSecret, iv);
+                decryptedKey = KeyStoreUtil.decryptBytes(encryptedSecret, iv);
             }
+
+            return getBackupKey(new String(decryptedKey), salt);
         } catch (GeneralSecurityException | JSONException e) {
             LogEvent.e(TAG,"Couldn't decrypt cipherKey", e);
             throw new GeneralSecurityException();

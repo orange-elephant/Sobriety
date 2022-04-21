@@ -1,13 +1,16 @@
 package com.orangeelephant.sobriety.backup;
 
 import android.os.Environment;
+import android.util.Base64;
 
 import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 import com.orangeelephant.sobriety.logging.LogEvent;
+import com.orangeelephant.sobriety.util.RandomUtil;
 import com.orangeelephant.sobriety.util.SqlUtil;
 
 import net.sqlcipher.Cursor;
+import net.sqlcipher.database.SQLiteDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,21 +24,21 @@ import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
 import java.util.ArrayList;
 
-public class CreateBackup extends BackupBase {
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
+public class CreateBackup {
     private static final String TAG = (CreateBackup.class.getSimpleName());
 
-    protected BackupSecret backupSecret = null;
+    private static final String AES_MODE = "AES/GCM/NoPadding";
+
+    protected BackupSecret backupSecret;
 
     public CreateBackup() {
         super();
-        this.database = ApplicationDependencies.getSobrietyDatabase().getReadableDatabase();
 
-        try {
-            backupSecret = new BackupSecret(null);
-        } catch (Exception e) {
-            LogEvent.e(TAG, "Couldn't create a new instance of backupSecret", e);
-        }
+        backupSecret = new BackupSecret(null);
     }
 
     public void setPassphrase(String passphrase) throws GeneralSecurityException {
@@ -43,17 +46,20 @@ public class CreateBackup extends BackupBase {
     }
 
     private JSONObject getEncryptedDataAsJson() throws JSONException, NoSecretExistsException, KeyManagementException {
-        String encryptedData = encryptString(getDatabaseAsJson().toString());
+        IvParameterSpec iv = new IvParameterSpec(RandomUtil.generateRandomBytes(12));
+        String encryptedData = encryptString(getDatabaseAsJson().toString(), iv, backupSecret);
 
         JSONObject encryptedDataAsJson = new JSONObject();
         encryptedDataAsJson.put("Salt", backupSecret.getSalt());
-        encryptedDataAsJson.put("IV", getIv());
+        encryptedDataAsJson.put("IV", Base64.encodeToString(iv.getIV(), Base64.DEFAULT));
         encryptedDataAsJson.put("EncryptedData", encryptedData);
 
         return encryptedDataAsJson;
     }
 
-    private JSONObject getDatabaseAsJson() throws JSONException {
+    private static JSONObject getDatabaseAsJson() throws JSONException {
+        SQLiteDatabase database = ApplicationDependencies.getSobrietyDatabase().getReadableDatabase();
+
         JSONObject databaseAsJson = new JSONObject();
         databaseAsJson.put("DatabaseVersion", DBOpenHelper.DATABASE_VERSION);
 
@@ -98,6 +104,7 @@ public class CreateBackup extends BackupBase {
 
     public void saveToExternalStorage() throws JSONException, NoSecretExistsException, KeyManagementException {
         JSONObject encryptedDataAsJson = getEncryptedDataAsJson();
+
         String fileName = "sobriety.backup";
         String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString();
         File backupFile = new File(root, fileName);
@@ -114,6 +121,25 @@ public class CreateBackup extends BackupBase {
             LogEvent.i(TAG, "Backup saved to " + root + "/" + fileName);
         } catch (IOException e) {
             LogEvent.e(TAG, "Failed to create backup file", e);
+        }
+    }
+
+    private static String encryptString(String toEncrypt, IvParameterSpec iv, BackupSecret backupSecret) throws NoSecretExistsException, KeyManagementException {
+        if (backupSecret == null) {
+            backupSecret = new BackupSecret(null);
+        }
+
+        try {
+            byte[] cipherKey = backupSecret.getBackupCipherKey();
+            Cipher cipher = Cipher.getInstance(AES_MODE);
+            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(cipherKey, "AES"), iv);
+
+            byte[] encrypted = cipher.doFinal(toEncrypt.getBytes(StandardCharsets.UTF_8));
+
+            return Base64.encodeToString(encrypted, Base64.DEFAULT);
+        } catch (GeneralSecurityException e) {
+            LogEvent.e(TAG,"Exception trying to retrieve backup cipher", e);
+            throw new KeyManagementException();
         }
     }
 }

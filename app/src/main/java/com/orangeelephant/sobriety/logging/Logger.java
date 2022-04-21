@@ -119,7 +119,6 @@ public class Logger {
             while (true) {
                 LogRecord record = queue.getNext();
                 logDatabase.write(record.getTag(), record.getMessage(), record.getStackTrace(), 10);
-                System.out.println("Written - " + record.getTag());
             }
         }
     }

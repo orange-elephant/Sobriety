@@ -22,9 +22,16 @@ import java.security.KeyManagementException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ImportBackup extends BackupBase {
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
+public class ImportBackup {
     private static final String TAG = (ImportBackup.class.getSimpleName());
+
+    private static final String AES_MODE = "AES/GCM/NoPadding";
+
+    private final BackupSecret backupSecret;
 
     public ImportBackup() throws JSONException, FileNotFoundException {
         super();
@@ -44,15 +51,13 @@ public class ImportBackup extends BackupBase {
         }
 
         try {
-            JSONObject decrypted = new JSONObject(decryptBytes(encrypted, iv));
-            LogEvent.i(TAG, decrypted.toString());
+            JSONObject decrypted = new JSONObject(decryptBytes(encrypted, iv, backupSecret));
             saveToDb(decrypted);
         } catch (KeyManagementException e) {
             e.printStackTrace();
         }
     }
 
-    @Override
     public void setPassphrase(String passphrase) throws GeneralSecurityException {
         backupSecret.setPassphrase(passphrase);
     }
@@ -118,5 +123,21 @@ public class ImportBackup extends BackupBase {
         Scanner fileScanner = new Scanner(backupFile);
         backupAsJson = new JSONObject(fileScanner.next());
         return backupAsJson;
+    }
+
+    private static String decryptBytes(byte[] toDecrypt, byte[] iv, BackupSecret backupSecret) throws KeyManagementException {
+        try {
+            Cipher cipher = Cipher.getInstance(AES_MODE);
+            IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+            byte[] cipherKey = backupSecret.getBackupCipherKey();
+            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(cipherKey, "AES"), ivParameterSpec);
+
+            byte[] decrypted = cipher.doFinal(toDecrypt);
+
+            return new String(decrypted);
+        } catch (NoSecretExistsException | GeneralSecurityException e) {
+            LogEvent.e(TAG,"Failed to decrypt string", e);
+            throw new KeyManagementException();
+        }
     }
 }
