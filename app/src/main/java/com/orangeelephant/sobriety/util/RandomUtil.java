@@ -2,6 +2,8 @@ package com.orangeelephant.sobriety.util;
 
 import java.security.SecureRandom;
 
+import javax.crypto.spec.IvParameterSpec;
+
 /**
  * Currently only provides generateRandomBytes method
  * used for random key, IV and Salt generation

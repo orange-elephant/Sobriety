@@ -20,6 +20,8 @@ public final class SobrietyPreferences {
     private static final String SQLCIPHER_ENCRYPTION_KEY = "sqlcipherEncryptionKey";
     private static final String IS_DATABASE_ENCRYPTED = "isEncrypted";
     private static final String IS_FIRST_OPEN = "isFirstOpen";
+    private static final String SQLCIPHER_KEY_WITH_IV = "sqlCipherKeyWithIv";
+    private static final String BACKUP_KEY_WITH_IV = "backupKeyWithIv";
 
     private static final String LANGUAGE = "language";
     private static final String THEME = "theme";
@@ -55,6 +57,22 @@ public final class SobrietyPreferences {
 
     public static boolean getIsDatabaseEncrypted() {
         return getBooleanPreference(IS_DATABASE_ENCRYPTED, false);
+    }
+
+    public static void setSqlcipherKeyWithIv(String  sqlcipherKeyWithIv) {
+        setStringPreference(SQLCIPHER_KEY_WITH_IV, sqlcipherKeyWithIv);
+    }
+
+    public static String getSqlcipherKeyWithIv() {
+        return getStringPreference(SQLCIPHER_KEY_WITH_IV, "");
+    }
+
+    public static void setBackupKeyWithIv(String backupKeyWithIv) {
+        setStringPreference(BACKUP_KEY_WITH_IV, backupKeyWithIv);
+    }
+
+    public static String getBackupKeyWithIv() {
+        return getStringPreference(BACKUP_KEY_WITH_IV, "");
     }
 
     public static void setLanguage(String language) {

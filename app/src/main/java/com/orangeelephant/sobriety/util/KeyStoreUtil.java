@@ -4,7 +4,12 @@ import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 import android.util.Base64;
 
+import androidx.annotation.Nullable;
+
 import com.orangeelephant.sobriety.logging.LogEvent;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -21,6 +26,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.IvParameterSpec;
 
 /**
  * A class of methods useful for encrypting data using keys in the android
@@ -39,11 +45,14 @@ public final class KeyStoreUtil {
     private static final String ANDROID_KEY_STORE = "AndroidKeyStore";
     private static final String KEY_ALIAS = "sobriety_database_key";
 
-    public static byte[] encryptBytes(byte[] bytesToEncrypt) throws GeneralSecurityException {
+    public static byte[] encryptBytes(byte[] bytesToEncrypt, @Nullable byte[] iv) throws GeneralSecurityException {
+        if (iv == null) {
+            iv = manageIV();
+        }
+
         try {
             Cipher cipher = Cipher.getInstance(AES_MODE);
-            cipher.init(Cipher.ENCRYPT_MODE, getKey(),
-                    new GCMParameterSpec(128, manageIV()));
+            cipher.init(Cipher.ENCRYPT_MODE, getKey(), new GCMParameterSpec(128, iv));
 
             return cipher.doFinal(bytesToEncrypt);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException |
@@ -56,11 +65,14 @@ public final class KeyStoreUtil {
         }
     }
 
-    public static byte[] decryptBytes(byte[] bytesToDecrypt) throws GeneralSecurityException {
+    public static byte[] decryptBytes(byte[] bytesToDecrypt, @Nullable byte[] iv) throws GeneralSecurityException {
+        if (iv == null) {
+            iv = manageIV();
+        }
+
         try {
             Cipher cipher = Cipher.getInstance(AES_MODE);
-            cipher.init(Cipher.DECRYPT_MODE, getKey(),
-                    new GCMParameterSpec(128, manageIV()));
+            cipher.init(Cipher.DECRYPT_MODE, getKey(), new GCMParameterSpec(128, iv));
 
             return cipher.doFinal(bytesToDecrypt);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException |
@@ -71,6 +83,14 @@ public final class KeyStoreUtil {
             LogEvent.i(TAG, String.valueOf(e.getClass()));
             throw new GeneralSecurityException("Invalid ciphertext provided");
         }
+    }
+
+    public static String serialiseSecretToStore(byte[] secret, byte[] iv) throws JSONException {
+        JSONObject secretToStore = new JSONObject();
+        secretToStore.put("encrypted", Base64.encodeToString(secret, Base64.DEFAULT));
+        secretToStore.put("iv", Base64.encodeToString(iv, Base64.DEFAULT));
+
+        return secretToStore.toString();
     }
 
     private static Key getKey() throws KeyManagementException {
@@ -88,7 +108,7 @@ public final class KeyStoreUtil {
         }
     }
 
-    private static void generateKey() throws KeyManagementException {
+    private static void generateKey() {
         try {
             KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEY_STORE);
             keyGenerator.init(new KeyGenParameterSpec.Builder(

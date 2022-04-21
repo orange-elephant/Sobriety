@@ -11,10 +11,15 @@ import com.orangeelephant.sobriety.util.KeyStoreUtil;
 import com.orangeelephant.sobriety.util.RandomUtil;
 import com.orangeelephant.sobriety.util.SobrietyPreferences;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+
+import javax.crypto.spec.IvParameterSpec;
 
 public class BackupSecret {
 
@@ -91,25 +96,52 @@ public class BackupSecret {
 
     public void setPassphrase(String passphrase) throws GeneralSecurityException {
         this.passphrase = passphrase;
+
         byte[] backupCipherKey = createNewSecretToStore();
-        byte[] encryptedCipherKey = KeyStoreUtil.encryptBytes(backupCipherKey);
-        SobrietyPreferences.setBackupEncryptionKey(Base64.encodeToString(encryptedCipherKey, Base64.DEFAULT));
-        LogEvent.i(TAG,"Backup cipher key created from password and stored");
+        byte[] iv = RandomUtil.generateRandomBytes(12);
+        byte[] encryptedCipherKey = KeyStoreUtil.encryptBytes(backupCipherKey, iv);
+
+        try {
+            String serialisedEncryptedSecret = KeyStoreUtil.serialiseSecretToStore(encryptedCipherKey, iv);
+            SobrietyPreferences.setBackupKeyWithIv(serialisedEncryptedSecret);
+            SobrietyPreferences.setBackupEncryptionKey("");
+
+            LogEvent.i(TAG,"Backup cipher key created from password and stored");
+        } catch (JSONException e) {
+            LogEvent.e(TAG, "setting backup passphrase failed due to a JSON exception", e);
+            throw new GeneralSecurityException("Couldn't set backup passphrase");
+        }
     }
 
     public byte[] getBackupCipherKey() throws NoSecretExistsException, GeneralSecurityException {
         try {
-            String savedSecret = SobrietyPreferences.getBackupEncryptionKey();
-            if (savedSecret.equals("")) {
+            if (SobrietyPreferences.getBackupEncryptionKey().equals("") &&
+                    SobrietyPreferences.getBackupKeyWithIv().equals("")) {
                 throw new NoSecretExistsException("No secret exists, create one by setting a passphrase");
             }
-            byte[] encryptedKey = Base64.decode(SobrietyPreferences.getBackupEncryptionKey(), Base64.DEFAULT);
-            backupCipherKey = KeyStoreUtil.decryptBytes(encryptedKey);
-        } catch (GeneralSecurityException e) {
+
+            if (!SobrietyPreferences.getBackupEncryptionKey().equals("")) {
+                LogEvent.w(TAG, "Backup passphrase is still stored without a unique IV");
+                byte[] encryptedKey = Base64.decode(SobrietyPreferences.getBackupEncryptionKey(), Base64.DEFAULT);
+
+                LogEvent.i(TAG, "Re-encrypting with a unique IV");
+                String serialisedEncryptedSecret = KeyStoreUtil.serialiseSecretToStore(encryptedKey, RandomUtil.generateRandomBytes(12));
+                SobrietyPreferences.setBackupKeyWithIv(serialisedEncryptedSecret);
+                SobrietyPreferences.setBackupEncryptionKey("");
+
+                return KeyStoreUtil.decryptBytes(encryptedKey, null);
+            } else {
+                JSONObject serialisedStoredSecret = new JSONObject(SobrietyPreferences.getBackupKeyWithIv());
+
+                byte[] encryptedSecret = Base64.decode(serialisedStoredSecret.getString("encrypted"), Base64.DEFAULT);
+                byte[] iv = Base64.decode(serialisedStoredSecret.getString("iv"), Base64.DEFAULT);
+
+                return KeyStoreUtil.decryptBytes(encryptedSecret, iv);
+            }
+        } catch (GeneralSecurityException | JSONException e) {
             LogEvent.e(TAG,"Couldn't decrypt cipherKey", e);
             throw new GeneralSecurityException();
         }
-        return backupCipherKey;
     }
 
     public boolean verifyPassphrase(String passphrase) throws NoSecretExistsException, GeneralSecurityException {
