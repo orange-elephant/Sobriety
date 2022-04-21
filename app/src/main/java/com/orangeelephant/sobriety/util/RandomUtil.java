@@ -1,6 +1,6 @@
 package com.orangeelephant.sobriety.util;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 /**
  * Currently only provides generateRandomBytes method
@@ -11,7 +11,7 @@ public final class RandomUtil {
     public static byte[] generateRandomBytes(int numBytes) {
         //generate random bytes of specified length
         byte[] bytes = new byte[numBytes];
-        Random random = new Random();
+        SecureRandom random = new SecureRandom();
         random.nextBytes(bytes);
 
         return bytes;
