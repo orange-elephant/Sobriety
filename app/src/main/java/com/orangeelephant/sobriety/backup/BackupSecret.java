@@ -14,7 +14,6 @@ import com.orangeelephant.sobriety.util.SobrietyPreferences;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -27,7 +26,6 @@ public class BackupSecret {
     private static final int DIGEST_ROUNDS = 250_000;
 
     private final byte[] salt;
-    private String passphrase;
 
     public BackupSecret(@Nullable byte[] salt) {
         if (salt == null) {
@@ -67,9 +65,7 @@ public class BackupSecret {
     }
 
     public void setPassphrase(String passphrase) throws GeneralSecurityException {
-        this.passphrase = passphrase;
-
-        byte[] backupCipherKey = passphrase.getBytes(StandardCharsets.UTF_8);
+        byte[] backupCipherKey = getBackupKey(passphrase, getSaltFromSharedPreferences());
         byte[] iv = RandomUtil.generateRandomBytes(12);
         byte[] encryptedCipherKey = KeyStoreUtil.encryptBytes(backupCipherKey, iv);
 
@@ -127,5 +123,24 @@ public class BackupSecret {
 
     public String getSalt() {
         return Base64.encodeToString(salt, Base64.DEFAULT);
+    }
+
+    private byte[] getSaltFromSharedPreferences() {
+        String base64encodedSalt = SobrietyPreferences.getBackupEncryptionPassphraseSalt();
+        if (base64encodedSalt.equals("")) {
+            LogEvent.i(TAG,"No salt is stored, creating one now");
+            base64encodedSalt = storeNewPassphraseSalt();
+        }
+
+        return base64encodedSalt.getBytes();
+    }
+
+    private String storeNewPassphraseSalt() {
+        byte[] salt = RandomUtil.generateRandomBytes(32);
+        String base64encodedBytes = Base64.encodeToString(salt, Base64.DEFAULT);
+
+        SobrietyPreferences.setBackupEncryptionPassphraseSalt(base64encodedBytes);
+
+        return base64encodedBytes;
     }
 }
