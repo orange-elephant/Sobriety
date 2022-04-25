@@ -1,8 +1,8 @@
-package com.orangeelephant.sobriety.database;
+package com.orangeelephant.sobriety.database.helpers;
 
 import android.content.Context;
 
-import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
+import com.orangeelephant.sobriety.database.SqlcipherKey;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 import com.orangeelephant.sobriety.logging.LogEvent;
 import com.orangeelephant.sobriety.util.SobrietyPreferences;
@@ -10,11 +10,11 @@ import com.orangeelephant.sobriety.util.SobrietyPreferences;
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteException;
 
-public class DatabaseManager {
+public class SqlCipherHelper {
 
-    private static final String TAG = (DatabaseManager.class.getSimpleName());
+    private static final String TAG = (SqlCipherHelper.class.getSimpleName());
 
-    private DatabaseManager() {}
+    private SqlCipherHelper() {}
 
     /**
      * A method that loads the libraries required for sqlCipher to work
