@@ -34,6 +34,7 @@
             android:fragment="com.orangeelephant.sobriety.activities.fragments.preferences.BackupPreferencesFragment"
             app:title="@string/backup"
             app:summary="@string/backup_prefs_description"
+            app:enabled="false"
             />
 
     </PreferenceCategory>
