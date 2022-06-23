@@ -30,14 +30,11 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class CreateBackup {
     private static final String TAG = (CreateBackup.class.getSimpleName());
-
     private static final String AES_MODE = "AES/GCM/NoPadding";
 
     protected BackupSecret backupSecret;
 
     public CreateBackup() {
-        super();
-
         backupSecret = new BackupSecret(null);
     }
 
@@ -63,8 +60,7 @@ public class CreateBackup {
         JSONObject databaseAsJson = new JSONObject();
         databaseAsJson.put("DatabaseVersion", DBOpenHelper.DATABASE_VERSION);
 
-        ArrayList<String> tableNames =
-                SqlUtil.getTableNames(database);
+        ArrayList<String> tableNames = SqlUtil.getTableNames(database);
 
         for (String tableName: tableNames) {
             JSONArray tableAsJson = new JSONArray();
@@ -122,6 +118,10 @@ public class CreateBackup {
         } catch (IOException e) {
             LogEvent.e(TAG, "Failed to create backup file", e);
         }
+    }
+
+    public String getEncryptedDataAsString() throws NoSecretExistsException, JSONException, KeyManagementException {
+        return getEncryptedDataAsJson().toString();
     }
 
     private static String encryptString(String toEncrypt, IvParameterSpec iv, BackupSecret backupSecret) throws NoSecretExistsException, KeyManagementException {

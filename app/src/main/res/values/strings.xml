@@ -14,7 +14,7 @@
 
     <!--Strings for the add counter view -->
     <string name="AddCounterActivity_enter_counter_name">Choose the name of your counter:</string>
-Ad    <string name="AddCounterActivity_counter_name_input">Name…</string>
+    <string name="AddCounterActivity_counter_name_input">Name…</string>
     <string name="AddCounterActivity_select_start_date">Select the start date:</string>
     <string name="AddCounterActivity_add_a_reason_for_sobriety">Add a reason for your sobriety (optional):</string>
     <string name="AddCounterActivity_add_a_reason_for_sobriety_hint">Enter reason here…</string>
@@ -43,6 +43,7 @@ Ad    <string name="AddCounterActivity_counter_name_input">Name…</string>
     <string name="Toast_counter_reset">Counter was reset successfully.</string>
     <string name="Toast_delete_cancelled">Counter was not deleted.</string>
     <string name="Settings_fingerprint_not_enabled">Fingerprint unlock couldn\'t be enabled</string>
+    <string name="Backup_passphrase_not_set">Backup passphrase could not be set</string>
 
     <!-- Confirmation fragment messages -->
     <string name="ConfirmationFrgament_title_delete">Delete counter</string>
@@ -60,6 +61,7 @@ Ad    <string name="AddCounterActivity_counter_name_input">Name…</string>
     <string name="theme">Theme</string>
     <string name="security">Security</string>
     <string name="fingerprint_unlock">Fingerprint unlock</string>
+    <string name="backup">Backup</string>
     <string name="about">About</string>
     <string name="version">Version</string>
     <string name="source_code">Source code</string>
@@ -71,5 +73,6 @@ Ad    <string name="AddCounterActivity_counter_name_input">Name…</string>
 
     <!-- option descriptions -->
     <string name="fingerprint_unlock_description">Enable this option so that a fingerprint is required to unlock the app.</string>
+    <string name="backup_prefs_description">Backup options</string>
     <string name="source_code_description">Follow this link to view the source code of this app.</string>
 </resources>

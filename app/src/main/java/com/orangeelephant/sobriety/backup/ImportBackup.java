@@ -1,6 +1,5 @@
 package com.orangeelephant.sobriety.backup;
 
-import android.os.Environment;
 import android.util.Base64;
 
 import com.orangeelephant.sobriety.counter.Counter;
@@ -28,15 +27,14 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class ImportBackup {
     private static final String TAG = (ImportBackup.class.getSimpleName());
-
     private static final String AES_MODE = "AES/GCM/NoPadding";
 
     private final BackupSecret backupSecret;
 
-    public ImportBackup() throws JSONException, FileNotFoundException {
-        super();
+    public ImportBackup(String path) throws JSONException, FileNotFoundException {
 
-        JSONObject jsonObject = readBackupFile();
+        JSONObject jsonObject = new JSONObject(path); //readBackupFile(path);
+
 
         byte[] salt = Base64.decode(jsonObject.getString("Salt"), Base64.DEFAULT);
         byte[] encrypted = Base64.decode(jsonObject.getString("EncryptedData"), Base64.DEFAULT);
@@ -113,10 +111,10 @@ public class ImportBackup {
         }
     }
 
-    private JSONObject readBackupFile() throws FileNotFoundException, JSONException{
-        String fileName = "sobriety.backup";
-        String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString();
-        File backupFile = new File(root, fileName);
+    private JSONObject readBackupFile(String path) throws FileNotFoundException, JSONException{
+        //String fileName = "sobriety.backup";
+        //String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString();
+        File backupFile = new File(path);
 
         JSONObject backupAsJson;
 

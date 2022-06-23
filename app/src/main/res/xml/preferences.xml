@@ -29,6 +29,13 @@
             app:enabled="false"
             app:title="@string/fingerprint_unlock"
             app:summary="@string/fingerprint_unlock_description"/>
+
+        <Preference
+            android:fragment="com.orangeelephant.sobriety.activities.fragments.preferences.BackupPreferencesFragment"
+            app:title="@string/backup"
+            app:summary="@string/backup_prefs_description"
+            />
+
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/about">
