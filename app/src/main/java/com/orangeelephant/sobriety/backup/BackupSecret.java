@@ -29,7 +29,7 @@ public class BackupSecret {
 
     public BackupSecret(@Nullable byte[] salt) {
         if (salt == null) {
-            this.salt = RandomUtil.generateRandomBytes(32);
+            this.salt = getSaltFromSharedPreferences();
         } else {
             this.salt = salt;
         }
@@ -65,7 +65,7 @@ public class BackupSecret {
     }
 
     public void setPassphrase(String passphrase) throws GeneralSecurityException {
-        byte[] backupCipherKey = getBackupKey(passphrase, getSaltFromSharedPreferences());
+        byte[] backupCipherKey = getBackupKey(passphrase, salt);
         byte[] iv = RandomUtil.generateRandomBytes(12);
         byte[] encryptedCipherKey = KeyStoreUtil.encryptBytes(backupCipherKey, iv);
 
