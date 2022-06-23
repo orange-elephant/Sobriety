@@ -13,7 +13,7 @@ import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.widget.Toast;
 
-import com.orangeelephant.sobriety.database.DatabaseManager;
+import com.orangeelephant.sobriety.database.helpers.SqlCipherHelper;
 import com.orangeelephant.sobriety.database.SqlcipherKey;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 import com.orangeelephant.sobriety.R;
@@ -33,7 +33,7 @@ public class AppStartupActivity extends AppCompatActivity {
 
         //initialise ApplicationDependencies
         ApplicationDependencies.init(getApplication());
-        DatabaseManager.loadSqlCipherLibs(this);
+        SqlCipherHelper.loadSqlCipherLibs(this);
 
         if (SobrietyPreferences.getFingerprintLockEnabled()
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -50,7 +50,7 @@ public class AppStartupActivity extends AppCompatActivity {
 
     private void onFirstOpen() {
         LogEvent.i(TAG,"Running first open tasks");
-        DatabaseManager.attemptToCreateEncryptedDatabase(this);
+        SqlCipherHelper.attemptToCreateEncryptedDatabase(this);
 
         SobrietyPreferences.setIsFirstOpen(false);
     }
@@ -64,7 +64,7 @@ public class AppStartupActivity extends AppCompatActivity {
         }
 
         if (!SobrietyPreferences.getIsDatabaseEncrypted()) {
-            DatabaseManager.attemptToCreateEncryptedDatabase(this);
+            SqlCipherHelper.attemptToCreateEncryptedDatabase(this);
         }
 
         Intent intent = new Intent(AppStartupActivity.this, HomeScreenActivity.class);
@@ -111,7 +111,7 @@ public class AppStartupActivity extends AppCompatActivity {
                 try {
                     uponUnlock();
                 } catch (KeyStoreException exception) {
-                    LogEvent.e("Unable to start app due to exception loading sqlCipherKey", exception);
+                    LogEvent.e(TAG, "Unable to start app due to exception loading sqlCipherKey", exception);
                 }
                 //start app
                 Intent intent = new Intent(AppStartupActivity.this, HomeScreenActivity.class);
