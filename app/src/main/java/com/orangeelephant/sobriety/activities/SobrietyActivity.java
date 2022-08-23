@@ -18,12 +18,13 @@ public class SobrietyActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         if (!ApplicationDependencies.isInitialised()) {
             initialise();
         }
 
         setLocale();
+
+        super.onCreate(savedInstanceState);
     }
 
     private void setLocale() {
