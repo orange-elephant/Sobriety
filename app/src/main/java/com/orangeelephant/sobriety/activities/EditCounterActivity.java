@@ -17,9 +17,7 @@ import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 
 import java.util.ArrayList;
 
-public class EditCounterActivity extends AppCompatActivity {
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
+public class EditCounterActivity extends SobrietyActivity {
 
     private Counter openCounter;
     private ArrayList<Reason> reasons;
@@ -27,21 +25,12 @@ public class EditCounterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         setContentView(R.layout.activity_edit_counter);
 
         int openCounterId = getIntent().getIntExtra("openCounterId", 0);
         this.openCounter = ApplicationDependencies.getSobrietyDatabase().getCountersDatabase()
                                 .getCounterById(openCounterId);
         this.reasons = openCounter.getReasons();
-        preferenceChangeListener =
-                new SharedPreferences.OnSharedPreferenceChangeListener() {
-                    @Override
-                    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                        recreate();
-                    }
-                };
-        sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
     }
 
     public void onClickSave(View v) {

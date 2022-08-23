@@ -26,7 +26,7 @@ public class ApplicationDependencies {
         }
     }
 
-    public boolean isInitialised() {
+    public static boolean isInitialised() {
         return application != null;
     }
 

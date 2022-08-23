@@ -16,15 +16,12 @@ import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.counter.Counter;
 import com.orangeelephant.sobriety.activities.adapters.CounterAdapter;
 
-public class HomeScreenActivity extends AppCompatActivity implements CounterAdapter.OnItemClicked {
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
+public class HomeScreenActivity extends SobrietyActivity implements CounterAdapter.OnItemClicked {
     private CounterAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         setContentView(R.layout.activity_home_screen);
         onCreateRecycler();
@@ -34,14 +31,6 @@ public class HomeScreenActivity extends AppCompatActivity implements CounterAdap
         actionBar.setDisplayShowTitleEnabled(false);
 
         setTimeMessageUpdateHandler();
-        preferenceChangeListener =
-                new SharedPreferences.OnSharedPreferenceChangeListener() {
-                    @Override
-                    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                        recreate();
-                    }
-                };
-        sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
     }
 
 

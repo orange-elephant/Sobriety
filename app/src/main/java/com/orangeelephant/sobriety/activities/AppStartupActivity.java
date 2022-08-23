@@ -23,17 +23,12 @@ import com.orangeelephant.sobriety.util.SobrietyPreferences;
 import java.security.KeyStoreException;
 import java.util.concurrent.Executor;
 
-public class AppStartupActivity extends AppCompatActivity {
-
+public class AppStartupActivity extends SobrietyActivity {
     private static final String TAG = (AppStartupActivity.class.getSimpleName());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //initialise ApplicationDependencies
-        ApplicationDependencies.init(getApplication());
-        SqlCipherHelper.loadSqlCipherLibs(this);
 
         if (SobrietyPreferences.getFingerprintLockEnabled()
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {

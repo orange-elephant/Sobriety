@@ -1,14 +1,11 @@
 package com.orangeelephant.sobriety.activities;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -22,9 +19,7 @@ import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 
 import java.util.Date;
 
-public class CounterFullViewActivity extends AppCompatActivity {
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
+public class CounterFullViewActivity extends SobrietyActivity {
 
     private Counter openCounter;
     private ReasonsAdapter adapter;
@@ -32,7 +27,7 @@ public class CounterFullViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         int openCounterId = getIntent().getIntExtra("openCounterId", 0);
         openCounter = ApplicationDependencies.getSobrietyDatabase()
                                                 .getCountersDatabase()
@@ -43,14 +38,6 @@ public class CounterFullViewActivity extends AppCompatActivity {
         refreshCurrentCounterView();
         onCreateRecycler();
         setTimeMessageUpdateHandler();
-        preferenceChangeListener =
-                new SharedPreferences.OnSharedPreferenceChangeListener() {
-                    @Override
-                    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                        recreate();
-                    }
-                };
-        sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
     }
 
     public void refreshCurrentCounterView () {

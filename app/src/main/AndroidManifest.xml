@@ -11,7 +11,10 @@
         android:label="Sobriety"
         android:roundIcon="@mipmap/app_logo"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Sobriety">
+        android:theme="@style/Theme.Sobriety" >
+        <activity
+            android:name=".SobrietyActivity"
+            android:exported="true" />
         <activity
             android:name=".activities.SettingsActivity"
             android:exported="true"
