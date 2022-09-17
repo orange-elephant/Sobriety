@@ -1,4 +1,4 @@
-package com.orangeelephant.sobriety.counter;
+package com.orangeelephant.sobriety.database.model;
 
 public class Reason {
     private final int reasonId;

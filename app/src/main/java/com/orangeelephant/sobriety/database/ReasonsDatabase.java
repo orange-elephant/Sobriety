@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 
-import com.orangeelephant.sobriety.counter.Reason;
+import com.orangeelephant.sobriety.database.model.Reason;
 import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
 import com.orangeelephant.sobriety.logging.LogEvent;
 

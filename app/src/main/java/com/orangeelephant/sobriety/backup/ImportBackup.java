@@ -2,8 +2,8 @@ package com.orangeelephant.sobriety.backup;
 
 import android.util.Base64;
 
-import com.orangeelephant.sobriety.counter.Counter;
-import com.orangeelephant.sobriety.counter.Reason;
+import com.orangeelephant.sobriety.database.model.Counter;
+import com.orangeelephant.sobriety.database.model.Reason;
 import com.orangeelephant.sobriety.database.CountersDatabase;
 import com.orangeelephant.sobriety.database.ReasonsDatabase;
 import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;

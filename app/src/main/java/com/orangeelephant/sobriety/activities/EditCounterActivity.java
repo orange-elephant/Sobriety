@@ -1,17 +1,13 @@
 package com.orangeelephant.sobriety.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
-
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.orangeelephant.sobriety.R;
-import com.orangeelephant.sobriety.counter.Counter;
-import com.orangeelephant.sobriety.counter.Reason;
+import com.orangeelephant.sobriety.database.model.Counter;
+import com.orangeelephant.sobriety.database.model.Reason;
 import com.orangeelephant.sobriety.database.ReasonsDatabase;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 

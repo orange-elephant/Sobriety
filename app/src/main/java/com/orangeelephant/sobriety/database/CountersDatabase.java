@@ -3,8 +3,8 @@ package com.orangeelephant.sobriety.database;
 import android.content.ContentValues;
 import android.provider.BaseColumns;
 
-import com.orangeelephant.sobriety.counter.Counter;
-import com.orangeelephant.sobriety.counter.Reason;
+import com.orangeelephant.sobriety.database.model.Counter;
+import com.orangeelephant.sobriety.database.model.Reason;
 import com.orangeelephant.sobriety.database.helpers.DBOpenHelper;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 import com.orangeelephant.sobriety.logging.LogEvent;

@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.orangeelephant.sobriety.R;
-import com.orangeelephant.sobriety.counter.Counter;
+import com.orangeelephant.sobriety.database.model.Counter;
 import com.orangeelephant.sobriety.database.CountersDatabase;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 

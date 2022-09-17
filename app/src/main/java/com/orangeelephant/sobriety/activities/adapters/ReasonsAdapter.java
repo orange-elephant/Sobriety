@@ -10,10 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
 
 import com.orangeelephant.sobriety.R;
-import com.orangeelephant.sobriety.counter.Reason;
+import com.orangeelephant.sobriety.database.model.Reason;
 
 public class ReasonsAdapter extends
         RecyclerView.Adapter<ReasonsAdapter.ViewHolder> {

@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.orangeelephant.sobriety.R;
-import com.orangeelephant.sobriety.counter.Counter;
-import com.orangeelephant.sobriety.counter.Reason;
+import com.orangeelephant.sobriety.database.model.Counter;
+import com.orangeelephant.sobriety.database.model.Reason;
 import com.orangeelephant.sobriety.database.CountersDatabase;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 import com.orangeelephant.sobriety.logging.LogEvent;

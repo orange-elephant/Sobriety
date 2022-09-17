@@ -1,4 +1,4 @@
-package com.orangeelephant.sobriety.counter;
+package com.orangeelephant.sobriety.database.model;
 
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;

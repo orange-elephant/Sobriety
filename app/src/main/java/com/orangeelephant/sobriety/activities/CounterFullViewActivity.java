@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.activities.adapters.ReasonsAdapter;
-import com.orangeelephant.sobriety.counter.Counter;
+import com.orangeelephant.sobriety.database.model.Counter;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 
 import java.util.Date;
