@@ -15,16 +15,16 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class SobrietyActivity extends AppCompatActivity {
+    private static final String TAG = (SobrietyActivity.class.getSimpleName());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (!ApplicationDependencies.isInitialised()) {
             initialise();
         }
+        super.onCreate(savedInstanceState);
 
         setLocale();
-
-        super.onCreate(savedInstanceState);
     }
 
     private void setLocale() {

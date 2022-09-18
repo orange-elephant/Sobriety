@@ -1,10 +1,5 @@
 package com.orangeelephant.sobriety.activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.biometrics.BiometricPrompt;
@@ -13,46 +8,27 @@ import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.widget.Toast;
 
-import com.orangeelephant.sobriety.database.helpers.SqlCipherHelper;
-import com.orangeelephant.sobriety.database.SqlcipherKey;
-import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+
 import com.orangeelephant.sobriety.R;
+import com.orangeelephant.sobriety.database.SqlcipherKey;
+import com.orangeelephant.sobriety.database.helpers.SqlCipherHelper;
+import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 import com.orangeelephant.sobriety.logging.LogEvent;
 import com.orangeelephant.sobriety.util.SobrietyPreferences;
 
 import java.security.KeyStoreException;
 import java.util.concurrent.Executor;
 
-public class AppStartupActivity extends SobrietyActivity {
-    private static final String TAG = (AppStartupActivity.class.getSimpleName());
+public class UnlockActivity extends SobrietyActivity {
+    private static final String TAG = (UnlockActivity.class.getSimpleName());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (SobrietyPreferences.getFingerprintLockEnabled()
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            fingerprintUnlock();
-        } else {
-            try {
-                uponUnlock();
-            } catch (KeyStoreException exception) {
-                LogEvent.e(TAG,"Unable to start app due to exception loading sqlCipherKey", exception);
-            }
-        }
-
-    }
-
-    private void onFirstOpen() {
-        LogEvent.i(TAG,"Running first open tasks");
-        SqlCipherHelper.attemptToCreateEncryptedDatabase(this);
-
-        SobrietyPreferences.setIsFirstOpen(false);
-    }
-
-    private void uponUnlock() throws KeyStoreException {
-        SqlcipherKey sqlcipherKey = new SqlcipherKey();
-        ApplicationDependencies.setSqlcipherKey(sqlcipherKey);
+        unlock();
 
         if (SobrietyPreferences.getIsFirstOpen()) {
             onFirstOpen();
@@ -61,9 +37,15 @@ public class AppStartupActivity extends SobrietyActivity {
         if (!SobrietyPreferences.getIsDatabaseEncrypted()) {
             SqlCipherHelper.attemptToCreateEncryptedDatabase(this);
         }
+    }
 
-        Intent intent = new Intent(AppStartupActivity.this, HomeScreenActivity.class);
-        startActivity(intent);
+    private void unlock() {
+        if (SobrietyPreferences.getFingerprintLockEnabled()
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            fingerprintUnlock();
+        } else {
+            uponUnlock();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -79,7 +61,6 @@ public class AppStartupActivity extends SobrietyActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         moveTaskToBack(true);
-                        AppStartupActivity.super.onBackPressed();
                     }
                 })
                 .build();
@@ -90,7 +71,7 @@ public class AppStartupActivity extends SobrietyActivity {
                                               @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
                 Toast.makeText(getApplicationContext(),
-                        getApplicationContext().getString(R.string.AppStartup_unlock_error) + errString, Toast.LENGTH_SHORT)
+                                getApplicationContext().getString(R.string.AppStartup_unlock_error) + errString, Toast.LENGTH_SHORT)
                         .show();
             }
 
@@ -99,30 +80,49 @@ public class AppStartupActivity extends SobrietyActivity {
                     @NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
                 Toast.makeText(getApplicationContext(),
-                        getApplicationContext().getString(R.string.AppStartup_unlock_successful),
-                        Toast.LENGTH_SHORT)
+                                getApplicationContext().getString(R.string.AppStartup_unlock_successful),
+                                Toast.LENGTH_SHORT)
                         .show();
 
-                try {
-                    uponUnlock();
-                } catch (KeyStoreException exception) {
-                    LogEvent.e(TAG, "Unable to start app due to exception loading sqlCipherKey", exception);
-                }
-                //start app
-                Intent intent = new Intent(AppStartupActivity.this, HomeScreenActivity.class);
-                startActivity(intent);
+                uponUnlock();
+                finish();
             }
 
             @Override
             public void onAuthenticationFailed() {
                 super.onAuthenticationFailed();
                 Toast.makeText(getApplicationContext(),
-                        getApplicationContext().getString(R.string.AppStartup_unlock_failed),
-                        Toast.LENGTH_SHORT)
+                                getApplicationContext().getString(R.string.AppStartup_unlock_failed),
+                                Toast.LENGTH_SHORT)
                         .show();
             }
         };
 
         biometricPrompt.authenticate(new CancellationSignal(), executor, callback);
+    }
+
+    private void uponUnlock() {
+        try {
+            SqlcipherKey sqlcipherKey = new SqlcipherKey();
+            ApplicationDependencies.setSqlcipherKey(sqlcipherKey);
+
+            Intent intent = new Intent(this, HomeScreenActivity.class);
+            startActivity(intent);
+        } catch (KeyStoreException e) {
+            Toast t = new Toast(this);
+            t.setText("Unable to start app due to exception loading sqlCipherKey");
+            t.show();
+
+            LogEvent.e(TAG, "Unable to start app due to exception loading sqlCipherKey", e);
+            finish();
+        }
+    }
+
+
+    private void onFirstOpen() {
+        LogEvent.i(TAG,"Running first open tasks");
+        SqlCipherHelper.attemptToCreateEncryptedDatabase(this);
+
+        SobrietyPreferences.setIsFirstOpen(false);
     }
 }
