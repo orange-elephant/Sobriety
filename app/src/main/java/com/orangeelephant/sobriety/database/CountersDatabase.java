@@ -89,6 +89,17 @@ public class CountersDatabase implements BaseColumns {
         return counters;
     }
 
+    public ArrayList<Counter> getAllCountersWithReasons() {
+        ArrayList<Counter> counters = getAllCountersWithoutReasons();
+        ReasonsDatabase database = ApplicationDependencies.getSobrietyDatabase().getReasonsDatabase();
+
+        for (Counter counter: counters) {
+            counter.addReasons(database.getReasonsForCounterId(counter.getId()));
+        }
+
+        return counters;
+    }
+
     public void deleteCounterById(int counterID) {
         String sqlCounterRecord = "DELETE FROM " + CountersDatabase.TABLE_NAME_COUNTERS +
                 " WHERE _id = " + counterID;

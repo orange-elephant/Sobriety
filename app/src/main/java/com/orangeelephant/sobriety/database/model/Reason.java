@@ -1,5 +1,8 @@
 package com.orangeelephant.sobriety.database.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Reason {
     private final int reasonId;
     private String reason;
@@ -19,5 +22,14 @@ public class Reason {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public JSONObject toJson() throws JSONException {
+        JSONObject jsonReasons = new JSONObject();
+
+        jsonReasons.put("ReasonId", reasonId);
+        jsonReasons.put("Reason", reason);
+
+        return jsonReasons;
     }
 }

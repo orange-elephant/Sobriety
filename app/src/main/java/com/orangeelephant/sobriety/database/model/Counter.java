@@ -3,6 +3,10 @@ package com.orangeelephant.sobriety.database.model;
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -40,6 +44,10 @@ public class Counter {
 
     public ArrayList<Reason> getReasons() {
         return reasons;
+    }
+
+    public void addReasons(ArrayList<Reason> newReasons) {
+        reasons.addAll(newReasons);
     }
 
     public long getStartTimeInMillis() {
@@ -86,5 +94,22 @@ public class Counter {
                 .getString(R.string.CounterViewActivity_counter_message_long);
 
         return String.format(timeSoberString, elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);
+    }
+
+    public JSONObject toJson() throws JSONException {
+        JSONObject counter = new JSONObject();
+
+        counter.put("Id", id);
+        counter.put("Name", name);
+        counter.put("StartTimeMillis", startTimeInMillis);
+        counter.put("RecordTimeSoberMillis", recordTimeSoberInMillis);
+
+        JSONArray jsonReasons = new JSONArray();
+        for (Reason reason: this.reasons) {
+            jsonReasons.put(reason.toJson());
+        }
+        counter.put("Reasons", jsonReasons);
+
+        return counter;
     }
 }
