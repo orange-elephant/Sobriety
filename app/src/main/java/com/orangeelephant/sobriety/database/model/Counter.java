@@ -112,4 +112,20 @@ public class Counter {
 
         return counter;
     }
+
+    public static Counter fromJson(JSONObject jsonCounter) throws JSONException {
+        int id = jsonCounter.getInt("Id");
+        String name = jsonCounter.getString("Name");
+        long startTime = jsonCounter.getLong("StartTimeMillis");
+        long recordTime = jsonCounter.getLong("RecordTimeSoberMillis");
+
+        JSONArray jsonReasons = jsonCounter.getJSONArray("Reasons");
+        ArrayList<Reason> reasons = new ArrayList<>();
+        for (int i = 0; i < jsonReasons.length(); i++) {
+            JSONObject reason = jsonReasons.getJSONObject(i);
+            reasons.add(Reason.fromJson(reason));
+        }
+
+        return new Counter(id, name, startTime, recordTime, reasons);
+    }
 }

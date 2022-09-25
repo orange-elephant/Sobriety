@@ -32,4 +32,11 @@ public class Reason {
 
         return jsonReasons;
     }
+
+    public static Reason fromJson(JSONObject jsonReason) throws JSONException {
+        int reasonId = jsonReason.getInt("ReasonId");
+        String reason = jsonReason.getString("Reason");
+
+        return new Reason(reasonId, reason);
+    }
 }
