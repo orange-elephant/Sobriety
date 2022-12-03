@@ -20,5 +20,12 @@ public class SettingsActivity extends SobrietyActivity {
                     .replace(R.id.settings, new PreferenceFragment())
                     .commit();
         }
+
+        setSupportActionBar(findViewById(R.id.toolbar));
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle(R.string.settings);
+        }
     }
 }

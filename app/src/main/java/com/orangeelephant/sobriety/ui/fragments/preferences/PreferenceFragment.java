@@ -24,6 +24,12 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             LogEvent.i(TAG, String.format("Language changed: %s", newValue));
             return true;
         }));
+
+        Preference themePref = requirePreference("theme_toggleable");
+        themePref.setOnPreferenceChangeListener(((preference, newValue) -> {
+            requireActivity().recreate();
+            return true;
+        }));
     }
 
     private @NonNull Preference requirePreference(String key) {
