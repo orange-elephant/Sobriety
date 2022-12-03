@@ -1,4 +1,4 @@
-package com.orangeelephant.sobriety.activities;
+package com.orangeelephant.sobriety.ui;
 
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -25,6 +25,7 @@ public class SobrietyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setLocale();
+        setTheme(SobrietyPreferences.getTheme().toStyle());
     }
 
     private void setLocale() {

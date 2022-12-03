@@ -1,4 +1,4 @@
-package com.orangeelephant.sobriety.activities;
+package com.orangeelephant.sobriety.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;

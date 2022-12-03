@@ -1,4 +1,4 @@
-package com.orangeelephant.sobriety.activities;
+package com.orangeelephant.sobriety.ui;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.database.model.Counter;
-import com.orangeelephant.sobriety.activities.adapters.CounterAdapter;
+import com.orangeelephant.sobriety.ui.adapters.CounterAdapter;
 
 public class HomeScreenActivity extends SobrietyActivity implements CounterAdapter.OnItemClicked {
     private CounterAdapter adapter;

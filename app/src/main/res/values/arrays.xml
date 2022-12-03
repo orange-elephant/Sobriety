@@ -21,8 +21,8 @@
     </string-array>
 
     <string-array name="themes_key">
-        <item>default</item>
-        <item>light</item>
-        <item>dark</item>
+        <item>SYSTEM</item>
+        <item>LIGHT_MODE</item>
+        <item>DARK_MODE</item>
     </string-array>
 </resources>

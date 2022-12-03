@@ -1,4 +1,4 @@
-package com.orangeelephant.sobriety.activities.fragments.preferences;
+package com.orangeelephant.sobriety.ui.fragments.preferences;
 
 import android.os.Bundle;
 

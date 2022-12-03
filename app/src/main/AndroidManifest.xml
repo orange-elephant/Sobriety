@@ -10,10 +10,9 @@
         android:icon="@mipmap/app_logo"
         android:label="Sobriety"
         android:roundIcon="@mipmap/app_logo"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.Sobriety" >
+        android:supportsRtl="true">
         <activity
-            android:name=".activities.UnlockActivity"
+            android:name=".ui.UnlockActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,20 +21,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.SettingsActivity"
+            android:name=".ui.SettingsActivity"
             android:exported="true"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".activities.EditCounterActivity"
+            android:name=".ui.EditCounterActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.CounterFullViewActivity"
+            android:name=".ui.CounterFullViewActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.AddCounterActivity"
+            android:name=".ui.AddCounterActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.HomeScreenActivity"
+            android:name=".ui.HomeScreenActivity"
             android:exported="true" />
     </application>
 

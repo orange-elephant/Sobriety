@@ -6,12 +6,16 @@ import android.content.SharedPreferences;
 
 
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
+import com.orangeelephant.sobriety.logging.LogEvent;
+import com.orangeelephant.sobriety.ui.Themes;
 
 /**
  * A class which provides methods to simplify the setting and accessing of preferences
  * and settings related to the app
  */
 public final class SobrietyPreferences {
+    private static final String TAG = SobrietyPreferences.class.getSimpleName();
+
     private static final String sharedPreferenceFile = "com.orangeelephant.sobriety_preferences";
 
     private static final String ENCRYPTION_FIXED_IV = "fixedIv";
@@ -24,7 +28,7 @@ public final class SobrietyPreferences {
     private static final String BACKUP_KEY_WITH_IV = "backupKeyWithIv";
 
     private static final String LANGUAGE = "language";
-    private static final String THEME = "theme";
+    private static final String THEME = "theme_toggleable";
     private static final String FINGERPRINT_LOCK_ENABLED = "fingerprintLockEnabled";
 
     public static void setEncryptionFixedIv(String fixedIv) {
@@ -83,12 +87,11 @@ public final class SobrietyPreferences {
         return getStringPreference(LANGUAGE, "default");
     }
 
-    public static void setTheme(String theme) {
-        setStringPreference(THEME, theme);
-    }
+    public static Themes getTheme() {
+        String themeName = getStringPreference(THEME, "SYSTEM");
+        LogEvent.i(TAG, themeName);
 
-    public static String getTheme() {
-        return getStringPreference(THEME, "default");
+        return Themes.valueOf(themeName);
     }
 
     public static void setBackupEncryptionPassphraseSalt(String salt) {

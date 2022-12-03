@@ -1,4 +1,4 @@
-package com.orangeelephant.sobriety.activities;
+package com.orangeelephant.sobriety.ui;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.orangeelephant.sobriety.R;
-import com.orangeelephant.sobriety.activities.adapters.ReasonsAdapter;
+import com.orangeelephant.sobriety.ui.adapters.ReasonsAdapter;
 import com.orangeelephant.sobriety.database.model.Counter;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 

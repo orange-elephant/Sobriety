@@ -13,11 +13,11 @@
             app:entryValues="@array/language_codes"/>
 
         <ListPreference
-            app:enabled="false"
-            app:key="theme"
+            app:enabled="true"
+            app:key="theme_toggleable"
             app:title="@string/theme"
             app:useSimpleSummaryProvider="true"
-            app:defaultValue="default"
+            app:defaultValue="SYSTEM"
             app:entries="@array/themes"
             app:entryValues="@array/themes_key"/>
 
@@ -31,7 +31,7 @@
             app:summary="@string/fingerprint_unlock_description"/>
 
         <Preference
-            android:fragment="com.orangeelephant.sobriety.activities.fragments.preferences.BackupPreferencesFragment"
+            android:fragment="com.orangeelephant.sobriety.ui.fragments.preferences.BackupPreferencesFragment"
             app:title="@string/backup"
             app:summary="@string/backup_prefs_description"
             app:enabled="false"
