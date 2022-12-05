@@ -14,7 +14,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.orangeelephant.sobriety.R;
-import com.orangeelephant.sobriety.ui.dialogs.Dialogs;
 import com.orangeelephant.sobriety.backup.BackupSecret;
 import com.orangeelephant.sobriety.backup.CreateBackup;
 import com.orangeelephant.sobriety.backup.ImportBackup;
@@ -33,26 +32,32 @@ public class BackupPreferencesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.backup_fragment, container, false);
-        view.findViewById(R.id.ImportBackup).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                importBackup();
-            }
-        });
+        view.findViewById(R.id.ImportBackup).setOnClickListener(importer -> importBackup());
 
-        view.findViewById(R.id.CreateBackup).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createBackup();
-            }
-        });
+        /* view.findViewById(R.id.CreateBackup).setOnClickListener(backup -> {
+            Dialogs.PasswordSetListener listener = (password) -> {
+                setPassphrase(new String(password));
+            };
+            Dialogs.showSetPasswordDialog(getContext(), listener);
+        }); */
 
-        setPassphrase();
         return view;
     }
 
-    private void setPassphrase() {
-        BackupSecret backupSecret = new BackupSecret(null);
+    private void setPassphrase(String passphrase) {
+        try {
+            new BackupSecret(null).setPassphrase(passphrase);
+
+            Toast t = new Toast(getContext());
+            t.setText("Password set successfully");
+            t.show();
+
+            createBackup();
+        } catch (GeneralSecurityException e) {
+            Toast t = new Toast(getContext());
+            t.setText("Failed to set password");
+            t.show();
+        }
     }
 
     private void selectBackupLocation() {
@@ -61,11 +66,7 @@ public class BackupPreferencesFragment extends Fragment {
 
     private void createBackup() {
         CreateBackup b = new CreateBackup();
-        try {
-            b.setPassphrase("Bob");
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        }
+
         try {
             TextView t = getView().findViewById(R.id.backup_text);
             t.setText(b.getEncryptedDataAsString());
@@ -95,7 +96,7 @@ public class BackupPreferencesFragment extends Fragment {
         System.out.println(data);
         try {
             ImportBackup i = new ImportBackup(data.toString());
-            i.setPassphrase("Bob");
+            i.setPassphrase("test");
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
