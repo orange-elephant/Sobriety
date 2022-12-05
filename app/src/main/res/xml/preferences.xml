@@ -7,6 +7,7 @@
             app:key="language"
             app:enabled="true"
             app:title="@string/language"
+            app:icon="@drawable/ic_fas_globe"
             app:useSimpleSummaryProvider="true"
             app:defaultValue="default"
             app:entries="@array/language"
@@ -16,6 +17,7 @@
             app:enabled="true"
             app:key="theme_toggleable"
             app:title="@string/theme"
+            app:icon="@drawable/ic_brush_black"
             app:useSimpleSummaryProvider="true"
             app:defaultValue="SYSTEM"
             app:entries="@array/themes"
@@ -28,11 +30,13 @@
             app:key="fingerprint_lock_enabled"
             app:enabled="false"
             app:title="@string/fingerprint_unlock"
+            app:icon="@drawable/ic_fingerprint_black"
             app:summary="@string/fingerprint_unlock_description"/>
 
         <Preference
             android:fragment="com.orangeelephant.sobriety.ui.fragments.preferences.BackupPreferencesFragment"
             app:title="@string/backup"
+            app:icon="@drawable/ic_cloud_upload_outline_black"
             app:summary="@string/backup_prefs_description"
             app:enabled="false"
             />
@@ -45,10 +49,12 @@
             app:selectable="false"
             app:enableCopying="false"
             app:title="@string/version"
+            app:icon="@drawable/ic_tools_black"
             app:summary=""/>
 
         <Preference
             app:title="@string/source_code"
+            app:icon="@drawable/ic_fas_code_branch"
             app:summary="@string/source_code_description">
             <intent android:action="android.intent.action.VIEW"
                 android:data="https://github.com/orange-elephant/sobriety" />
