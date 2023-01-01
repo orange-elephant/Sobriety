@@ -1,6 +1,5 @@
-package com.orangeelephant.sobriety.ui.adapters;
+package com.orangeelephant.sobriety.ui.views;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +13,18 @@ import java.util.ArrayList;
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.database.model.Reason;
 
-public class ReasonsAdapter extends
-        RecyclerView.Adapter<ReasonsAdapter.ViewHolder> {
+public class ReasonsAdapter extends RecyclerView.Adapter<ReasonsAdapter.ViewHolder> {
 
-    private ArrayList<Reason> reasonsDict;
+    private final ArrayList<Reason> reasons;
 
-    public ReasonsAdapter(ArrayList<Reason> reasonsDict) {
-        this.reasonsDict = reasonsDict;
+    public ReasonsAdapter(ArrayList<Reason> reasons) {
+        this.reasons = reasons;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         View reasonsView = inflater.inflate(R.layout.reason_layout, parent, false);
 
@@ -36,7 +33,7 @@ public class ReasonsAdapter extends
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String reason = reasonsDict.get(position).getReason();
+        String reason = reasons.get(position).getReason();
 
         TextView reasonTextView = holder.reasonView;
         reasonTextView.setText(reason);
@@ -44,7 +41,7 @@ public class ReasonsAdapter extends
 
     @Override
     public int getItemCount() {
-        return reasonsDict.size();
+        return reasons.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

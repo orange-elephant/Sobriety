@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.orangeelephant.sobriety.R;
-import com.orangeelephant.sobriety.ui.adapters.ReasonsAdapter;
+import com.orangeelephant.sobriety.ui.views.ReasonsAdapter;
 import com.orangeelephant.sobriety.database.model.Counter;
 import com.orangeelephant.sobriety.dependencies.ApplicationDependencies;
 
@@ -22,7 +22,6 @@ import java.util.Date;
 public class CounterFullViewActivity extends SobrietyActivity {
 
     private Counter openCounter;
-    private ReasonsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +129,7 @@ public class CounterFullViewActivity extends SobrietyActivity {
     public void onCreateRecycler() {
         RecyclerView reasonsView = findViewById(R.id.CounterViewActivity_reasons_recycler_view);
 
-        this.adapter = new ReasonsAdapter(openCounter.getReasons());
+        ReasonsAdapter adapter = new ReasonsAdapter(openCounter.getReasons());
         reasonsView.setAdapter(adapter);
         reasonsView.setLayoutManager(new LinearLayoutManager(this));
     }

@@ -11,9 +11,9 @@ import android.view.View;
 
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.database.model.Counter;
-import com.orangeelephant.sobriety.ui.adapters.CounterAdapter;
+import com.orangeelephant.sobriety.ui.views.CounterAdapter;
 
-public class HomeScreenActivity extends SobrietyActivity implements CounterAdapter.OnItemClicked {
+public class HomeScreenActivity extends SobrietyActivity implements CounterAdapter.Listener {
     private CounterAdapter adapter;
 
     @Override
@@ -21,7 +21,11 @@ public class HomeScreenActivity extends SobrietyActivity implements CounterAdapt
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_home_screen);
-        onCreateRecycler();
+
+        adapter = new CounterAdapter(this);
+        RecyclerView countersView = (RecyclerView) findViewById(R.id.counterView);
+        countersView.setAdapter(adapter);
+        countersView.setLayoutManager(new LinearLayoutManager(this));
 
         setSupportActionBar(findViewById(R.id.homeScreenToolbar));
         ActionBar actionBar = getSupportActionBar();
@@ -29,7 +33,6 @@ public class HomeScreenActivity extends SobrietyActivity implements CounterAdapt
 
         setTimeMessageUpdateHandler();
     }
-
 
     @Override
     public void onResume() {
@@ -48,23 +51,11 @@ public class HomeScreenActivity extends SobrietyActivity implements CounterAdapt
     }
 
     @Override
-    public void onItemClick(int position) {
-        Counter openCounter = this.adapter.getmCounter()[position];
-
+    public void onCounterClicked(Counter openCounter) {
         Intent intent = new Intent(HomeScreenActivity.this, CounterFullViewActivity.class);
         intent.putExtra("openCounterId", openCounter.getId());
 
         startActivity(intent);
-    }
-
-    private void onCreateRecycler() {
-        RecyclerView countersView = (RecyclerView) findViewById(R.id.counterView);
-
-        this.adapter = new CounterAdapter(this);
-        countersView.setAdapter(adapter);
-        countersView.setLayoutManager(new LinearLayoutManager(this));
-
-        adapter.setOnClick(this);
     }
 
     private void updateCounterDurationMessage() {
