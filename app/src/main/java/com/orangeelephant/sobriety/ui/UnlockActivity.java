@@ -1,16 +1,14 @@
 package com.orangeelephant.sobriety.ui;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CancellationSignal;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
 
 import com.orangeelephant.sobriety.R;
 import com.orangeelephant.sobriety.database.SqlcipherKey;
@@ -20,7 +18,6 @@ import com.orangeelephant.sobriety.logging.LogEvent;
 import com.orangeelephant.sobriety.util.SobrietyPreferences;
 
 import java.security.KeyStoreException;
-import java.util.concurrent.Executor;
 
 public class UnlockActivity extends SobrietyActivity {
     private static final String TAG = (UnlockActivity.class.getSimpleName());
@@ -50,55 +47,16 @@ public class UnlockActivity extends SobrietyActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void fingerprintUnlock() {
-        Executor executor;
-        BiometricPrompt biometricPrompt;
-
-        executor = ContextCompat.getMainExecutor(this);
-        biometricPrompt = new BiometricPrompt.Builder(this)
-                .setTitle(this.getString(R.string.AppStartup_unlock_title))
+        BiometricPrompt biometricPrompt = new BiometricPrompt(this, new BiometricCallback());
+        BiometricPrompt.PromptInfo biometricPromptInfo = new BiometricPrompt.PromptInfo
+                .Builder()
+                .setAllowedAuthenticators(BiometricManager.Authenticators.DEVICE_CREDENTIAL |
+                                          BiometricManager.Authenticators.BIOMETRIC_STRONG)
+                .setTitle(getString(R.string.AppStartup_unlock_title))
                 .setSubtitle(this.getString(R.string.AppStartup_unlock_subtitle))
-                .setNegativeButton(getString(R.string.AppStartup_unlock_negative_button), executor, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        moveTaskToBack(true);
-                    }
-                })
                 .build();
 
-        BiometricPrompt.AuthenticationCallback callback = new BiometricPrompt.AuthenticationCallback() {
-            @Override
-            public void onAuthenticationError(int errorCode,
-                                              @NonNull CharSequence errString) {
-                super.onAuthenticationError(errorCode, errString);
-                Toast.makeText(getApplicationContext(),
-                                getApplicationContext().getString(R.string.AppStartup_unlock_error) + errString, Toast.LENGTH_SHORT)
-                        .show();
-            }
-
-            @Override
-            public void onAuthenticationSucceeded(
-                    @NonNull BiometricPrompt.AuthenticationResult result) {
-                super.onAuthenticationSucceeded(result);
-                Toast.makeText(getApplicationContext(),
-                                getApplicationContext().getString(R.string.AppStartup_unlock_successful),
-                                Toast.LENGTH_SHORT)
-                        .show();
-
-                uponUnlock();
-                finish();
-            }
-
-            @Override
-            public void onAuthenticationFailed() {
-                super.onAuthenticationFailed();
-                Toast.makeText(getApplicationContext(),
-                                getApplicationContext().getString(R.string.AppStartup_unlock_failed),
-                                Toast.LENGTH_SHORT)
-                        .show();
-            }
-        };
-
-        biometricPrompt.authenticate(new CancellationSignal(), executor, callback);
+        biometricPrompt.authenticate(biometricPromptInfo);
     }
 
     private void uponUnlock() {
@@ -118,11 +76,33 @@ public class UnlockActivity extends SobrietyActivity {
         }
     }
 
-
     private void onFirstOpen() {
         LogEvent.i(TAG,"Running first open tasks");
         SqlCipherHelper.attemptToCreateEncryptedDatabase(this);
 
         SobrietyPreferences.setIsFirstOpen(false);
+    }
+
+    private class BiometricCallback extends BiometricPrompt.AuthenticationCallback {
+        @Override
+        public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+            super.onAuthenticationError(errorCode, errString);
+            Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.AppStartup_unlock_error) + errString, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+            super.onAuthenticationSucceeded(result);
+            Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.AppStartup_unlock_successful), Toast.LENGTH_SHORT).show();
+
+            uponUnlock();
+            finish();
+        }
+
+        @Override
+        public void onAuthenticationFailed() {
+            super.onAuthenticationFailed();
+            Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.AppStartup_unlock_failed), Toast.LENGTH_SHORT).show();
+        }
     }
 }

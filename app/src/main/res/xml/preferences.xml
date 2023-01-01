@@ -28,7 +28,7 @@
     <PreferenceCategory app:title="@string/security">
         <SwitchPreference
             app:key="fingerprint_lock_enabled"
-            app:enabled="false"
+            app:enabled="true"
             app:title="@string/fingerprint_unlock"
             app:icon="@drawable/ic_fingerprint_black"
             app:summary="@string/fingerprint_unlock_description"/>
